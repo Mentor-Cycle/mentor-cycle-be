@@ -1,22 +1,13 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+.env
+
 # compiled output
 /dist
-/node_modules
+/tmp
+/out-tsc
 
-# Logs
-logs
-*.log
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-
-# OS
-.DS_Store
-
-# Tests
-/coverage
-/.nyc_output
+# dependencies
+node_modules
 
 # IDEs and editors
 /.idea
@@ -26,6 +17,8 @@ lerna-debug.log*
 *.launch
 .settings/
 *.sublime-workspace
+.VSCodeCounter
+.eslintcache
 
 # IDE - VSCode
 .vscode/*
@@ -33,3 +26,18 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+debug.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db

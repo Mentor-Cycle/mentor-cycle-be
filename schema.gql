@@ -1,0 +1,17 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TestModel {
+  id: Float!
+  anyUniqueText: String!
+  anyNonUniqueText: String!
+}
+
+type Query {
+  any(id: Float!): TestModel!
+}
+
+type Mutation {
+  createAny(anyUniqueText: String!, anyNonUniqueText: String!): TestModel!
+}
