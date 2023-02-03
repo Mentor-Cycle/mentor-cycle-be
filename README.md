@@ -39,9 +39,13 @@ Antes de tudo precisamos ter as seguintes ferramentas instaladas na sua máquina
 > Caso você esteja fazendo uma tarefa Front-end e necessite do Layout, role até o fim da página e acesse o link do figma.
 
  1. Entre no Trello e veja as tarefas que estão na coluna **"A Fazer"**, lá você pode escolher um card, clicar nele e Ingressar conforma na imagem e em seguida feche o modal, clique e arraste a tarefa para a coluna **"Em andamento"**. A partir daí você já estará responsável pela entrega desta tarefa: 
-    ![image](https://user-images.githubusercontent.com/57500163/216627716-657789cd-e68f-4f1a-9564-7382bfd3f061.png)
- 2.   Agora vá até a aba **"Repositórios"** e escolha um repositório, lembrando que existem repositórios **Front-end** e **Back-end**, baseado na tarefa que você escolheu você irá fazer um **"Fork"** da aplicação, para isso você precisa abrir o repositório escolhido e clicar em **"fork"**, do lado superior direito conforma na imagem:
-	![image](https://user-images.githubusercontent.com/57500163/216629255-034809cf-1041-4ee7-9a60-63722b4ab08d.png)
+ 
+![image](https://user-images.githubusercontent.com/57500163/216627716-657789cd-e68f-4f1a-9564-7382bfd3f061.png)
+    
+ 2. Agora vá até a aba **"Repositórios"** e escolha um repositório, lembrando que existem repositórios **Front-end** e **Back-end**, baseado na tarefa que você escolheu você irá fazer um **"Fork"** da aplicação, para isso você precisa abrir o repositório escolhido e clicar em **"fork"**, do lado superior direito conforma na imagem:
+ 
+![image](https://user-images.githubusercontent.com/57500163/216629255-034809cf-1041-4ee7-9a60-63722b4ab08d.png)
+	
 O Fork visa criar um clone desse repositório na sua conta GitHub, e é lá que você irá trabalhar no projeto, nunca submeta PRs diretamente do repositório da organização, existe uma trava que não permitirá que você faça isso, então caso tenha algum erro, reveja esse passo. Após fazer o fork você deverá ter um repositório com o seguinte nome: 
 `seu_nome_de_usuario/nome_do_repositorio` como está aqui: 
 
@@ -53,52 +57,54 @@ O Fork visa criar um clone desse repositório na sua conta GitHub, e é lá que 
 
  
  Para clonar basta você clicar no botão **"<> Code"** e copiar o link que aparecerá na tela, após isso va até seu terminal e digite o seguinte comando: 
-```console
+```bash
 git clone codigo_que_voce_copiou
 ```
 No meu caso estou clonando o repositório Back-end como exemplo, então o comando ficará assim: 
-```console
+```bash
 git clone https://github.com/oliveirabalsa/mentor-cycle-be.git
 ```
 
 4. Com repositório na sua máquina, basta você abri-lo com seu editor de código favorito, em seguida executar o comando:
-```console
+```bash
 npm install
 ```
 Isso fará com que o gerenciador de pacotes do node, baixe todas as dependências necessárias para rodar, finalizado a instalação rode o comando:
-```console
+```bash
 npm run dev
 ```
 e para o Back-end:
-```console
+```bash
 npm run start:dev
 ```
 5. Agora com tudo instalado e rodando, basta você criar a sua **branch**, executar a sua tarefa e após finalizado lembre se adicionar ao **stage** como o comando:
 
 Criar branch:
-```console
+```bash
 git checkout -b nome_da_branch
 ```
 Adicionando arquivos:
-```console
+```bash
 git add .
 ```
 Adicione uma mensagem de commit com o comando: 
-```console
+```bash
 git commit -m "sua_mensagem_aqui"
 ```
 > Neste passo lembre-se de utilizar uma mensagem em inglês e também descrevendo o que você fez com poucas palavras e o padrão de commits, por exemplo "feat: create user endpoint"
 
 e em seguida suba as alterações para o seu repositório fork com o comando:
-```console
+```bash
 git push
 ```
 6. Hora da pull request, após dar o `git push`, ao abrir o seu repositório fork na página do GitHub, você notará que existe uma mensagem logo no topo assim como essa: 
+7. 
 ![image](https://user-images.githubusercontent.com/57500163/216635436-f2bfba76-a084-45b7-9b42-d8abe97a7062.png)
 
 Vendo isso, clique no botão **"Compare & pull request"**, isso começara o processo de abertura de uma **PR(Pull Request**) e lembre se de apontar sempre para a branch `dev` do projeto Mentor Cycle  e também adicionar 2 pessoas para revisar a sua tarefa. Esse passo é muito importante, pois essas pessoas irão validar o que você fez e caso tenha algo errado ou que possa ser melhorado elas irão comentar. Isso ajudará muito na sua evolução.
 
 Lembre se de colocar o título conforme o tipo da tarefa, uma mensagem que descreva o que você fez, se possível anexar uma captura de tela e colocar o Link do card da tarefa do Trello que você pegou, pode seguir este modelo ficando mais ou menos assim: 
+
 ![image](https://user-images.githubusercontent.com/57500163/216638205-a473736a-6dbb-453c-948f-2b7712df7d4a.png)
 
 
@@ -128,6 +134,7 @@ Lembre se de colocar o título conforme o tipo da tarefa, uma mensagem que descr
 ---
 
 <p align="center">Developed by <a href="https://www.linkedin.com/in/leonardo-balsalobre/">Leonardo Balsalobre</a> :copyright:
+
 
 #PARA SEGUIR OS PASSOS NEST.JS SIGA O TUTORIAL ABAIXO:
 
