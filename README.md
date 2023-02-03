@@ -135,9 +135,6 @@ Lembre se de colocar o título conforme o tipo da tarefa, uma mensagem que descr
 
 <p align="center">Developed by <a href="https://www.linkedin.com/in/leonardo-balsalobre/">Leonardo Balsalobre</a> :copyright:
 
-
-#PARA SEGUIR OS PASSOS NEST.JS SIGA O TUTORIAL ABAIXO:
-
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
