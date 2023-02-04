@@ -8,10 +8,47 @@ type TestModel {
   anyNonUniqueText: String!
 }
 
+type User {
+  id: ID!
+  email: String!
+  firstName: String!
+  lastName: String
+  photoUrl: String
+  isEmailVerified: Boolean!
+  isTermsAccepted: Boolean!
+  onBoardingCompleted: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type SignIn {
+  token: ID!
+  user: User!
+}
+
 type Query {
   any(id: Float!): TestModel!
 }
 
 type Mutation {
   createAny(anyUniqueText: String!, anyNonUniqueText: String!): TestModel!
+  signUp(userInput: CreateUserInput!): SignIn!
+  signInUser(userInput: SignInUserInput!): SignIn!
+}
+
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input SignInUserInput {
+  email: String!
+  password: String!
 }

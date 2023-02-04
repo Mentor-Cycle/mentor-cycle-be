@@ -21,5 +21,6 @@
 			"@common/*": ["common/*"],
 			"@modules/*": ["modules/*"]
 		}
-  }
+  },
+  "exclude": ["dist"]
 }
