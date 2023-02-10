@@ -10,14 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
-  id               Int    @id @default(autoincrement())
-  anyUniqueText    String @unique @map("any_unique_text")
-  anyNonUniqueText String @map("any_non_unique_text")
-
-  @@map("test")
-}
-
 model User {
   id         String   @id @default(uuid())
   firstName  String   @map("first_name")
@@ -25,7 +17,7 @@ model User {
   email      String   @unique
   password   String?
   googleId   String?  @map("google_id")
-  facebookId String?  @map("facebook_id")
+  linkedinId String?  @map("linkedin_id")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 

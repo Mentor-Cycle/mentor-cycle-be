@@ -2,12 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type TestModel {
-  id: Float!
-  anyUniqueText: String!
-  anyNonUniqueText: String!
-}
-
 type User {
   id: ID!
   email: String!
@@ -32,11 +26,10 @@ type SignIn {
 }
 
 type Query {
-  any(id: Float!): TestModel!
+  sayHello: String!
 }
 
 type Mutation {
-  createAny(anyUniqueText: String!, anyNonUniqueText: String!): TestModel!
   signUp(userInput: CreateUserInput!): SignIn!
   signInUser(userInput: SignInUserInput!): SignIn!
 }
