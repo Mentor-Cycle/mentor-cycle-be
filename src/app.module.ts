@@ -7,10 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [
-    GraphQLModule,
-    PrismaModule
-  ],
+  imports: [GraphQLModule, PrismaModule],
   controllers: [AppController],
   providers: [AppService],
 })
