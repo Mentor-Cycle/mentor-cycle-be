@@ -1,0 +1,13 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: mentorcycle
+      POSTGRES_PASSWORD: mentorcycle
+      POSTGRES_DB: mentorcycle
+    ports:
+      - 5432:5432
