@@ -18,8 +18,8 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-			"@common/*": ["common/*"],
-			"@modules/*": ["modules/*"]
-		}
+      "@common/*": ["src/common/*"],
+      "@modules/*": ["src/modules/*"]
+    }
   }
 }
