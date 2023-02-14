@@ -1,9 +1,11 @@
-import { Resolvers } from './resolvers'
+import { Resolvers } from './resolvers';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule as GQLModule } from '@nestjs/graphql';
-import { AnyService } from '../services';
-import { AnyRepository } from '../repositories';
+import { UserService } from '@modules/services';
+import { UserRepository } from '@modules/repositories';
+import { JwtService } from '@nestjs/jwt';
+import { CryptService } from '@common/services/crypt';
 
 @Module({
   imports: [
@@ -12,6 +14,12 @@ import { AnyRepository } from '../repositories';
       autoSchemaFile: 'schema.gql',
     }),
   ],
-  providers: [ AnyService, AnyRepository, ...Resolvers]
+  providers: [
+    UserService,
+    JwtService,
+    CryptService,
+    UserRepository,
+    ...Resolvers,
+  ],
 })
 export class GraphQLModule {}

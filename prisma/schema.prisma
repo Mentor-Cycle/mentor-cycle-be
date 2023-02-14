@@ -10,10 +10,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
-  id    Int     @default(autoincrement()) @id
-  anyUniqueText String @unique @map("any_unique_text")
-  anyNonUniqueText String @map("any_non_unique_text")
+model User {
+  id         String   @id @default(uuid())
+  firstName  String   @map("first_name")
+  lastName   String?  @map("last_name")
+  email      String   @unique
+  password   String?
+  googleId   String?  @map("google_id")
+  linkedinId String?  @map("linkedin_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
-  @@map("test")
+  @@map("users")
 }

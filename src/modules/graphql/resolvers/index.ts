@@ -1,5 +1,4 @@
-import { AnyResolver } from './any.resolver'
+import { RootResolver } from './root.resolver';
+import { AuthenticationResolver } from './authentication.resolver';
 
-export const Resolvers = [
-    AnyResolver
-]
+export const Resolvers = [RootResolver, AuthenticationResolver];
