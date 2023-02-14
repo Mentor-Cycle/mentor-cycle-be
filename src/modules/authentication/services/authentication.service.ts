@@ -58,7 +58,7 @@ export class AuthenticationService {
       email,
       firstName,
       lastName,
-      //photoUrl,
+      photoUrl,
     };
 
     if (provider === 'google') {

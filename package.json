@@ -17,6 +17,8 @@
     "db:migrate": "prisma migrate dev --preview-feature",
     "db:deploy": "prisma migrate deploy",
     "start:db": "docker-compose up -d",
+    "migrate": "npx prisma migrate dev",
+    "generate": "npx prisma generate",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",

@@ -4,7 +4,6 @@ import { AuthInvalidError, ObjectAlreadyExistsError } from '@common/errors';
 import { CreateUserDto, SignInUserDto } from '@common/dtos';
 import { UserRepository } from '@modules/repositories';
 import { CryptService } from '@common/services/crypt';
-import { JUser } from '@common/types';
 
 @Injectable()
 export class UserService {

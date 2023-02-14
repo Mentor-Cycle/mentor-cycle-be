@@ -1,0 +1,17 @@
+-- AlterTable
+ALTER TABLE "users" ADD COLUMN     "birth_date" TIMESTAMP(3),
+ADD COLUMN     "city" TEXT,
+ADD COLUMN     "country" TEXT,
+ADD COLUMN     "description" TEXT,
+ADD COLUMN     "facebook_id" TEXT,
+ADD COLUMN     "github" TEXT,
+ADD COLUMN     "is_mentor" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "is_terms_accepted" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "is_verified" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "linkedin" TEXT,
+ADD COLUMN     "on_boarding_completed" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "photo_url" TEXT,
+ADD COLUMN     "skills" TEXT[],
+ADD COLUMN     "state" TEXT,
+ADD COLUMN     "status" TEXT NOT NULL DEFAULT 'PENDING',
+ADD COLUMN     "website" TEXT;
