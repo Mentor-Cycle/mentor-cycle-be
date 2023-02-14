@@ -25,12 +25,17 @@ type SignIn {
   user: User!
 }
 
+type SignUp {
+  token: ID!
+  user: User!
+}
+
 type Query {
   sayHello: String!
 }
 
 type Mutation {
-  signUp(userInput: CreateUserInput!): SignIn!
+  signUp(userInput: CreateUserInput!): SignUp!
   signInUser(userInput: SignInUserInput!): SignIn!
 }
 
