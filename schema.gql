@@ -5,6 +5,7 @@
 type User {
   id: ID!
   email: String!
+  password: String
   firstName: String!
   lastName: String
   photoUrl: String
@@ -13,6 +14,19 @@ type User {
   onBoardingCompleted: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
+  googleId: String
+  facebookId: String
+  birthDate: DateTime!
+  country: String!
+  state: String!
+  city: String!
+  skills: [String!]
+  linkedin: String
+  github: String
+  website: String
+  description: String!
+  isMentor: Boolean
+  status: String
 }
 
 """
@@ -44,6 +58,20 @@ input CreateUserInput {
   lastName: String!
   email: String!
   password: String!
+  photoUrl: String
+  skills: [String!]!
+  birthDate: DateTime
+  country: String!
+  state: String!
+  city: String!
+  linkedin: String
+  github: String
+  website: String
+  description: String!
+  isMentor: Boolean
+  facebookId: String
+  googleId: String
+  status: String
 }
 
 input SignInUserInput {
