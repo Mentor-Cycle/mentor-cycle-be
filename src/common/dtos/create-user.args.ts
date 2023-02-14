@@ -7,7 +7,7 @@ import {
   IsString,
   IsOptional,
 } from 'class-validator';
-import { createStringRequirements } from '../utils';
+import { createStringRequirements } from '@common/utils';
 
 @InputType('CreateUserInput')
 export class CreateUserDto {

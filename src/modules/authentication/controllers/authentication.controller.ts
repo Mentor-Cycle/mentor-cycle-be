@@ -1,7 +1,7 @@
-import qs from 'querystring';
 import { Controller, Request, Response, Next, Get } from '@nestjs/common';
 import express from 'express';
-import { authenticate } from 'passport';
+import ps from 'passport';
+import { URLSearchParams } from 'url';
 
 type AuthProvider = 'google' | 'linkedin'; //TODO: implement linkedin auth
 
@@ -39,11 +39,13 @@ export class AuthenticationController {
     const { provider, scope } = params;
     const clientUrl = req.query.clientUrl as string;
 
-    authenticate(provider, {
+    console.log('params: ' + JSON.stringify(req.query));
+
+    ps.authenticate(provider, {
       scope,
-      state: qs.stringify({
+      state: new URLSearchParams({
         clientUrl,
-      }),
+      }).toString(),
     })(req, res, next);
   }
 
@@ -53,9 +55,10 @@ export class AuthenticationController {
     @Response() res: express.Response,
     @Next() next: express.NextFunction,
   ) {
-    const clientUrl = qs.decode(req.query.state as string).clientUrl as string;
-
-    authenticate(
+    const clientUrl = new URLSearchParams(req.query.state as string).get(
+      'clientUrl',
+    ) as string;
+    ps.authenticate(
       provider,
       {
         failureRedirect: `${clientUrl}/auth/login`,

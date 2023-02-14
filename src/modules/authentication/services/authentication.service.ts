@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Prisma, User } from '../../../modules/prisma';
-import { UserRepository } from '../../../modules/repositories';
+import { Prisma, User } from '@modules/prisma';
+import { UserRepository } from '@modules/repositories';
 
 type AuthProvider = 'google' | 'facebook';
 
@@ -109,7 +109,7 @@ export class AuthenticationService {
         email,
         role: 'USER',
       },
-      { subject: userId },
+      { subject: userId, secret: process.env.SECRET },
     );
   }
 }

@@ -1,4 +1,4 @@
-import { ErrorCode } from './error-code.type';
+import { ErrorCode } from '@common/types';
 
 export interface DomainError<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

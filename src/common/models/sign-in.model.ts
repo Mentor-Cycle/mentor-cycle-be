@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { FieldId } from '../decorators';
+import { FieldId } from '@common/decorators';
 import { User } from './user.model';
 
 @ObjectType()
@@ -10,3 +10,6 @@ export class SignIn {
   @Field()
   user: User;
 }
+
+@ObjectType()
+export class SignUp extends SignIn {}

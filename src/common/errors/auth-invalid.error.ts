@@ -1,4 +1,4 @@
-import { DomainError } from '../types';
+import { DomainError } from '@common/errors';
 
 interface AuthInvalidErrorMetadata {
   field: 'email' | 'password';

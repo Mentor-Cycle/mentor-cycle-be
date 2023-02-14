@@ -9,7 +9,7 @@ import { GoogleStrategy } from './strategies';
     JwtModule.registerAsync({
       useFactory: async () => {
         return {
-          secret: process.env.SECRET || 'secret123',
+          secret: process.env.SECRET || '12345',
           signOptions: {
             expiresIn: '7d',
             noTimestamp: false,
