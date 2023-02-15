@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { FieldId } from '@common/decorators';
-import { User } from './user.model';
+import { User } from './user.entity';
 
 @ObjectType()
 export class SignIn {

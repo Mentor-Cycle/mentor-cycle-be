@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthInvalidError, ObjectAlreadyExistsError } from '@common/errors';
-import { CreateUserDto, SignInUserDto } from '@common/dtos';
-import { UserRepository } from '@modules/repositories';
 import { CryptService } from '@common/services/crypt';
+import { SignInUserDto, CreateUserInput } from './dto';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
@@ -43,7 +43,7 @@ export class UserService {
     return { token: generateToken, user: findUser };
   }
 
-  async signUpUser(args: CreateUserDto) {
+  async signUpUser(args: CreateUserInput) {
     const countedUsers = await this.userRepository.count({ email: args.email });
 
     if (countedUsers) {
@@ -68,7 +68,7 @@ export class UserService {
     return { user, token };
   }
 
-  private createUser(args: CreateUserDto) {
+  private createUser(args: CreateUserInput) {
     return this.userRepository.create(args);
   }
 }

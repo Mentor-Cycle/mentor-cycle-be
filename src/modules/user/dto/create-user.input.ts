@@ -12,7 +12,7 @@ import {
 import { createStringRequirements } from '@common/utils';
 
 @InputType('CreateUserInput')
-export class CreateUserDto {
+export class CreateUserInput {
   @Field()
   @IsString()
   @Length(2, 100)
