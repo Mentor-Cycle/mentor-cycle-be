@@ -2,7 +2,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile, VerifyCallback } from 'passport-google-oauth20';
 import { config } from 'dotenv';
 import { Injectable } from '@nestjs/common';
-import { AuthenticationService } from '@modules/authentication/services';
+import { AuthenticationService } from '@modules/authentication/authentication.service';
 
 config();
 

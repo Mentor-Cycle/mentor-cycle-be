@@ -1,8 +1,9 @@
+import { UserRepository } from '@modules/user/user.repository';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthenticationController } from './controllers';
-import { AuthenticationService } from './services';
 import { GoogleStrategy } from './strategies';
+import { AuthenticationController } from './authentication.controller';
+import { AuthenticationService } from './authentication.service';
 
 @Module({
   imports: [
@@ -19,6 +20,6 @@ import { GoogleStrategy } from './strategies';
     }),
   ],
   controllers: [AuthenticationController],
-  providers: [AuthenticationService, GoogleStrategy],
+  providers: [AuthenticationService, GoogleStrategy, UserRepository],
 })
 export class AuthenticationModule {}

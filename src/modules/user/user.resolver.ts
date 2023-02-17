@@ -1,15 +1,15 @@
 import { Inject } from '@nestjs/common';
-import { Args, Resolver, Mutation } from '@nestjs/graphql';
-import { UserService } from '@modules/services';
-import { CreateUserDto, SignInUserDto } from '@common/dtos';
-import { SignIn, SignUp } from '@common/models';
+import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { CreateUserInput, SignInUserDto } from './dto';
+import { SignUp, SignIn } from './entities/sign-in.entity';
+import { UserService } from './user.service';
 
-@Resolver()
-export class AuthenticationResolver {
+@Resolver('User')
+export class UserResolver {
   constructor(@Inject(UserService) private userService: UserService) {}
 
   @Mutation(() => SignUp)
-  async signUp(@Args('userInput') input: CreateUserDto) {
+  async signUp(@Args('userInput') input: CreateUserInput) {
     return this.userService.signUpUser(input);
   }
 

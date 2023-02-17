@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Prisma, User } from '@modules/prisma';
-import { UserRepository } from '@modules/repositories';
+import { UserRepository } from '@modules/user/user.repository';
 
 type AuthProvider = 'google' | 'facebook';
 
