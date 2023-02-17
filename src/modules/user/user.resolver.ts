@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { CreateUserInput, SignInUserDto } from './dto';
-import { SignUp, SignIn } from './entities/sign-in.entityl';
+import { SignUp, SignIn } from './entities/sign-in.entity';
 import { UserService } from './user.service';
 
 @Resolver('User')
