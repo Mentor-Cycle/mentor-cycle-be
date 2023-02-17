@@ -26,6 +26,8 @@ export class AuthenticationService {
     token: string;
     new?: boolean;
   }> {
+    console.log('here');
+
     const { accountId, email, firstName, lastName, photoUrl } = user;
 
     const existingUser = await this.userRepository.getByEmail(email);
