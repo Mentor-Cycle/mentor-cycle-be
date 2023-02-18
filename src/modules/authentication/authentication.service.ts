@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Prisma, User } from '@modules/prisma';
 import { UserRepository } from '@modules/user/user.repository';
 import { AuthProvider } from './types';
+import { Profile } from 'passport';
 
 @Injectable()
 export class AuthenticationService {
@@ -13,19 +14,18 @@ export class AuthenticationService {
 
   async authenticateUserFromOAuth(
     provider: AuthProvider,
-    user: {
-      accountId: string;
-      email: string;
-      firstName: string;
-      lastName: string;
-      photoUrl?: string;
-    },
+    profile: Profile,
   ): Promise<{
     user: User;
     token: string;
     new?: boolean;
   }> {
-    const { accountId, email, firstName, lastName, photoUrl } = user;
+    const { id, emails, photos, name } = profile;
+    const firstName = name?.givenName || '';
+    const lastName = name?.familyName || '';
+    const email = emails?.[0].value || '';
+    const photoUrl = photos?.[0].value;
+    const accountId = id;
 
     const existingUser = await this.userRepository.getByEmail(email);
 
