@@ -1,3 +1,4 @@
+import { AuthProvider } from '../types';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile, VerifyCallback } from 'passport-google-oauth20';
 import { config } from 'dotenv';
@@ -7,7 +8,10 @@ import { AuthenticationService } from '@modules/authentication/authentication.se
 config();
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+export class GoogleStrategy extends PassportStrategy(
+  Strategy,
+  AuthProvider.GOOGLE,
+) {
   constructor(private readonly authenticationService: AuthenticationService) {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
@@ -31,7 +35,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       const photoUrl = photos?.[0].value;
 
       const result = await this.authenticationService.authenticateUserFromOAuth(
-        'google',
+        AuthProvider.GOOGLE,
         {
           email,
           firstName,
@@ -40,7 +44,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
           accountId: id,
         },
       );
-
       done(null, result);
     } catch (error) {
       done(error.toString());

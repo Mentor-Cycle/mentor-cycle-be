@@ -45,6 +45,7 @@
     "graphql-tools": "^8.3.16",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
+    "passport-linkedin-oauth2": "^2.0.0",
     "reflect-metadata": "^0.1.13",
     "remove-accents": "^0.4.4",
     "rxjs": "^7.2.0"
