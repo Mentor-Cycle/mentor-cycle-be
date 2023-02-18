@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Prisma, User } from '@modules/prisma';
 import { UserRepository } from '@modules/user/user.repository';
-
-type AuthProvider = 'google' | 'facebook';
+import { AuthProvider } from './types';
 
 @Injectable()
 export class AuthenticationService {
@@ -26,8 +25,6 @@ export class AuthenticationService {
     token: string;
     new?: boolean;
   }> {
-    console.log('here');
-
     const { accountId, email, firstName, lastName, photoUrl } = user;
 
     const existingUser = await this.userRepository.getByEmail(email);
