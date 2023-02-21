@@ -1,5 +1,7 @@
+import { Availability } from './../../availability/entities/availability.entity';
 import { Directive, Field, ObjectType } from '@nestjs/graphql';
 import { FieldId } from '@common/decorators';
+import { Prisma } from '@prisma/client';
 
 @ObjectType()
 @Directive('@key(fields: "id")')
@@ -52,4 +54,6 @@ export class User {
   isMentor?: boolean;
   @Field({ nullable: true })
   status?: string;
+  @Field(() => [Availability], { nullable: true })
+  availability?: Availability[];
 }

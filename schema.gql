@@ -2,6 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Availability {
+  id: ID!
+  mentorId: String!
+  weekDay: Int!
+  startHour: String!
+  endHour: String!
+  active: Boolean!
+}
+
 type User {
   id: ID!
   email: String!
@@ -27,6 +36,7 @@ type User {
   description: String!
   isMentor: Boolean
   status: String
+  availability: [Availability!]
 }
 
 """
@@ -46,11 +56,15 @@ type SignUp {
 
 type Query {
   sayHello: String!
+  findMentorAvailability(mentorId: String!): User!
 }
 
 type Mutation {
   signUp(userInput: CreateUserInput!): SignUp!
   signInUser(userInput: SignInUserInput!): SignIn!
+  createAvailability(createAvailabilityInput: CreateAvailabilityInput!): User!
+  updateAvailability(updateAvailabilityInput: UpdateAvailabilityInput!): Availability!
+  removeAvailability(id: Int!): Availability!
 }
 
 input CreateUserInput {
@@ -77,4 +91,22 @@ input CreateUserInput {
 input SignInUserInput {
   email: String!
   password: String!
+}
+
+input CreateAvailabilityInput {
+  mentorId: ID!
+  availabilities: [AvailabilityInput!]
+}
+
+input AvailabilityInput {
+  weekDay: Int!
+  startHour: String!
+  endHour: String!
+  active: Boolean!
+}
+
+input UpdateAvailabilityInput {
+  mentorId: ID
+  availabilities: [AvailabilityInput!]
+  id: Int!
 }

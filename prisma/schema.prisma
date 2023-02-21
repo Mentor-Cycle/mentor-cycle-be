@@ -34,6 +34,7 @@ model User {
   description         String?
   isMentor            Boolean   @default(false) @map("is_mentor")
   status              String    @default("PENDING")
+  availability        Json?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
