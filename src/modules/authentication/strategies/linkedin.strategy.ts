@@ -28,21 +28,9 @@ export class LinkedinStrategy extends PassportStrategy(
     done: VerifyCallback,
   ) {
     try {
-      const { id, emails, photos, name } = profile;
-      const firstName = name?.givenName || '';
-      const lastName = name?.familyName || '';
-      const email = emails?.[0].value || '';
-      const photoUrl = photos?.[0].value;
-
       const result = await this.authenticationService.authenticateUserFromOAuth(
         AuthProvider.LINKEDIN,
-        {
-          email,
-          firstName,
-          lastName,
-          photoUrl,
-          accountId: id,
-        },
+        profile,
       );
       done(null, result);
     } catch (error) {

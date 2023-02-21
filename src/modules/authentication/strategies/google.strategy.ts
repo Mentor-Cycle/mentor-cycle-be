@@ -1,9 +1,10 @@
 import { AuthProvider } from '../types';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, Profile, VerifyCallback } from 'passport-google-oauth20';
+import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { config } from 'dotenv';
 import { Injectable } from '@nestjs/common';
 import { AuthenticationService } from '@modules/authentication/authentication.service';
+import { Profile } from 'passport';
 
 config();
 
@@ -28,21 +29,9 @@ export class GoogleStrategy extends PassportStrategy(
     done: VerifyCallback,
   ) {
     try {
-      const { id, emails, photos, name } = profile;
-      const firstName = name?.givenName || '';
-      const lastName = name?.familyName || '';
-      const email = emails?.[0].value || '';
-      const photoUrl = photos?.[0].value;
-
       const result = await this.authenticationService.authenticateUserFromOAuth(
         AuthProvider.GOOGLE,
-        {
-          email,
-          firstName,
-          lastName,
-          photoUrl,
-          accountId: id,
-        },
+        profile,
       );
       done(null, result);
     } catch (error) {
