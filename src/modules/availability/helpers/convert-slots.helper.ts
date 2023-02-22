@@ -57,7 +57,10 @@ function getDateTimeFromTimeString(timeString: string): Date {
   return new Date(dateTimeString);
 }
 function getHourStringFromDateTime(dateTime: Date): string {
-  const [hours, minutes] = dateTime.toISOString().substr(11, 5).split(':');
+  const isoString = dateTime.toISOString();
+  const hours = isoString.substring(11, 13);
+  const minutes = isoString.substring(14, 16);
+
   return `${+hours - 3}:${minutes}`;
 }
 function generateDate(hours: string, minutes: string) {
