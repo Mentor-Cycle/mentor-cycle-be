@@ -54,9 +54,35 @@ type SignUp {
   user: User!
 }
 
+type Event {
+  id: ID!
+  mentorId: String!
+  learners: [User!]!
+  startDate: String!
+  endDate: String!
+  active: Boolean!
+}
+
+type LearnerInfo {
+  user: User!
+  assignedBy: String!
+  assignedAt: DateTime!
+}
+
+type CreateEventOutput {
+  id: ID!
+  mentorId: String!
+  learners: [LearnerInfo!]!
+  startDate: String!
+  endDate: String!
+  active: Boolean!
+}
+
 type Query {
   sayHello: String!
   findMentorAvailability(mentorId: String!): User!
+  findEvents(learnerId: String, mentorId: String): [CreateEventOutput!]!
+  findOneEvent(id: String!): CreateEventOutput!
 }
 
 type Mutation {
@@ -65,6 +91,9 @@ type Mutation {
   createAvailability(createAvailabilityInput: CreateAvailabilityInput!): User!
   updateAvailability(updateAvailabilityInput: UpdateAvailabilityInput!): Availability!
   removeAvailability(id: Int!): Availability!
+  createEvent(createEventInput: CreateEventInput!): Event!
+  updateEvent(updateEventInput: UpdateEventInput!): Event!
+  removeEvent(id: Int!): Event!
 }
 
 input CreateUserInput {
@@ -109,4 +138,21 @@ input UpdateAvailabilityInput {
   mentorId: ID
   availabilities: [AvailabilityInput!]
   id: Int!
+}
+
+input CreateEventInput {
+  mentorId: String!
+  learnerId: String!
+  startDate: String!
+  endDate: String!
+  active: Boolean!
+}
+
+input UpdateEventInput {
+  mentorId: String
+  learnerId: String
+  startDate: String
+  endDate: String
+  active: Boolean
+  id: String!
 }
