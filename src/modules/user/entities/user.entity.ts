@@ -1,7 +1,6 @@
 import { Availability } from './../../availability/entities/availability.entity';
 import { Directive, Field, ObjectType } from '@nestjs/graphql';
 import { FieldId } from '@common/decorators';
-import { Prisma } from '@prisma/client';
 
 @ObjectType()
 @Directive('@key(fields: "id")')

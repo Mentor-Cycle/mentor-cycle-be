@@ -10,7 +10,6 @@ import {
   IsBoolean,
 } from 'class-validator';
 import { createStringRequirements } from '@common/utils';
-import { Availability } from '@modules/availability/entities/availability.entity';
 
 @InputType('CreateUserInput')
 export class CreateUserInput {
