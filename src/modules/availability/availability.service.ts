@@ -49,7 +49,7 @@ export class AvailabilityService {
     );
     const mentorEvents = await this.prisma.event.findMany({
       where: {
-        mentorId: mentorId,
+        mentorId,
       },
     });
     const mentorEventsDates = mentorEvents.map((event) => {

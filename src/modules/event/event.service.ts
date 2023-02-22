@@ -21,7 +21,7 @@ export class EventService {
     }
     const eventAtThisTimeAlreadyExists = await this.prisma.event.findMany({
       where: {
-        mentorId: mentorId,
+        mentorId,
         startDate: {
           gte: startDate,
         },
@@ -35,10 +35,10 @@ export class EventService {
     }
     return this.prisma.event.create({
       data: {
-        mentorId: mentorId,
-        startDate: startDate,
-        endDate: endDate,
-        active: active,
+        mentorId,
+        startDate,
+        endDate,
+        active,
         learners: {
           create: [
             {
@@ -65,7 +65,7 @@ export class EventService {
   }) {
     const options = {
       ...(mentorId && {
-        mentorId: mentorId,
+        mentorId,
       }),
       ...(learnerId && {
         learners: {
