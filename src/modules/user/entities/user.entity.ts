@@ -1,3 +1,4 @@
+import { Availability } from './../../availability/entities/availability.entity';
 import { Directive, Field, ObjectType } from '@nestjs/graphql';
 import { FieldId } from '@common/decorators';
 
@@ -52,4 +53,6 @@ export class User {
   isMentor?: boolean;
   @Field({ nullable: true })
   status?: string;
+  @Field(() => [Availability], { nullable: true })
+  availability?: Availability[];
 }

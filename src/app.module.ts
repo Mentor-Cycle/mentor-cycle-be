@@ -9,6 +9,8 @@ import { AuthenticationModule } from '@modules/authentication/authentication.mod
 import { UserModule } from './modules/user/user.module';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { AuthenticationController } from '@modules/authentication/authentication.controller';
+import { AvailabilityModule } from './modules/availability/availability.module';
+import { EventModule } from './modules/event/event.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { AuthenticationController } from '@modules/authentication/authentication
     AuthenticationModule,
     UserModule,
     AuthenticationModule,
+    AvailabilityModule,
+    EventModule,
   ],
   controllers: [AppController, AuthenticationController],
   providers: [AppService, CryptService, RootResolver],
