@@ -36,6 +36,7 @@
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "4.9.0",
+    "@types/faker": "^6.6.9",
     "apollo-server-express": "^3.11.1",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.4.3",
     "@commitlint/config-conventional": "^17.4.3",
+    "@faker-js/faker": "^7.6.0",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",

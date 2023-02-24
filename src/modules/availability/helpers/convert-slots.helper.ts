@@ -36,7 +36,7 @@ function splitTimeSlot(timeSlot: AvailabilityInput): AvailabilityInput[] {
   });
   if (currentEndDateTime < endDateTime) {
     const newStartHour = getHourStringFromDateTime(currentEndDateTime);
-    const newEndHour = timeSlot.endHour;
+    const newEndHour = timeSlot.endHour.padStart(5, '0');
 
     newTimeSlots.push({
       weekDay: timeSlot.weekDay,
@@ -60,8 +60,9 @@ function getHourStringFromDateTime(dateTime: Date): string {
   const isoString = dateTime.toISOString();
   const hours = isoString.substring(11, 13);
   const minutes = isoString.substring(14, 16);
+  const hourSum = String(+hours - 3);
 
-  return `${+hours - 3}:${minutes}`;
+  return `${hourSum.padStart(2, '0')}:${minutes}`;
 }
 function generateDate(hours: string, minutes: string) {
   const now = new Date();
