@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Availability } from '../entities/availability.entity';
 import {
   getDateForWeekday,
@@ -73,15 +74,15 @@ describe('getListOfAvailabilityDays', () => {
 
     const result = getListOfAvailabilityDays(availabilities);
 
-    const startDate = new Date(result[0].startDate);
-    const endDate = new Date(result[0].endDate);
+    const startDate = dayjs(result[0].startDate);
+    const endDate = dayjs(result[0].endDate);
 
-    expect(startDate.getDay()).toEqual(0);
-    expect(startDate.getHours()).toEqual(9);
-    expect(startDate.getMinutes()).toEqual(0);
-    expect(endDate.getDay()).toEqual(0);
-    expect(endDate.getHours()).toEqual(12);
-    expect(endDate.getMinutes()).toEqual(0);
+    expect(startDate.day()).toEqual(0);
+    expect(startDate.hour()).toEqual(9);
+    expect(startDate.minute()).toEqual(0);
+    expect(endDate.day()).toEqual(0);
+    expect(endDate.hour()).toEqual(12);
+    expect(endDate.minute()).toEqual(0);
   });
 });
 

@@ -1,7 +1,8 @@
+import dayjs from 'dayjs';
 import { REGEX_TO_REMOVE_AM_AND_PM } from '@common/utils';
 import { AvailabilityInput } from './../dto/availability.input';
 
-export function convertAvailabilityToThirtyMinuteSlots(
+function convertAvailabilityToThirtyMinuteSlots(
   timeSlots: AvailabilityInput[],
 ): AvailabilityInput[] {
   return timeSlots.flatMap(splitTimeSlot);
@@ -12,23 +13,19 @@ export function splitTimeSlot(
   const startDateTime = getDateTimeFromTimeString(timeSlot.startHour);
   const endDateTime = getDateTimeFromTimeString(timeSlot.endHour);
   const durationInMinutes =
-    (endDateTime.getTime() - startDateTime.getTime()) / 60000;
+    (endDateTime.valueOf() - startDateTime.valueOf()) / 60000;
   if (durationInMinutes <= 30) {
     return [timeSlot];
   }
   const numNewTimeSlots = Math.floor(durationInMinutes / 30);
   const minutesToAdd = durationInMinutes / numNewTimeSlots;
   let currentStartDateTime = startDateTime;
-  let currentEndDateTime = new Date(
-    currentStartDateTime.getTime() + minutesToAdd * 60000,
-  );
+  let currentEndDateTime = currentStartDateTime.add(minutesToAdd, 'minute');
   const newTimeSlots = Array.from({ length: numNewTimeSlots }, () => {
-    const newStartHour = getHourStringFromDateTime(currentStartDateTime);
-    const newEndHour = getHourStringFromDateTime(currentEndDateTime);
+    const newStartHour = currentStartDateTime.format('HH:mm');
+    const newEndHour = currentEndDateTime.format('HH:mm');
     currentStartDateTime = currentEndDateTime;
-    currentEndDateTime = new Date(
-      currentStartDateTime.getTime() + minutesToAdd * 60000,
-    );
+    currentEndDateTime = currentStartDateTime.add(minutesToAdd, 'minute');
     return {
       weekDay: timeSlot.weekDay,
       active: timeSlot.active,
@@ -36,8 +33,8 @@ export function splitTimeSlot(
       endHour: newEndHour,
     };
   });
-  if (currentEndDateTime < endDateTime) {
-    const newStartHour = getHourStringFromDateTime(currentEndDateTime);
+  if (currentEndDateTime.isBefore(endDateTime)) {
+    const newStartHour = currentEndDateTime.format('HH:mm');
     const newEndHour = timeSlot.endHour.padStart(5, '0');
 
     newTimeSlots.push({
@@ -49,28 +46,23 @@ export function splitTimeSlot(
   }
   return newTimeSlots;
 }
-export function getDateTimeFromTimeString(timeString: string): Date {
-  if (!timeString || timeString.length > 5) return new Date('Invalid Date');
+
+function getDateTimeFromTimeString(timeString: string): dayjs.Dayjs {
   const timeStringWithoutAMPM = timeString.replace(
     REGEX_TO_REMOVE_AM_AND_PM,
     '',
   );
   const [hours, minutes] = timeStringWithoutAMPM.split(':');
   const dateTimeString = generateDate(hours, minutes);
-  return new Date(dateTimeString);
+  return dayjs(dateTimeString, 'YYYY-MM-DDTHH:mm:ss');
 }
-export function getHourStringFromDateTime(dateTime: Date): string {
-  const isoString = dateTime.toISOString();
-  const hours = isoString.substring(11, 13);
-  const minutes = isoString.substring(14, 16);
-  const hourSum = String(+hours - 3);
 
-  return `${hourSum.padStart(2, '0')}:${minutes}`;
-}
-export function generateDate(hours: string, minutes: string) {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = (now.getMonth() + 1).toString().padStart(2, '0');
-  const day = now.getDate().toString().padStart(2, '0');
+function generateDate(hours: string, minutes: string) {
+  const now = dayjs();
+  const year = now.year();
+  const month = (now.month() + 1).toString().padStart(2, '0');
+  const day = now.date().toString().padStart(2, '0');
   return `${year}-${month}-${day}T${hours}:${minutes}:00`;
 }
+
+export { convertAvailabilityToThirtyMinuteSlots };
