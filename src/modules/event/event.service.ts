@@ -1,3 +1,5 @@
+import { Availability } from '@modules/availability/entities/availability.entity';
+import { getListOfAvailabilityDays } from '@modules/availability/helpers/get-date-for-weekday.helper';
 import { PrismaService } from '@modules/prisma';
 import { Injectable } from '@nestjs/common';
 import { CreateEventInput } from './dto/create-event.input';
@@ -9,14 +11,14 @@ export class EventService {
   async create(createEventInput: CreateEventInput) {
     const { mentorId, startDate, endDate, learnerId, active } =
       createEventInput;
-    const users = await this.prisma.user.count({
+    const users = await this.prisma.user.findMany({
       where: {
         id: {
           in: [learnerId, mentorId],
         },
       },
     });
-    if (users !== 2) {
+    if (users.length !== 2) {
       throw new Error('One of the users does not exist');
     }
     const eventAtThisTimeAlreadyExists = await this.prisma.event.findMany({
@@ -33,6 +35,22 @@ export class EventService {
     if (eventAtThisTimeAlreadyExists.length) {
       throw new Error('Event already exists at this time');
     }
+    const mentorProfile = users.find((user) => user.isMentor);
+    const mentorAvailabilityDates = getListOfAvailabilityDays(
+      mentorProfile.availability as unknown as Availability[],
+    );
+
+    console.log(mentorAvailabilityDates);
+    console.log(createEventInput.startDate);
+
+    const isPossibleToSchedule = mentorAvailabilityDates.find(
+      (avl) => avl.startDate === createEventInput.startDate,
+    );
+
+    if (!isPossibleToSchedule) {
+      throw new Error('Mentor is not available at this time');
+    }
+
     return this.prisma.event.create({
       data: {
         mentorId,

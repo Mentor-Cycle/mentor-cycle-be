@@ -6,7 +6,9 @@ export function convertAvailabilityToThirtyMinuteSlots(
 ): AvailabilityInput[] {
   return timeSlots.flatMap(splitTimeSlot);
 }
-function splitTimeSlot(timeSlot: AvailabilityInput): AvailabilityInput[] {
+export function splitTimeSlot(
+  timeSlot: AvailabilityInput,
+): AvailabilityInput[] {
   const startDateTime = getDateTimeFromTimeString(timeSlot.startHour);
   const endDateTime = getDateTimeFromTimeString(timeSlot.endHour);
   const durationInMinutes =
@@ -47,7 +49,8 @@ function splitTimeSlot(timeSlot: AvailabilityInput): AvailabilityInput[] {
   }
   return newTimeSlots;
 }
-function getDateTimeFromTimeString(timeString: string): Date {
+export function getDateTimeFromTimeString(timeString: string): Date {
+  if (!timeString || timeString.length > 5) return new Date('Invalid Date');
   const timeStringWithoutAMPM = timeString.replace(
     REGEX_TO_REMOVE_AM_AND_PM,
     '',
@@ -56,7 +59,7 @@ function getDateTimeFromTimeString(timeString: string): Date {
   const dateTimeString = generateDate(hours, minutes);
   return new Date(dateTimeString);
 }
-function getHourStringFromDateTime(dateTime: Date): string {
+export function getHourStringFromDateTime(dateTime: Date): string {
   const isoString = dateTime.toISOString();
   const hours = isoString.substring(11, 13);
   const minutes = isoString.substring(14, 16);
@@ -64,7 +67,7 @@ function getHourStringFromDateTime(dateTime: Date): string {
 
   return `${hourSum.padStart(2, '0')}:${minutes}`;
 }
-function generateDate(hours: string, minutes: string) {
+export function generateDate(hours: string, minutes: string) {
   const now = new Date();
   const year = now.getFullYear();
   const month = (now.getMonth() + 1).toString().padStart(2, '0');
