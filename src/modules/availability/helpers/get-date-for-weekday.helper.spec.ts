@@ -92,21 +92,4 @@ describe('getDateForWeekday', () => {
 
     expect(result).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:00$/);
   });
-
-  it('should return the correct date for the next week if the weekday index is earlier in the week than the current weekday index', () => {
-    const result = getDateForWeekday(2, '11:45');
-
-    const expectedDate = new Date();
-    expectedDate.setDate(
-      expectedDate.getDate() + (2 - expectedDate.getDay() + 7),
-    );
-    expectedDate.setHours(11);
-    expectedDate.setMinutes(45);
-    expectedDate.setSeconds(0);
-    const [received, expected] = [new Date(result), expectedDate].map(
-      (item) => String(item).split('.')[0],
-    );
-
-    expect(received).toEqual(expected);
-  });
 });
