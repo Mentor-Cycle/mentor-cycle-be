@@ -40,9 +40,6 @@ export class EventService {
       mentorProfile.availability as unknown as Availability[],
     );
 
-    console.log(mentorAvailabilityDates);
-    console.log(createEventInput.startDate);
-
     const isPossibleToSchedule = mentorAvailabilityDates.find(
       (avl) => avl.startDate === createEventInput.startDate,
     );
