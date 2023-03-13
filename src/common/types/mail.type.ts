@@ -3,7 +3,7 @@ import { RequireOnlyOne } from '../utils';
 /* eslint-disable prettier/prettier */
 export interface IAddress {
   email: string;
-  name?: string | undefined;
+  name?: string;
 }
 
 export type IMessage =

@@ -1,5 +1,3 @@
-import removeAccents from 'remove-accents';
-
 export function createStringRequirements({
   minLength = 8,
   maxLength,
