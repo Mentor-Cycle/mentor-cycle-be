@@ -1,9 +1,5 @@
 {
-  "moduleFileExtensions": [
-    "js",
-    "json",
-    "ts"
-  ],
+  "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": "src",
   "testRegex": ".*\\.spec\\.ts$",
   "transform": {
@@ -25,6 +21,7 @@
   "testEnvironment": "node",
   "moduleNameMapper": {
     "^@common(.*)$": "<rootDir>/common$1",
-    "^@modules(.*)$": "<rootDir>/modules$1"
+    "^@modules(.*)$": "<rootDir>/modules$1",
+    "^@providers(.*)$": "<rootDir>/providers$1"
   }
 }

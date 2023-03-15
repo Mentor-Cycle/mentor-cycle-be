@@ -36,6 +36,7 @@ model User {
   status              String          @default("PENDING")
   availability        Json?
   events              EventsOnUsers[]
+  temporaryCodes      TemporaryCode[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -43,6 +44,18 @@ model User {
   eventId   String?
 
   @@map("users")
+}
+
+model TemporaryCode {
+  id            String    @id @default(uuid())
+  temporarycode String    @map("temporary_code")
+  email         String
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String    @map("user_id")
+  isPin         Boolean?  @default(false) @map("is_pin")
+  expiresAt     DateTime? @default(now()) @map("expires_at")
+
+  @@map("temporary_codes")
 }
 
 model Event {

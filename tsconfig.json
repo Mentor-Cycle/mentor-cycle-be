@@ -27,7 +27,8 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
 			"@common/*": ["common/*"],
-			"@modules/*": ["modules/*"]
+			"@modules/*": ["modules/*"],
+      "@providers/*": ["providers/*"]
 		}
   },
   "exclude": ["dist"]

@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
-import { CreateUserInput, SignInUserDto } from './dto';
+import { isEmail } from 'class-validator';
+import { CreateUserInput, ResetPasswordUserDto, SignInUserDto } from './dto';
 import { SignUp, SignIn } from './entities/sign-in.entity';
 import { UserService } from './user.service';
 
@@ -16,5 +17,23 @@ export class UserResolver {
   @Mutation(() => SignIn, { name: 'signInUser' })
   async signIn(@Args('userInput') userInput: SignInUserDto) {
     return await this.userService.signIn(userInput);
+  }
+
+  @Mutation(() => Boolean)
+  async resetUserPassword(
+    @Args('userInput') resetUserInput: ResetPasswordUserDto,
+  ) {
+    return this.userService.resetPasswordUser(resetUserInput);
+  }
+
+  @Mutation(() => Boolean)
+  async sendResetPassword(@Args('email') email: string) {
+    const validateEmail = isEmail(email);
+
+    if (!validateEmail) {
+      return validateEmail;
+    }
+
+    return this.userService.sendResetPassword(email);
   }
 }

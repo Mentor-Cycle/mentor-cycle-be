@@ -5,12 +5,17 @@ import { AuthInvalidError, ObjectAlreadyExistsError } from '@common/errors';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
 import { SignInUserDto } from './dto';
+import { MailService } from '@common/services/mail';
+import { TemporaryCodeRepository } from './temporary-code.repository';
 
 describe('UserService', () => {
   let userService: UserService;
   let userRepository: UserRepository;
   let jwtService: JwtService;
   let cryptService: CryptService;
+  let mailService: MailService;
+  let temporaryCodeRepository: TemporaryCodeRepository;
+
   let user: any;
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -37,6 +42,21 @@ describe('UserService', () => {
             encrypt: jest.fn(),
           },
         },
+        {
+          provide: MailService,
+          useValue: {
+            sendMail: jest.fn(),
+          },
+        },
+        {
+          provide: TemporaryCodeRepository,
+          useValue: {
+            getOne: jest.fn(),
+            delete: jest.fn(),
+            deleteMany: jest.fn(),
+            create: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -44,6 +64,10 @@ describe('UserService', () => {
     userRepository = moduleRef.get<UserRepository>(UserRepository);
     jwtService = moduleRef.get<JwtService>(JwtService);
     cryptService = moduleRef.get<CryptService>(CryptService);
+    mailService = moduleRef.get<MailService>(MailService);
+    temporaryCodeRepository = moduleRef.get<TemporaryCodeRepository>(
+      TemporaryCodeRepository,
+    );
     user = {
       id: '1',
       firstName: 'John',

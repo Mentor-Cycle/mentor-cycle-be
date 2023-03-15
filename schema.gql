@@ -88,6 +88,8 @@ type Query {
 type Mutation {
   signUp(userInput: CreateUserInput!): SignUp!
   signInUser(userInput: SignInUserInput!): SignIn!
+  resetUserPassword(userInput: ResetPasswordInput!): Boolean!
+  sendResetPassword(email: String!): Boolean!
   createAvailability(createAvailabilityInput: CreateAvailabilityInput!): User!
   updateAvailability(updateAvailabilityInput: UpdateAvailabilityInput!): Availability!
   removeAvailability(id: Int!): Availability!
@@ -120,6 +122,12 @@ input CreateUserInput {
 input SignInUserInput {
   email: String!
   password: String!
+}
+
+input ResetPasswordInput {
+  email: String!
+  pin: String!
+  newPassword: String!
 }
 
 input CreateAvailabilityInput {
