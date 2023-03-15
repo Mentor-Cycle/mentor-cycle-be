@@ -10,10 +10,63 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
-  id    Int     @default(autoincrement()) @id
-  anyUniqueText String @unique @map("any_unique_text")
-  anyNonUniqueText String @map("any_non_unique_text")
+model User {
+  id                  String          @id @default(uuid())
+  firstName           String          @map("first_name")
+  lastName            String?         @map("last_name")
+  email               String          @unique
+  password            String?
+  photoUrl            String?         @map("photo_url")
+  isVerified          Boolean         @default(false) @map("is_verified")
+  isTermsAccepted     Boolean         @default(false) @map("is_terms_accepted")
+  onBoardingCompleted Boolean         @default(false) @map("on_boarding_completed")
+  googleId            String?         @map("google_id")
+  linkedinId          String?         @map("linkedin_id")
+  facebookId          String?         @map("facebook_id")
+  birthDate           DateTime?       @map("birth_date")
+  country             String?
+  state               String?
+  city                String?
+  skills              String[]
+  linkedin            String?
+  github              String?
+  website             String?
+  description         String?
+  isMentor            Boolean         @default(false) @map("is_mentor")
+  status              String          @default("PENDING")
+  availability        Json?
+  events              EventsOnUsers[]
 
-  @@map("test")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  Event     Event?   @relation(fields: [eventId], references: [id])
+  eventId   String?
+
+  @@map("users")
+}
+
+model Event {
+  id        String          @id @default(uuid())
+  mentorId  String          @map("mentor_id")
+  learners  EventsOnUsers[]
+  startDate String          @map("start_date")
+  endDate   String          @map("end_date")
+  active    Boolean         @default(false)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  User      User[]
+
+  @@map("events")
+}
+
+model EventsOnUsers {
+  event      Event    @relation(fields: [eventId], references: [id])
+  eventId    String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([eventId, userId])
 }

@@ -6,20 +6,29 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "target": "es2017",
+    "lib": ["esnext"],
+    "allowJs": true,
     "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
+    "outDir": "dist",
+    "baseUrl": "./src",
+    "strict": true,
     "incremental": true,
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "strictNullChecks": false,
+    "strictPropertyInitialization": false,
     "noImplicitAny": false,
+    "esModuleInterop": true,
     "strictBindCallApply": false,
+    "isolatedModules": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@common/*": ["src/common/*"],
-      "@modules/*": ["src/modules/*"]
-    }
-  }
+			"@common/*": ["common/*"],
+			"@modules/*": ["modules/*"]
+		}
+  },
+  "exclude": ["dist"]
 }
