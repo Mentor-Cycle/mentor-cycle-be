@@ -20,7 +20,7 @@ import { UserRepository } from './user.repository';
 import {
   passwordResetEmailProps,
   updatePasswordConfirmationProps,
-} from 'providers/mails';
+} from '@providers/mails';
 import { reverseString } from '@common/utils/string';
 import { TemporaryCodeRepository } from './temporary-code.repository';
 import { MailService } from '@common/services/mail';
