@@ -138,6 +138,7 @@ input CreateUserInput {
 input SignInUserInput {
   email: String!
   password: String!
+  rememberMe: Boolean!
 }
 
 input ResetPasswordInput {
