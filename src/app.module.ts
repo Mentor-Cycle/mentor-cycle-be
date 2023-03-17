@@ -12,7 +12,7 @@ import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { AuthenticationController } from '@modules/authentication/authentication.controller';
 import { AvailabilityModule } from './modules/availability/availability.module';
 import { EventModule } from './modules/event/event.module';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -29,17 +29,6 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
         },
       },
       context: ({ req, res }) => ({ req, res }),
-    }),
-    JwtModule.registerAsync({
-      useFactory: async () => {
-        return {
-          secret: process.env.SECRET || '12345',
-          signOptions: {
-            expiresIn: '7d',
-            noTimestamp: false,
-          },
-        };
-      },
     }),
     PrismaModule,
     AuthenticationModule,

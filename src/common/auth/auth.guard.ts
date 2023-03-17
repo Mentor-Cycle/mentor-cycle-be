@@ -8,7 +8,6 @@ export class AuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const ctx = GqlExecutionContext.create(context);
     const { req } = ctx.getContext();
-    //Check token exist and if it's expired, decript and to everything use jwt.verify.
     if (!req.cookies.token) {
       return false;
     }
@@ -16,7 +15,6 @@ export class AuthGuard implements CanActivate {
     const isVerified = this.jwtService.verify(token, {
       secret: process.env.SECRET,
     });
-
     return !!isVerified;
   }
 }

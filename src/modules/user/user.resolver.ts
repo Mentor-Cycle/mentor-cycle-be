@@ -1,15 +1,9 @@
 import { Inject } from '@nestjs/common';
-import {
-  Resolver,
-  Mutation,
-  Args,
-  Context,
-  GraphQLExecutionContext,
-} from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { isEmail } from 'class-validator';
 import { Response } from 'express';
 import { CreateUserInput, ResetPasswordUserDto, SignInUserDto } from './dto';
-import { SignUp, SignIn } from './entities/sign-in.entity';
+import { SignUp } from './entities/sign-in.entity';
 import { UserService } from './user.service';
 
 @Resolver('User')
@@ -25,10 +19,6 @@ export class UserResolver {
     @Args('userInput') userInput: SignInUserDto,
     @Context('res') res: Response,
   ): Promise<boolean> {
-    const user = await this.userService.signIn(userInput);
-    if (!user) {
-      return false;
-    }
     const expireRanges = {
       ONE_HOUR_IN_MILLISECONDS: 86400000 / 24,
       ONE_DAY_IN_MILLISECONDS: 86400000,
@@ -39,6 +29,11 @@ export class UserResolver {
       : expireRanges.ONE_HOUR_IN_MILLISECONDS;
 
     const expires = new Date(Date.now() + expireSession);
+
+    const user = await this.userService.signIn(userInput, expireSession);
+    if (!user) {
+      return false;
+    }
 
     res.cookie('token', user.token, {
       httpOnly: true,
