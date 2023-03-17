@@ -62,7 +62,7 @@
     "@commitlint/cli": "^17.4.3",
     "@commitlint/config-conventional": "^17.4.3",
     "@faker-js/faker": "^7.6.0",
-    "@nestjs/cli": "^9.0.0",
+    "@nestjs/cli": "^9.3.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
     "@types/bcryptjs": "^2.4.2",
