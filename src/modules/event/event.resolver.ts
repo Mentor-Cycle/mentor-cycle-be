@@ -4,6 +4,8 @@ import { Event } from './entities/event.entity';
 import { CreateEventInput } from './dto/create-event.input';
 import { UpdateEventInput } from './dto/update-event.input';
 import { CreateEventOutput } from './dto/create-event.output';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@common/auth/auth.guard';
 
 @Resolver(() => Event)
 export class EventResolver {
@@ -14,6 +16,7 @@ export class EventResolver {
     return this.eventService.create(createEventInput);
   }
 
+  @UseGuards(AuthGuard)
   @Query(() => [CreateEventOutput], { name: 'findEvents' })
   findAll(
     @Args('learnerId', { nullable: true }) learnerId?: string,
