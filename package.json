@@ -36,11 +36,13 @@
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "4.9.0",
+    "@sendgrid/mail": "^7.7.0",
     "@types/faker": "^6.6.9",
     "apollo-server-express": "^3.11.1",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "cuid": "^3.0.0",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
@@ -50,7 +52,8 @@
     "passport-linkedin-oauth2": "^2.0.0",
     "reflect-metadata": "^0.1.13",
     "remove-accents": "^0.4.4",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "sendgrid": "^5.2.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.3",
