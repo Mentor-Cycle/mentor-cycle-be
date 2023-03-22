@@ -12,7 +12,6 @@ import { AuthenticationService } from './authentication.service';
         return {
           secret: process.env.SECRET || '12345',
           signOptions: {
-            expiresIn: '7d',
             noTimestamp: false,
           },
         };

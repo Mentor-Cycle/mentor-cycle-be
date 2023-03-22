@@ -14,8 +14,8 @@ export class LinkedinStrategy extends PassportStrategy(
 ) {
   constructor(private readonly authenticationService: AuthenticationService) {
     super({
-      clientID: process.env.LINKEDIN_CLIENT_ID,
-      clientSecret: process.env.LINKEDIN_SECRET,
+      clientID: process.env.LINKEDIN_CLIENT_ID || '_',
+      clientSecret: process.env.LINKEDIN_SECRET || '_',
       callbackURL: `${process.env.APP_BASE_URL}/auth/linkedin/callback`,
       scope: ['r_emailaddress', 'r_liteprofile'],
     });

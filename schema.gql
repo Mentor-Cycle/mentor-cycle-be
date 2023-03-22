@@ -44,11 +44,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type SignIn {
-  token: ID!
-  user: User!
-}
-
 type SignUp {
   token: ID!
   user: User!
@@ -87,7 +82,7 @@ type Query {
 
 type Mutation {
   signUp(userInput: CreateUserInput!): SignUp!
-  signInUser(userInput: SignInUserInput!): SignIn!
+  signInUser(userInput: SignInUserInput!): Boolean!
   resetUserPassword(userInput: ResetPasswordInput!): Boolean!
   sendResetPassword(email: String!): Boolean!
   createAvailability(createAvailabilityInput: CreateAvailabilityInput!): User!
@@ -122,6 +117,7 @@ input CreateUserInput {
 input SignInUserInput {
   email: String!
   password: String!
+  rememberMe: Boolean!
 }
 
 input ResetPasswordInput {

@@ -1,3 +1,4 @@
+import { User } from '@modules/prisma';
 import { Injectable } from '@nestjs/common';
 import { slug } from 'cuid';
 import { JwtService } from '@nestjs/jwt';
@@ -35,7 +36,7 @@ export class UserService {
     private readonly temporaryCodeRepository: TemporaryCodeRepository,
   ) {}
 
-  async signIn(input: SignInUserDto) {
+  async signIn(input: SignInUserDto, expiresSession: number) {
     const { email, password } = input;
 
     const findUser = await this.userRepository.getByEmail(email);
@@ -53,14 +54,7 @@ export class UserService {
       throw new AuthInvalidError({ field: 'password' });
     }
 
-    const generateToken = this.jwtService.sign(
-      {
-        id: findUser.id,
-        email,
-        role: 'USER',
-      },
-      { subject: findUser.id, secret: process.env.SECRET },
-    );
+    const generateToken = this.generateToken(findUser, expiresSession);
 
     return { token: generateToken, user: findUser };
   }
@@ -78,14 +72,7 @@ export class UserService {
     args.password = await this.cryptService.encrypt(args.password);
     const user = await this.createUser(args);
 
-    const token = this.jwtService.sign(
-      {
-        id: user.id,
-        email: user.email,
-        role: 'USER',
-      },
-      { subject: user.id, secret: process.env.SECRET },
-    );
+    const token = this.generateToken(user);
 
     return { user, token };
   }
@@ -204,6 +191,21 @@ export class UserService {
     await this.resetPasswordSent({ email, firstName, pin });
 
     return true;
+  }
+
+  private generateToken(user: User, expiresSession?: number) {
+    return this.jwtService.sign(
+      {
+        id: user.id,
+        email: user.email,
+        role: 'USER',
+      },
+      {
+        subject: user.id,
+        secret: process.env.SECRET,
+        expiresIn: Date.now() + expiresSession,
+      },
+    );
   }
 
   private async resetPasswordSent(input: ResetPasswordSentDto) {

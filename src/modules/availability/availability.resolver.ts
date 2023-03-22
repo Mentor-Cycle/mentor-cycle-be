@@ -4,6 +4,8 @@ import { Availability } from './entities/availability.entity';
 import { CreateAvailabilityInput } from './dto/create-availability.input';
 import { UpdateAvailabilityInput } from './dto/update-availability.input';
 import { User } from '@modules/user/entities/user.entity';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@common/auth/auth.guard';
 
 @Resolver(() => Availability)
 export class AvailabilityResolver {
@@ -16,7 +18,7 @@ export class AvailabilityResolver {
   ) {
     return this.availabilityService.create(createAvailabilityInput);
   }
-
+  @UseGuards(AuthGuard)
   @Query(() => User, { name: 'findMentorAvailability' })
   findOne(@Args('mentorId', { type: () => String }) mentorId: string) {
     return this.availabilityService.findOne(mentorId);
