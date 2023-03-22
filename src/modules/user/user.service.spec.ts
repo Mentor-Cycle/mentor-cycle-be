@@ -110,7 +110,7 @@ describe('UserService', () => {
       jest.spyOn(userRepository, 'getByEmail').mockResolvedValueOnce(null);
 
       // Act
-      const signInPromise = userService.signIn(input);
+      const signInPromise = userService.signIn(input, Date.now());
 
       // Assert
       await expect(signInPromise).rejects.toThrow(AuthInvalidError);
@@ -123,7 +123,7 @@ describe('UserService', () => {
       jest.spyOn(cryptService, 'compare').mockResolvedValueOnce(false);
 
       // Act
-      const signInPromise = userService.signIn(input);
+      const signInPromise = userService.signIn(input, Date.now());
 
       // Assert
       await expect(signInPromise).rejects.toThrow(AuthInvalidError);
@@ -143,9 +143,8 @@ describe('UserService', () => {
       jest.spyOn(userRepository, 'getByEmail').mockResolvedValue(user);
       jest.spyOn(cryptService, 'compare').mockResolvedValue(true);
       jest.spyOn(jwtService, 'sign').mockReturnValue('token');
-
       // Act
-      const result = await userService.signIn(signInUserDto);
+      const result = await userService.signIn(signInUserDto, Date.now());
 
       // Assert
       expect(result).toEqual({ token: 'token', user });
@@ -156,7 +155,11 @@ describe('UserService', () => {
       );
       expect(jwtService.sign).toHaveBeenCalledWith(
         { id: user.id, email, role: 'USER' },
-        { subject: user.id, secret: process.env.SECRET },
+        {
+          subject: user.id,
+          secret: process.env.SECRET,
+          expiresIn: expect.any(Number),
+        },
       );
     });
   });
@@ -182,7 +185,11 @@ describe('UserService', () => {
       expect(jwtService.sign).toHaveBeenCalledTimes(1);
       expect(jwtService.sign).toHaveBeenCalledWith(
         { id: '1', email: args.email, role: 'USER' },
-        { subject: '1', secret: process.env.SECRET },
+        {
+          subject: '1',
+          secret: process.env.SECRET,
+          expiresIn: expect.any(Number),
+        },
       );
       expect(result.user).toEqual(args);
       expect(result.token).toEqual('dummyToken');

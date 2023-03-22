@@ -194,7 +194,6 @@ export class UserService {
   }
 
   private generateToken(user: User, expiresSession?: number) {
-    console.log(Date.now() + expiresSession);
     return this.jwtService.sign(
       {
         id: user.id,
