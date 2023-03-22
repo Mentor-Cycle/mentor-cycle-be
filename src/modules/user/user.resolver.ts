@@ -1,9 +1,10 @@
 import { Inject } from '@nestjs/common';
-import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query, Context } from '@nestjs/graphql';
 import { isEmail } from 'class-validator';
+import { Response } from 'express';
 import { CreateUserInput, ResetPasswordUserDto, SignInUserDto } from './dto';
 import { FindMentorInput } from './dto/find-mentor.dto';
-import { SignUp, SignIn } from './entities/sign-in.entity';
+import { SignUp } from './entities/sign-in.entity';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 
@@ -21,10 +22,27 @@ export class UserResolver {
   async signUp(@Args('userInput') input: CreateUserInput) {
     return this.userService.signUpUser(input);
   }
+  @Mutation(() => Boolean, { name: 'signInUser' })
+  async signIn(
+    @Args('userInput') userInput: SignInUserDto,
+    @Context('res') res: Response,
+  ): Promise<boolean> {
+    const user = await this.userService.signIn(userInput);
+    if (!user) {
+      return false;
+    }
+    const ONE_DAY_IN_MILLISECONDS = 86400000;
+    const expires = new Date(Date.now() + ONE_DAY_IN_MILLISECONDS);
 
-  @Mutation(() => SignIn, { name: 'signInUser' })
-  async signIn(@Args('userInput') userInput: SignInUserDto) {
-    return await this.userService.signIn(userInput);
+    res.cookie('token', user.token, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+      path: '/',
+      expires,
+    });
+
+    return true;
   }
 
   @Mutation(() => Boolean)

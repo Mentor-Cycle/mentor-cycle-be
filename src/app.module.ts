@@ -17,6 +17,16 @@ import { EventModule } from './modules/event/event.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
+      cors: {
+        origin: true,
+        credentials: true,
+      },
+      playground: {
+        settings: {
+          'request.credentials': 'include',
+        },
+      },
+      context: ({ req, res }) => ({ req, res }),
     }),
     PrismaModule,
     AuthenticationModule,
