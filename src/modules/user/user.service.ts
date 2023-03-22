@@ -24,6 +24,7 @@ import {
 import { reverseString } from '@common/utils/string';
 import { TemporaryCodeRepository } from './temporary-code.repository';
 import { MailService } from '@common/services/mail';
+import { FindMentorInput } from './dto/find-mentor.dto';
 
 @Injectable()
 export class UserService {
@@ -34,6 +35,18 @@ export class UserService {
     private readonly mailService: MailService,
     private readonly temporaryCodeRepository: TemporaryCodeRepository,
   ) {}
+
+  async findMentors(input: FindMentorInput) {
+    let args = Object.values(input).length && input;
+    if (input.pageNumber && input.pageSize) {
+      args = {
+        ...args,
+        skip: (input.pageNumber - 1) * input.pageSize,
+        take: input.pageSize,
+      };
+    }
+    return this.userRepository.findManyMentors(args);
+  }
 
   async signIn(input: SignInUserDto) {
     const { email, password } = input;
