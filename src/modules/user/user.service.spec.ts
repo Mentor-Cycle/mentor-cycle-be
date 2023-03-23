@@ -27,6 +27,7 @@ describe('UserService', () => {
             getByEmail: jest.fn(),
             count: jest.fn(),
             create: jest.fn(),
+            findOneMentor: jest.fn(),
           },
         },
         {
@@ -193,6 +194,25 @@ describe('UserService', () => {
       );
       expect(result.user).toEqual(args);
       expect(result.token).toEqual('dummyToken');
+    });
+  });
+
+  describe('findOneMentor', () => {
+    it('should return a mentor with the given id', async () => {
+      const id = '1';
+      jest.spyOn(userRepository, 'findOneMentor').mockResolvedValue(user);
+      const result = await userService.findOneMentor(id);
+      expect(userRepository.findOneMentor).toHaveBeenCalledTimes(1);
+      expect(userRepository.findOneMentor).toHaveBeenCalledWith(id);
+      expect(result).toEqual(user);
+    });
+    it('should return null when no mentor with the given id exists', async () => {
+      const id = '1';
+      jest.spyOn(userRepository, 'findOneMentor').mockResolvedValue(null);
+      const result = await userService.findOneMentor(id);
+      expect(userRepository.findOneMentor).toHaveBeenCalledTimes(1);
+      expect(userRepository.findOneMentor).toHaveBeenCalledWith(id);
+      expect(result).toEqual(null);
     });
   });
 });

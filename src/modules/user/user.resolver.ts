@@ -1,9 +1,10 @@
-import { Inject } from '@nestjs/common';
-import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
+import { HttpException, Inject } from '@nestjs/common';
+import { Resolver, Mutation, Args, Query, Context } from '@nestjs/graphql';
 import { isEmail } from 'class-validator';
 import { Response } from 'express';
 import { CreateUserInput, ResetPasswordUserDto, SignInUserDto } from './dto';
 import { SignUp } from './entities/sign-in.entity';
+import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 
 @Resolver('User')
@@ -62,5 +63,14 @@ export class UserResolver {
     }
 
     return this.userService.sendResetPassword(email);
+  }
+
+  @Query(() => User, { name: 'findOneMentor' })
+  async findOneMentor(@Args('id', { type: () => String }) id: string) {
+    const mentor = await this.userService.findOneMentor(id);
+    if (!mentor) {
+      throw new HttpException('Mentor not found', 404);
+    }
+    return mentor;
   }
 }

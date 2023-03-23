@@ -25,6 +25,7 @@ import {
 import { reverseString } from '@common/utils/string';
 import { TemporaryCodeRepository } from './temporary-code.repository';
 import { MailService } from '@common/services/mail';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -206,6 +207,10 @@ export class UserService {
         expiresIn: Date.now() + expiresSession,
       },
     );
+  }
+
+  async findOneMentor(id: string) {
+    return this.userRepository.findOneMentor(id);
   }
 
   private async resetPasswordSent(input: ResetPasswordSentDto) {

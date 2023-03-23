@@ -28,6 +28,14 @@ export class UserRepository {
   async getUser(where: Prisma.UserWhereUniqueInput) {
     return this.prismaService.user.findUnique({ where });
   }
+  async findOneMentor(id: string) {
+    return this.prismaService.user.findFirst({
+      where: {
+        id,
+        isMentor: true,
+      },
+    });
+  }
 
   async create(input: Prisma.UserCreateInput) {
     return this.prismaService.user.create({ data: input });
