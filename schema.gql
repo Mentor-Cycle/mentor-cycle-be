@@ -73,11 +73,18 @@ type CreateEventOutput {
   active: Boolean!
 }
 
+type Skill {
+  id: ID!
+  name: String!
+}
+
 type Query {
   sayHello: String!
   findMentorAvailability(mentorId: String!): User!
   findEvents(learnerId: String, mentorId: String): [CreateEventOutput!]!
   findOneEvent(id: String!): CreateEventOutput!
+  findAllSkills: [Skill!]!
+  skill(id: Int!): Skill!
 }
 
 type Mutation {
@@ -91,6 +98,9 @@ type Mutation {
   createEvent(createEventInput: CreateEventInput!): Event!
   updateEvent(updateEventInput: UpdateEventInput!): Event!
   removeEvent(id: Int!): Event!
+  createSkill(createSkillInput: CreateSkillInput!): Skill!
+  updateSkill(updateSkillInput: UpdateSkillInput!): Skill!
+  removeSkill(id: Int!): Skill!
 }
 
 input CreateUserInput {
@@ -159,4 +169,15 @@ input UpdateEventInput {
   endDate: String
   active: Boolean
   id: String!
+}
+
+input CreateSkillInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateSkillInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
