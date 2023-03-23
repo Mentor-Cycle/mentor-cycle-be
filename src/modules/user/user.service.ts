@@ -25,7 +25,6 @@ import {
 import { reverseString } from '@common/utils/string';
 import { TemporaryCodeRepository } from './temporary-code.repository';
 import { MailService } from '@common/services/mail';
-import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
