@@ -83,3 +83,10 @@ model EventsOnUsers {
 
   @@id([eventId, userId])
 }
+
+model Skill {
+  id   String @id @default(uuid())
+  name String
+
+  @@map("skills")
+}

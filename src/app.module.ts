@@ -13,6 +13,7 @@ import { AuthenticationController } from '@modules/authentication/authentication
 import { AvailabilityModule } from './modules/availability/availability.module';
 import { EventModule } from './modules/event/event.module';
 import { JwtService } from '@nestjs/jwt';
+import { SkillModule } from './modules/skill/skill.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { JwtService } from '@nestjs/jwt';
     AvailabilityModule,
     EventModule,
     AuthModule,
+    SkillModule,
   ],
   controllers: [AppController, AuthenticationController],
   providers: [AppService, CryptService, RootResolver, JwtService],
