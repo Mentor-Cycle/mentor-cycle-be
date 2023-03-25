@@ -117,6 +117,7 @@ type Mutation {
   createAvailability(createAvailabilityInput: CreateAvailabilityInput!): User!
   updateAvailability(updateAvailabilityInput: UpdateAvailabilityInput!): Availability!
   removeAvailability(id: Int!): Availability!
+  createGoogleEvent(createEventInput: CreateEventInput!): Event!
   createEvent(createEventInput: CreateEventInput!): Event!
   updateEvent(updateEventInput: UpdateEventInput!): Event!
   removeEvent(id: Int!): Event!
