@@ -74,6 +74,8 @@ export class UserService {
 
     const token = this.generateToken(user);
 
+    delete user.password;
+
     return { user, token };
   }
 
