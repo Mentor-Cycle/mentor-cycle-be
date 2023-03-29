@@ -221,6 +221,10 @@ export class UserService {
     );
   }
 
+  async findOneMentor(id: string) {
+    return this.userRepository.findOneMentor(id);
+  }
+
   private async resetPasswordSent(input: ResetPasswordSentDto) {
     const { email, firstName, pin } = input;
     this.mailService.sendMail({

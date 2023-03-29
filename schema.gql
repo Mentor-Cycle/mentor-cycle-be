@@ -80,6 +80,7 @@ type Skill {
 
 type Query {
   sayHello: String!
+  findOneMentor(id: String!): User!
   findMentors(findMentorsInput: FindMentorInput!): [User!]!
   findMentorAvailability(mentorId: String!): User!
   findEvents(learnerId: String, mentorId: String): [CreateEventOutput!]!

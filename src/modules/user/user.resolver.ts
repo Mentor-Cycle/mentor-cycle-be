@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import { HttpException, Inject } from '@nestjs/common';
 import { Resolver, Mutation, Args, Query, Context } from '@nestjs/graphql';
 import { isEmail } from 'class-validator';
 import { Response } from 'express';
@@ -70,5 +70,14 @@ export class UserResolver {
     }
 
     return this.userService.sendResetPassword(email);
+  }
+
+  @Query(() => User, { name: 'findOneMentor' })
+  async findOneMentor(@Args('id', { type: () => String }) id: string) {
+    const mentor = await this.userService.findOneMentor(id);
+    if (!mentor) {
+      throw new HttpException('Mentor not found', 404);
+    }
+    return mentor;
   }
 }
