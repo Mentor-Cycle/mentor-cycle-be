@@ -81,11 +81,32 @@ type Skill {
 type Query {
   sayHello: String!
   findOneMentor(id: String!): User!
+  findMentors(findMentorsInput: FindMentorInput!): [User!]!
   findMentorAvailability(mentorId: String!): User!
   findEvents(learnerId: String, mentorId: String): [CreateEventOutput!]!
   findOneEvent(id: String!): CreateEventOutput!
   findAllSkills: [Skill!]!
   skill(id: Int!): Skill!
+}
+
+input FindMentorInput {
+  firstName: String
+  skills: [String!]
+  availability: AvailabilityInput
+  limit: Float
+  orderBy: String
+  order: String
+  pageNumber: Float
+  pageSize: Float
+  skip: Float
+  take: Float
+}
+
+input AvailabilityInput {
+  weekDay: Int!
+  startHour: String!
+  endHour: String!
+  active: Boolean!
 }
 
 type Mutation {
@@ -140,13 +161,6 @@ input ResetPasswordInput {
 input CreateAvailabilityInput {
   mentorId: ID!
   availabilities: [AvailabilityInput!]
-}
-
-input AvailabilityInput {
-  weekDay: Int!
-  startHour: String!
-  endHour: String!
-  active: Boolean!
 }
 
 input UpdateAvailabilityInput {
