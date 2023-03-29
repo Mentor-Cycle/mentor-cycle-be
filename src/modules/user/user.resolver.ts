@@ -1,15 +1,23 @@
 import { Inject } from '@nestjs/common';
-import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query, Context } from '@nestjs/graphql';
 import { isEmail } from 'class-validator';
 import { Response } from 'express';
 import { CreateUserInput, ResetPasswordUserDto, SignInUserDto } from './dto';
+import { FindMentorInput } from './dto/find-mentor.dto';
 import { SignUp } from './entities/sign-in.entity';
+import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 
 @Resolver('User')
 export class UserResolver {
   constructor(@Inject(UserService) private userService: UserService) {}
 
+  @Query(() => [User], { name: 'findMentors' })
+  async findMentors(
+    @Args('findMentorsInput') findMentorInput: FindMentorInput,
+  ) {
+    return this.userService.findMentors(findMentorInput);
+  }
   @Mutation(() => SignUp)
   async signUp(@Args('userInput') input: CreateUserInput) {
     return this.userService.signUpUser(input);
