@@ -9,7 +9,6 @@ import { AuthGuard } from '@common/auth/auth.guard';
 
 @Resolver(() => Event)
 export class EventResolver {
-  private readonly calendar: any;
   constructor(private readonly eventService: EventService) {}
 
   @Mutation(() => Event)
