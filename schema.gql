@@ -56,6 +56,7 @@ type Event {
   startDate: String!
   endDate: String!
   active: Boolean!
+  meetLink: String!
 }
 
 type LearnerInfo {
@@ -80,8 +81,8 @@ type Skill {
 
 type Query {
   sayHello: String!
-  findOneMentor(id: String!): User!
   findMentors(findMentorsInput: FindMentorInput!): [User!]!
+  findOneMentor(id: String!): User!
   findMentorAvailability(mentorId: String!): User!
   findEvents(learnerId: String, mentorId: String): [CreateEventOutput!]!
   findOneEvent(id: String!): CreateEventOutput!
@@ -117,7 +118,6 @@ type Mutation {
   createAvailability(createAvailabilityInput: CreateAvailabilityInput!): User!
   updateAvailability(updateAvailabilityInput: UpdateAvailabilityInput!): Availability!
   removeAvailability(id: Int!): Availability!
-  createGoogleEvent(createEventInput: CreateEventInput!): Event!
   createEvent(createEventInput: CreateEventInput!): Event!
   updateEvent(updateEventInput: UpdateEventInput!): Event!
   removeEvent(id: Int!): Event!

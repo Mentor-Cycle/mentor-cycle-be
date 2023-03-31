@@ -17,4 +17,6 @@ export class Event {
   endDate: string;
   @Field(() => Boolean)
   active: boolean;
+  @Field(() => String)
+  meetLink: string;
 }
