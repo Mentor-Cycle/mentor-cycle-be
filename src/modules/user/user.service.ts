@@ -1,5 +1,5 @@
 import { User } from '@modules/prisma';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { slug } from 'cuid';
 import { JwtService } from '@nestjs/jwt';
 import {
@@ -26,6 +26,7 @@ import { reverseString } from '@common/utils/string';
 import { TemporaryCodeRepository } from './temporary-code.repository';
 import { MailService } from '@common/services/mail';
 import { FindMentorInput } from './dto/find-mentor.dto';
+import { JWTProps } from './types';
 
 @Injectable()
 export class UserService {
@@ -36,6 +37,14 @@ export class UserService {
     private readonly mailService: MailService,
     private readonly temporaryCodeRepository: TemporaryCodeRepository,
   ) {}
+
+  async me(token: string) {
+    const decoded = this.jwtService.decode(token) as JWTProps;
+    if (!decoded || !decoded.email) {
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+    }
+    return this.userRepository.getByEmail(decoded.email);
+  }
 
   async findMentors(input: FindMentorInput) {
     let args = Object.values(input).length && input;
@@ -208,12 +217,12 @@ export class UserService {
     return true;
   }
 
-  private generateToken(user: User, expiresSession?: number) {
+  private generateToken(user: User, expiresSession = 0) {
     return this.jwtService.sign(
       {
         id: user.id,
         email: user.email,
-        role: 'USER',
+        role: user.isMentor ? 'MENTOR' : 'USER',
       },
       {
         subject: user.id,
