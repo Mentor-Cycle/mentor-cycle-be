@@ -2,7 +2,7 @@ import { Controller, Get, Param, Res } from '@nestjs/common';
 import { join } from 'path';
 import { Response } from 'express';
 
-@Controller('images')
+@Controller('static')
 export class StaticFilesController {
   @Get(':filename')
   serveFile(@Param('filename') filename: string, @Res() res: Response) {
