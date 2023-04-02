@@ -12,8 +12,7 @@ import { Img } from '@react-email/img';
 import { Button } from '@react-email/button';
 import { Column } from '@react-email/column';
 
-const baseUrl =
-  'https://raw.githubusercontent.com/Mentor-Cycle/mentor-cycle-be/dev/emails';
+const baseUrl = process.env.APP_BASE_URL;
 
 export const ResetPassword = ({ name }: { name: string }) => (
   <Html>

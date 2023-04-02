@@ -241,7 +241,6 @@ export class UserService {
   private async resetPasswordSent(input: ResetPasswordSentDto) {
     const { email, firstName, pin } = input;
     const html = render(ResetPassword({ name: firstName }));
-    console.log(html);
     this.mailService.sendMail({
       to: {
         name: firstName,
