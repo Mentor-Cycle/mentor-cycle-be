@@ -8,10 +8,14 @@
   "rootDir": "src",
   "testRegex": ".*\\.spec\\.ts$",
   "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
+    "^.+\\.(t|j)s$": "ts-jest",
+    "^.+\\.(t|j)sx$": "ts-jest"
   },
   "collectCoverageFrom": [
     "**/*.(t|j)s",
+    "!**/*.(t|j)sx",
+    "!**/emails/**",
+    "!**/.react-email/**",
     "!**/*.module.(t|j)s",
     "!**/*.dto.(t|j)s",
     "!**/*.entity.(t|j)s",
