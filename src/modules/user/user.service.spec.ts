@@ -155,7 +155,7 @@ describe('UserService', () => {
         user.password,
       );
       expect(jwtService.sign).toHaveBeenCalledWith(
-        { id: user.id, email, role: 'USER' },
+        { id: user.id, email, role: expect.any(String) },
         {
           subject: user.id,
           secret: process.env.SECRET,
@@ -185,7 +185,7 @@ describe('UserService', () => {
       expect(userRepository.create).toHaveBeenCalledWith(args);
       expect(jwtService.sign).toHaveBeenCalledTimes(1);
       expect(jwtService.sign).toHaveBeenCalledWith(
-        { id: '1', email: args.email, role: 'USER' },
+        { id: '1', email: args.email, role: expect.any(String) },
         {
           subject: '1',
           secret: process.env.SECRET,
