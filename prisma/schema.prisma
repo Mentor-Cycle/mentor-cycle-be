@@ -59,12 +59,13 @@ model TemporaryCode {
 }
 
 model Event {
-  id        String          @id @default(uuid())
-  mentorId  String          @map("mentor_id")
-  learners  EventsOnUsers[]
-  startDate String          @map("start_date")
-  endDate   String          @map("end_date")
-  active    Boolean         @default(false)
+  id          String          @id @default(uuid())
+  mentorId    String          @map("mentor_id")
+  learners    EventsOnUsers[]
+  startDate   String          @map("start_date")
+  meetingLink String          @map("meeting_link")
+  endDate     String          @map("end_date")
+  active      Boolean         @default(false)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

@@ -4,6 +4,7 @@ import { PrismaService } from '@modules/prisma';
 import { Injectable } from '@nestjs/common';
 import { CreateEventInput } from './dto/create-event.input';
 import { UpdateEventInput } from './dto/update-event.input';
+import { MEETING_PROVIDER_URL } from '@common/config/constants';
 
 @Injectable()
 export class EventService {
@@ -39,21 +40,20 @@ export class EventService {
     const mentorAvailabilityDates = getListOfAvailabilityDays(
       mentorProfile.availability as unknown as Availability[],
     );
-
     const isPossibleToSchedule = mentorAvailabilityDates.find(
       (avl) => avl.startDate === createEventInput.startDate,
     );
-
     if (!isPossibleToSchedule) {
       throw new Error('Mentor is not available at this time');
     }
-
+    const meetingLink = `${MEETING_PROVIDER_URL}/mentor-cycle-${mentorId}-${learnerId}`;
     return this.prisma.event.create({
       data: {
         mentorId,
         startDate,
         endDate,
         active,
+        meetingLink,
         learners: {
           create: [
             {
