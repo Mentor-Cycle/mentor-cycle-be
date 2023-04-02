@@ -50,7 +50,7 @@ export const ResetPassword = ({ name }: { name: string }) => (
           <Heading className="text-primary-03 inline-flex">
             Ola!!
             <Img
-              src={`${baseUrl}/static/smile.svg`}
+              src={`${baseUrl}/static/smile.png`}
               width="32"
               height="32"
               alt="smile picture"
@@ -97,17 +97,17 @@ export const ResetPassword = ({ name }: { name: string }) => (
               <Text className="my-0">E-mail: contato@idip.com.br</Text>
               <div className="flex justify-start items-center gap-2 p-2 h-6 w-6">
                 <Img
-                  src={`${baseUrl}/static/linkedin.svg`}
+                  src={`${baseUrl}/static/linkedin.png`}
                   alt="LinkedIn icon"
                   className="w-6 h-6 object-fill"
                 />
                 <Img
-                  src={`${baseUrl}/static/youtube.svg`}
+                  src={`${baseUrl}/static/youtube.png`}
                   alt="YouTube icon"
                   className="w-6 h-6 object-contain"
                 />
                 <Img
-                  src={`${baseUrl}/static/instagram.svg`}
+                  src={`${baseUrl}/static/instagram.png`}
                   alt="Instagram icon"
                   className="w-6 h-6 object-cover"
                 />
