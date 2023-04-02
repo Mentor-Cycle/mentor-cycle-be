@@ -13,7 +13,7 @@ import { Button } from '@react-email/button';
 import { Column } from '@react-email/column';
 
 const baseUrl =
-  'https://raw.githubusercontent.com/Mentor-Cycle/mentor-cycle-fe/dev/emails';
+  'https://raw.githubusercontent.com/Mentor-Cycle/mentor-cycle-be/dev/emails';
 
 export const ResetPassword = ({ name }: { name: string }) => (
   <Html>
