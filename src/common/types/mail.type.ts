@@ -42,10 +42,6 @@ export type IReturnMail = RequireOnlyOne<
   {
     subject?: string;
     templateId?: string;
-    dynamicTemplateData?: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      [key: string]: any;
-    };
     html?: string;
   },
   'html' | 'templateId'

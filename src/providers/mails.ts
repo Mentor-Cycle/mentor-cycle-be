@@ -1,16 +1,8 @@
 import { IReturnMail } from '@common/types';
 
-export const passwordResetEmailProps = (args: {
-  fname: string;
-  pin: string;
-}): IReturnMail => ({
+export const passwordResetEmailProps = (html: string): IReturnMail => ({
   subject: 'Reset your password',
-  templateId: undefined, //TEMPLATE ID
-  html: `${JSON.stringify(args)}`,
-  // dynamicTemplateData: { //TODO: uncomment once template id is ready
-  //   link: `/password-reset/`, //not being used yet. for later
-  //   ...args,
-  // },
+  html,
 });
 
 export const updatePasswordConfirmationProps = (args: {

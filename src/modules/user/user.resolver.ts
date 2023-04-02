@@ -59,18 +59,18 @@ export class UserResolver {
     return setCookies(res, user.token, expires);
   }
 
-  @Mutation(() => Boolean)
-  async resetUserPassword(
-    @Args('userInput') resetUserInput: ResetPasswordUserDto,
-  ) {
-    return this.userService.resetPasswordUser(resetUserInput);
-  }
-
   @UseGuards(AuthGuard)
   @Query(() => User, { name: 'me' })
   async me(@Context('req') req: Request) {
     const token = req.cookies['token'];
     return this.userService.me(token);
+  }
+
+  @Mutation(() => Boolean)
+  async resetUserPassword(
+    @Args('userInput') resetUserInput: ResetPasswordUserDto,
+  ) {
+    return this.userService.resetPasswordUser(resetUserInput);
   }
 
   @Mutation(() => Boolean)

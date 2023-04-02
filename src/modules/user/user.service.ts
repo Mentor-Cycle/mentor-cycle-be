@@ -27,6 +27,8 @@ import { TemporaryCodeRepository } from './temporary-code.repository';
 import { MailService } from '@common/services/mail';
 import { FindMentorInput } from './dto/find-mentor.dto';
 import { JWTProps } from './types';
+import { render } from '@react-email/components';
+import ResetPassword from '../../../emails/reset-password';
 
 @Injectable()
 export class UserService {
@@ -238,15 +240,14 @@ export class UserService {
 
   private async resetPasswordSent(input: ResetPasswordSentDto) {
     const { email, firstName, pin } = input;
+    const html = render(ResetPassword({ name: firstName }));
+    console.log(html);
     this.mailService.sendMail({
       to: {
         name: firstName,
         email,
       },
-      ...passwordResetEmailProps({
-        fname: firstName,
-        pin,
-      }),
+      ...passwordResetEmailProps(html),
     });
   }
 
