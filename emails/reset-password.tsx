@@ -14,7 +14,13 @@ import { Column } from '@react-email/column';
 
 const baseUrl = process.env.APP_BASE_URL;
 
-export const ResetPassword = ({ name }: { name: string }) => (
+export const ResetPassword = ({
+  name,
+  redirectUrl,
+}: {
+  name: string;
+  redirectUrl: string;
+}) => (
   <Html>
     <Head />
     <Preview>Redefinir Senha</Preview>
@@ -59,15 +65,18 @@ export const ResetPassword = ({ name }: { name: string }) => (
             Solicitação de alteração de senha!
           </Text>
           <Hr />
-          <Text className=" text-center">
+          <Text className="text-center">
             Olá {name}, recebemos um pedido para troca da sua senha, clique no
             botão a baixo para realizar a alteração:
           </Text>
-          <div className="flex justify-center items-center mt-16 max-w-xs m-auto cursor-pointer">
-            <Button className="p-4 bg-primary-03 text-neutral-03 rounded-lg flex-1 text-center">
+          <Container className="flex justify-center items-center mt-16 m-auto cursor-pointer w-full">
+            <Button
+              href={redirectUrl}
+              className="p-4 bg-primary-03 text-neutral-03 rounded-lg flex-1 text-center w-full"
+            >
               Alterar senha
             </Button>
-          </div>
+          </Container>
           <Text className=" mt-16">
             Caso não queira realizar essa ação desconsidere esse e-mail ou se
             não foi você que solicitou, recomendamos que realize a troca da

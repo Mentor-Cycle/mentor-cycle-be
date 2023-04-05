@@ -239,11 +239,12 @@ export class UserService {
   }
 
   private async resetPasswordSent(input: ResetPasswordSentDto) {
-    const { email, firstName, pin } = input;
-    const html = render(ResetPassword({ name: firstName }));
+    const { email, firstName: name, pin } = input;
+    const redirectUrl = `${process.env.FRONTEND_URL}/change-password?email=${email}&pin=${pin}`;
+    const html = render(ResetPassword({ name, redirectUrl }));
     this.mailService.sendMail({
       to: {
-        name: firstName,
+        name,
         email,
       },
       ...passwordResetEmailProps(html),
