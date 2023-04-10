@@ -131,11 +131,6 @@ export class UserService {
 
     await this.userRepository.update({ password }, { id: findUser.id });
 
-    this.sendPasswordChanged({
-      email: findUser.email,
-      firstName: findUser.firstName,
-    });
-
     if (temporaryCodeInfo) {
       await this.temporaryCodeRepository.delete({ id: temporaryCodeInfo.id });
     }
