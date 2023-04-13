@@ -2,7 +2,7 @@ import { Availability } from '@modules/availability/entities/availability.entity
 import { getListOfAvailabilityDays } from '@modules/availability/helpers/get-date-for-weekday.helper';
 import { PrismaService } from '@modules/prisma';
 import { Injectable } from '@nestjs/common';
-import { CreateEventInput } from './dto/create-event.input';
+import { CreateEventInput, EventStatus } from './dto/create-event.input';
 import { UpdateEventInput } from './dto/update-event.input';
 import { MEETING_PROVIDER_URL } from '@common/config/constants';
 
@@ -119,8 +119,27 @@ export class EventService {
     });
   }
 
-  update(id: string, updateEventInput: UpdateEventInput) {
-    return `This action updates a #${id} event`;
+  async update(id: string, updateEventInput: UpdateEventInput) {
+    const { status } = updateEventInput;
+
+    const eventExists = await this.prisma.event.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!eventExists) {
+      throw new Error('Event does not exist');
+    }
+
+    return this.prisma.event.update({
+      where: {
+        id,
+      },
+      data: {
+        status: status.toString(),
+      },
+    });
   }
 
   remove(id: number) {
