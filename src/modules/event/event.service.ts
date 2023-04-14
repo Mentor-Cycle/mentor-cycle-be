@@ -2,7 +2,7 @@ import { Availability } from '@modules/availability/entities/availability.entity
 import { getListOfAvailabilityDays } from '@modules/availability/helpers/get-date-for-weekday.helper';
 import { PrismaService } from '@modules/prisma';
 import { Injectable } from '@nestjs/common';
-import { CreateEventInput, EventStatus } from './dto/create-event.input';
+import { CreateEventInput } from './dto/create-event.input';
 import { UpdateEventInput } from './dto/update-event.input';
 import { MEETING_PROVIDER_URL } from '@common/config/constants';
 

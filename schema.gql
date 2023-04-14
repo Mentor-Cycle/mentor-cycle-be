@@ -7,6 +7,7 @@ type Availability {
   mentorId: String!
   weekDay: Int!
   startHour: String!
+  period: String!
   endHour: String!
   active: Boolean!
 }
@@ -91,7 +92,7 @@ type Query {
 input FindMentorInput {
   firstName: String
   skills: [String!]
-  availability: AvailabilityInput
+  period: String
   limit: Float
   orderBy: String
   order: String
@@ -99,13 +100,6 @@ input FindMentorInput {
   pageSize: Float
   skip: Float
   take: Float
-}
-
-input AvailabilityInput {
-  weekDay: Int!
-  startHour: String!
-  endHour: String!
-  active: Boolean!
 }
 
 type Mutation {
@@ -148,7 +142,7 @@ input CreateUserInput {
 input SignInUserInput {
   email: String!
   password: String!
-  rememberMe: Boolean!
+  rememberMe: Boolean
 }
 
 input ResetPasswordInput {
@@ -160,6 +154,14 @@ input ResetPasswordInput {
 input CreateAvailabilityInput {
   mentorId: ID!
   availabilities: [AvailabilityInput!]
+}
+
+input AvailabilityInput {
+  weekDay: Int!
+  startHour: String!
+  endHour: String!
+  active: Boolean!
+  period: String
 }
 
 input UpdateAvailabilityInput {
