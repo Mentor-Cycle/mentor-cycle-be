@@ -4,6 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SkillRepository } from './skill.repository';
 import { SkillResolver } from './skill.resolver';
 import { SkillService } from './skill.service';
+import { JwtService } from '@nestjs/jwt';
 
 describe('SkillResolver', () => {
   let resolver: SkillResolver;
@@ -11,7 +12,13 @@ describe('SkillResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [SkillResolver, SkillService, SkillRepository, PrismaService],
+      providers: [
+        SkillResolver,
+        SkillService,
+        SkillRepository,
+        PrismaService,
+        JwtService,
+      ],
     }).compile();
 
     resolver = module.get<SkillResolver>(SkillResolver);

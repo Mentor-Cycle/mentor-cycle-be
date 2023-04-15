@@ -119,8 +119,27 @@ export class EventService {
     });
   }
 
-  update(id: string, updateEventInput: UpdateEventInput) {
-    return `This action updates a #${id} event`;
+  async update(id: string, updateEventInput: UpdateEventInput) {
+    const { status } = updateEventInput;
+
+    const eventExists = await this.prisma.event.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!eventExists) {
+      throw new Error('Event does not exist');
+    }
+
+    return this.prisma.event.update({
+      where: {
+        id,
+      },
+      data: {
+        status: status.toString(),
+      },
+    });
   }
 
   remove(id: number) {

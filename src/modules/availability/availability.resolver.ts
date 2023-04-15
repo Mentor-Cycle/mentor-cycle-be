@@ -11,6 +11,7 @@ import { AuthGuard } from '@common/auth/auth.guard';
 export class AvailabilityResolver {
   constructor(private readonly availabilityService: AvailabilityService) {}
 
+  @UseGuards(AuthGuard)
   @Mutation(() => User)
   createAvailability(
     @Args('createAvailabilityInput')
@@ -23,7 +24,7 @@ export class AvailabilityResolver {
   findOne(@Args('mentorId', { type: () => String }) mentorId: string) {
     return this.availabilityService.findOne(mentorId);
   }
-
+  @UseGuards(AuthGuard)
   @Mutation(() => Availability)
   updateAvailability(
     @Args('updateAvailabilityInput')
@@ -34,7 +35,7 @@ export class AvailabilityResolver {
       updateAvailabilityInput,
     );
   }
-
+  @UseGuards(AuthGuard)
   @Mutation(() => Availability)
   removeAvailability(@Args('id', { type: () => Int }) id: number) {
     return this.availabilityService.remove(id);

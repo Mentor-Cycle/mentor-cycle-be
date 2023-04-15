@@ -11,8 +11,7 @@ export class SignInUserDto {
   @IsString()
   password: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsBoolean()
-  @IsEmpty()
   rememberMe?: boolean;
 }

@@ -12,6 +12,8 @@ export class Event {
   @Field(() => [User])
   learners: User[];
   @Field(() => String)
+  status: string;
+  @Field(() => String)
   startDate: string;
   @Field(() => String)
   endDate: string;

@@ -13,16 +13,12 @@ import {
   SignInUserDto,
   CreateUserInput,
   ResetPasswordUserDto,
-  PasswordChangedDto,
   CheckPinUserDto,
   ResetPasswordSentDto,
   UpdateUserDto,
 } from './dto';
 import { UserRepository } from './user.repository';
-import {
-  passwordResetEmailProps,
-  updatePasswordConfirmationProps,
-} from '@providers/mails';
+import { passwordResetEmailProps } from '@providers/mails';
 import { reverseString } from '@common/utils/string';
 import { TemporaryCodeRepository } from './temporary-code.repository';
 import { MailService } from '@common/services/mail';
@@ -133,11 +129,6 @@ export class UserService {
 
     await this.userRepository.update({ password }, { id: findUser.id });
 
-    this.sendPasswordChanged({
-      email: findUser.email,
-      firstName: findUser.firstName,
-    });
-
     if (temporaryCodeInfo) {
       await this.temporaryCodeRepository.delete({ id: temporaryCodeInfo.id });
     }
@@ -181,23 +172,6 @@ export class UserService {
 
     return true;
   }
-
-  private async sendPasswordChanged(input: PasswordChangedDto) {
-    const { firstName, email } = input;
-    this.mailService.sendMail({
-      to: {
-        name: firstName,
-        email,
-      },
-      ...updatePasswordConfirmationProps({
-        fname: firstName,
-      }),
-    });
-  }
-
-  // private async sendMagicLink(input: MagicLinkSentDto) {
-  //   return this.eventBus.publish(new MagicLinkSentEvent(input));
-  // }
 
   async sendResetPassword(email: string) {
     const findUser = await this.userRepository.getByEmail(email);

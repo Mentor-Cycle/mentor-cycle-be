@@ -13,6 +13,8 @@ export class Availability {
   @Field(() => String)
   startHour: string;
   @Field(() => String)
+  period?: string;
+  @Field(() => String)
   endHour: string;
   @Field(() => Boolean)
   active: boolean;

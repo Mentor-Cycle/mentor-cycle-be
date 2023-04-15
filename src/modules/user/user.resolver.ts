@@ -9,7 +9,6 @@ import {
   SignInUserDto,
 } from './dto';
 import { FindMentorInput } from './dto/find-mentor.dto';
-import { SignUp } from './entities/sign-in.entity';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 import { generateExpiresAt, setCookies } from '@common/utils';
@@ -26,6 +25,7 @@ export class UserResolver {
     return this.userService.findMentors(findMentorInput);
   }
 
+  @UseGuards(AuthGuard)
   @Query(() => User, { name: 'findOneMentor' })
   async findOneMentor(@Args('id', { type: () => String }) id: string) {
     const mentor = await this.userService.findOneMentor(id);
@@ -50,6 +50,7 @@ export class UserResolver {
     return setCookies(res, user.token, expires);
   }
 
+
   @Mutation(() => Boolean, { name: 'updateUser' })
   async update(
     @Args('userInput') input: UpdateUserDto,
@@ -64,7 +65,7 @@ export class UserResolver {
 
     return setCookies(res, user.token, expires);
   }
-
+  
   @Mutation(() => Boolean, { name: 'signInUser' })
   async signIn(
     @Args('userInput') userInput: SignInUserDto,
@@ -87,6 +88,7 @@ export class UserResolver {
     return this.userService.me(token);
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(() => Boolean)
   async resetUserPassword(
     @Args('userInput') resetUserInput: ResetPasswordUserDto,
@@ -94,6 +96,7 @@ export class UserResolver {
     return this.userService.resetPasswordUser(resetUserInput);
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(() => Boolean)
   async sendResetPassword(@Args('email') email: string) {
     const validateEmail = isEmail(email);
