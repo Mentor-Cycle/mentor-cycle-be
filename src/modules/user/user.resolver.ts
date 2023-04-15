@@ -30,7 +30,6 @@ export class UserResolver {
     return mentor;
   }
 
-  @UseGuards(AuthGuard)
   @Mutation(() => Boolean, { name: 'signUpUser' })
   async signUp(
     @Args('userInput') input: CreateUserInput,
@@ -46,7 +45,6 @@ export class UserResolver {
     return setCookies(res, user.token, expires);
   }
 
-  @UseGuards(AuthGuard)
   @Mutation(() => Boolean, { name: 'signInUser' })
   async signIn(
     @Args('userInput') userInput: SignInUserDto,

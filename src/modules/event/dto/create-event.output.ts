@@ -26,6 +26,8 @@ export class CreateEventOutput {
   startDate: string;
   @Field(() => String)
   endDate: string;
+  @Field(() => String)
+  status: string;
   @Field(() => Boolean)
   active: boolean;
 }

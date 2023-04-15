@@ -1,5 +1,11 @@
-import { AvailabilityInput } from '@modules/availability/dto/availability.input';
 import { Field, InputType } from '@nestjs/graphql';
+import { IsEnum } from 'class-validator';
+
+export enum PeriodEnum {
+  MORNING = 'MORNING',
+  AFTERNOON = 'AFTERNOON',
+  EVENING = 'EVENING',
+}
 
 @InputType('FindMentorInput')
 export class FindMentorInput {
@@ -9,8 +15,9 @@ export class FindMentorInput {
   @Field(() => [String], { nullable: true })
   skills?: string[];
 
-  @Field(() => AvailabilityInput, { nullable: true })
-  availability?: AvailabilityInput;
+  @Field(() => String, { nullable: true })
+  @IsEnum(PeriodEnum)
+  period?: PeriodEnum;
 
   @Field({ nullable: true })
   limit?: number;

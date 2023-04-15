@@ -10,14 +10,12 @@ export class UserRepository {
     const searchInput = {
       ...(args?.firstName && { firstName: { contains: args.firstName } }),
       ...(args?.skills && { skills: { hasSome: args?.skills } }),
-      ...(args?.availability && {
+      ...(args?.period && {
         availability: {
           array_contains: [
             {
               active: true,
-              weekDay: args?.availability?.weekDay,
-              startHour: args?.availability?.startHour,
-              endHour: args?.availability?.endHour,
+              period: args?.period,
             },
           ],
         },
