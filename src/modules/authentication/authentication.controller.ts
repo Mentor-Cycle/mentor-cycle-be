@@ -3,6 +3,7 @@
 import { AuthGuard } from '@nestjs/passport';
 import { Controller, Get, UseGuards, Req, Res } from '@nestjs/common';
 import { AuthProvider } from './types';
+import { setCookies } from '@common/utils';
 
 @Controller('auth')
 export class AuthenticationController {
@@ -16,7 +17,19 @@ export class AuthenticationController {
     if (!req.user) {
       return 'No user found';
     }
-    res.redirect(`${process.env.CLIENT_URL}/${req.user.token}`);
+    setCookies(res, req.user.token, req.user.expires);
+    res.redirect(
+      `${process.env.CLIENT_URL}/${
+        '?firstName=' +
+        req.user.user.firstName +
+        '&lastName=' +
+        req.user.user.lastName +
+        '&email=' +
+        req.user.user.email +
+        '&photoUrl=' +
+        req.user.user.photoUrl
+      }`,
+    );
   }
 
   @Get('linkedin')
@@ -29,6 +42,18 @@ export class AuthenticationController {
     if (!req.user) {
       return 'No user found';
     }
-    res.redirect(`${process.env.CLIENT_URL}/${req.user.token}`);
+    setCookies(res, req.user.token, req.user.expires);
+    res.redirect(
+      `${process.env.CLIENT_URL}/${
+        '?firstName=' +
+        req.user.user.firstName +
+        '&lastName=' +
+        req.user.user.lastName +
+        '&email=' +
+        req.user.user.email +
+        '&photoUrl=' +
+        req.user.user.photoUrl
+      }`,
+    );
   }
 }
