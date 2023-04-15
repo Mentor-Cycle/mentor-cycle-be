@@ -72,6 +72,21 @@ export class CreateUserInput {
   @IsOptional()
   website?: string;
 
+  @Field({ nullable: true })
+  @IsString()
+  @IsOptional()
+  jobTitle?: string;
+
+  @Field({ nullable: true })
+  @IsString()
+  @IsOptional()
+  jobCompany?: string;
+
+  @Field({ nullable: true })
+  @IsString()
+  @IsOptional()
+  biography?: string;
+
   @Field()
   @IsString()
   @Length(2, 400)

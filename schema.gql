@@ -34,6 +34,9 @@ type User {
   linkedin: String
   github: String
   website: String
+  jobTitle: String
+  jobCompany: String
+  biography: String
   description: String!
   isMentor: Boolean
   status: String
@@ -132,6 +135,9 @@ input CreateUserInput {
   linkedin: String
   github: String
   website: String
+  jobTitle: String
+  jobCompany: String
+  biography: String
   description: String!
   isMentor: Boolean
   facebookId: String

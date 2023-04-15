@@ -32,6 +32,9 @@ model User {
   github              String?
   website             String?
   description         String?
+  jobTitle            String?         @map("job_title")
+  jobCompany          String?         @map("job_company")
+  bigraphy            String?
   isMentor            Boolean         @default(false) @map("is_mentor")
   status              String          @default("PENDING")
   availability        Json?

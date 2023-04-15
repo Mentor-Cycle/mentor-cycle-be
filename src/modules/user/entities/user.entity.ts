@@ -47,6 +47,12 @@ export class User {
   github?: string;
   @Field({ nullable: true })
   website?: string;
+  @Field({ nullable: true })
+  jobTitle?: string;
+  @Field({ nullable: true })
+  jobCompany?: string;
+  @Field({ nullable: true })
+  biography?: string;
   @Field({ nullable: false })
   description?: string;
   @Field({ nullable: true })
