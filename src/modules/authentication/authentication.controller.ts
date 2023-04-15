@@ -17,19 +17,20 @@ export class AuthenticationController {
     if (!req.user) {
       return 'No user found';
     }
-    setCookies(res, req.user.token, req.user.expires);
-    res.redirect(
-      `${process.env.CLIENT_URL}/${
-        '?firstName=' +
-        req.user.user.firstName +
-        '&lastName=' +
-        req.user.user.lastName +
-        '&email=' +
-        req.user.user.email +
-        '&photoUrl=' +
-        req.user.user.photoUrl
-      }`,
-    );
+    const {
+      token,
+      expires,
+      user: { firstName, lastName, email, photoUrl },
+    } = req.user;
+    setCookies(res, token, expires);
+    const params = new URLSearchParams({
+      firstName,
+      lastName,
+      email,
+      photoUrl,
+    });
+
+    res.redirect(`${process.env.CLIENT_URL}/?${params.toString()}`);
   }
 
   @Get('linkedin')
@@ -42,18 +43,19 @@ export class AuthenticationController {
     if (!req.user) {
       return 'No user found';
     }
-    setCookies(res, req.user.token, req.user.expires);
-    res.redirect(
-      `${process.env.CLIENT_URL}/${
-        '?firstName=' +
-        req.user.user.firstName +
-        '&lastName=' +
-        req.user.user.lastName +
-        '&email=' +
-        req.user.user.email +
-        '&photoUrl=' +
-        req.user.user.photoUrl
-      }`,
-    );
+    const {
+      token,
+      expires,
+      user: { firstName, lastName, email, photoUrl },
+    } = req.user;
+    setCookies(res, token, expires);
+    const params = new URLSearchParams({
+      firstName,
+      lastName,
+      email,
+      photoUrl,
+    });
+
+    res.redirect(`${process.env.CLIENT_URL}/?${params.toString()}`);
   }
 }
