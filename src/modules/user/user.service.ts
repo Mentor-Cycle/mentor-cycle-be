@@ -16,6 +16,7 @@ import {
   PasswordChangedDto,
   CheckPinUserDto,
   ResetPasswordSentDto,
+  UpdateUserDto,
 } from './dto';
 import { UserRepository } from './user.repository';
 import {
@@ -29,6 +30,7 @@ import { FindMentorInput } from './dto/find-mentor.dto';
 import { JWTProps } from './types';
 import { render } from '@react-email/components';
 import ResetPassword from '../../../emails/reset-password';
+import { Exclude } from 'class-transformer';
 
 @Injectable()
 export class UserService {
@@ -143,6 +145,14 @@ export class UserService {
     return true;
   }
 
+  async updateUserData(userData: UpdateUserDto) {
+    const user = await this.updateUser(userData);
+    const token = this.generateToken(user);
+
+    delete user.password;
+
+    return { user, token };
+  }
   private async checkPinUser(input: CheckPinUserDto) {
     const { email, pin } = input;
 
@@ -259,5 +269,11 @@ export class UserService {
 
   private createUser(args: CreateUserInput) {
     return this.userRepository.create(args);
+  }
+
+  private updateUser(updateUserObj: UpdateUserDto) {
+    const { email, password, isMentor, id, ...dataFromUserToBeUpdated } =
+      updateUserObj;
+    return this.userRepository.update(dataFromUserToBeUpdated, { id });
   }
 }

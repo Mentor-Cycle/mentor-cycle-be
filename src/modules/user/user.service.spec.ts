@@ -27,6 +27,7 @@ describe('UserService', () => {
             getByEmail: jest.fn(),
             count: jest.fn(),
             create: jest.fn(),
+            update: jest.fn(),
             findOneMentor: jest.fn(),
           },
         },
@@ -164,6 +165,7 @@ describe('UserService', () => {
       );
     });
   });
+
   describe('signUpUser', () => {
     it('should throw ObjectAlreadyExistsError when a user with the same email already exists', async () => {
       const args = user;
@@ -183,6 +185,28 @@ describe('UserService', () => {
       expect(userRepository.count).toHaveBeenCalledWith({ email: args.email });
       expect(userRepository.create).toHaveBeenCalledTimes(1);
       expect(userRepository.create).toHaveBeenCalledWith(args);
+      expect(jwtService.sign).toHaveBeenCalledTimes(1);
+      expect(jwtService.sign).toHaveBeenCalledWith(
+        { id: '1', email: args.email, role: expect.any(String) },
+        {
+          subject: '1',
+          secret: process.env.SECRET,
+          expiresIn: expect.any(Number),
+        },
+      );
+      expect(result.user).toEqual(args);
+      expect(result.token).toEqual('dummyToken');
+    });
+  });
+
+  describe('updateUserData', () => {
+    it('should update user data and generate a token when the user was found', async () => {
+      const args = user;
+      jest.spyOn(userRepository, 'update').mockResolvedValue(args);
+      jest.spyOn(jwtService, 'sign').mockReturnValue('dummyToken');
+      const result = await userService.updateUserData(args);
+      expect(userRepository.update).toHaveBeenCalledTimes(1);
+      expect(userRepository.update).toHaveBeenCalledWith(args, { id: '1' });
       expect(jwtService.sign).toHaveBeenCalledTimes(1);
       expect(jwtService.sign).toHaveBeenCalledWith(
         { id: '1', email: args.email, role: expect.any(String) },

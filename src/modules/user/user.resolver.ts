@@ -2,7 +2,12 @@ import { HttpException, HttpStatus, Inject, UseGuards } from '@nestjs/common';
 import { Resolver, Mutation, Args, Query, Context } from '@nestjs/graphql';
 import { isEmail } from 'class-validator';
 import { Request, Response } from 'express';
-import { CreateUserInput, ResetPasswordUserDto, SignInUserDto } from './dto';
+import {
+  CreateUserInput,
+  UpdateUserDto,
+  ResetPasswordUserDto,
+  SignInUserDto,
+} from './dto';
 import { FindMentorInput } from './dto/find-mentor.dto';
 import { SignUp } from './entities/sign-in.entity';
 import { User } from './entities/user.entity';
@@ -44,6 +49,22 @@ export class UserResolver {
 
     return setCookies(res, user.token, expires);
   }
+
+  @Mutation(() => Boolean, { name: 'updateUser' })
+  async update(
+    @Args('userInput') input: UpdateUserDto,
+    @Context('res') res: Response,
+  ) {
+    const user = await this.userService.updateUserData(input);
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    const { expires } = generateExpiresAt(false);
+
+    return setCookies(res, user.token, expires);
+  }
+
   @Mutation(() => Boolean, { name: 'signInUser' })
   async signIn(
     @Args('userInput') userInput: SignInUserDto,
