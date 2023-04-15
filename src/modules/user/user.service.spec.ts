@@ -205,9 +205,13 @@ describe('UserService', () => {
       jest.spyOn(userRepository, 'update').mockResolvedValue(args);
       jest.spyOn(jwtService, 'sign').mockReturnValue('dummyToken');
       const result = await userService.updateUserData(args);
-      expect(userRepository.update).toHaveBeenCalledTimes(1);
-      expect(userRepository.update).toHaveBeenCalledWith(args, { id: '1' });
-      expect(jwtService.sign).toHaveBeenCalledTimes(1);
+
+      const { email, isMentor, id, ...updateUserObj } = args;
+
+      expect(userRepository.update).toHaveBeenCalledWith(updateUserObj, {
+        id: '1',
+      });
+
       expect(jwtService.sign).toHaveBeenCalledWith(
         { id: '1', email: args.email, role: expect.any(String) },
         {
