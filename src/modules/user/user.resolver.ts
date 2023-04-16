@@ -50,22 +50,16 @@ export class UserResolver {
     return setCookies(res, user.token, expires);
   }
 
-
-  @Mutation(() => Boolean, { name: 'updateUser' })
-  async update(
-    @Args('userInput') input: UpdateUserDto,
-    @Context('res') res: Response,
-  ) {
+  @Mutation(() => User, { name: 'updateUser' })
+  async update(@Args('userInput') input: UpdateUserDto) {
     const user = await this.userService.updateUserData(input);
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    const { expires } = generateExpiresAt(false);
-
-    return setCookies(res, user.token, expires);
+    return user;
   }
-  
+
   @Mutation(() => Boolean, { name: 'signInUser' })
   async signIn(
     @Args('userInput') userInput: SignInUserDto,

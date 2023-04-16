@@ -203,7 +203,7 @@ describe('UserService', () => {
     it('should update user data and generate a token when the user was found', async () => {
       const args = user;
       jest.spyOn(userRepository, 'update').mockResolvedValue(args);
-      jest.spyOn(jwtService, 'sign').mockReturnValue('dummyToken');
+
       const result = await userService.updateUserData(args);
 
       const { email, isMentor, id, ...updateUserObj } = args;
@@ -212,16 +212,7 @@ describe('UserService', () => {
         id: '1',
       });
 
-      expect(jwtService.sign).toHaveBeenCalledWith(
-        { id: '1', email: args.email, role: expect.any(String) },
-        {
-          subject: '1',
-          secret: process.env.SECRET,
-          expiresIn: expect.any(Number),
-        },
-      );
-      expect(result.user).toEqual(args);
-      expect(result.token).toEqual('dummyToken');
+      expect(result).toEqual(args);
     });
   });
 

@@ -104,7 +104,7 @@ input FindMentorInput {
 
 type Mutation {
   signUpUser(userInput: CreateUserInput!): Boolean!
-  updateUser(userInput: UpdateUserInput!): Boolean!
+  updateUser(userInput: UpdateUserDto!): User!
   signInUser(userInput: SignInUserInput!): Boolean!
   resetUserPassword(userInput: ResetPasswordInput!): Boolean!
   sendResetPassword(email: String!): Boolean!
@@ -140,7 +140,7 @@ input CreateUserInput {
   status: String
 }
 
-input UpdateUserInput {
+input UpdateUserDto {
   firstName: String
   lastName: String
   email: String
