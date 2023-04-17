@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsEnum } from 'class-validator';
+import { IsEnum, IsOptional } from 'class-validator';
 
 export enum PeriodEnum {
   MORNING = 'MORNING',
@@ -17,6 +17,7 @@ export class FindMentorInput {
 
   @Field(() => String, { nullable: true })
   @IsEnum(PeriodEnum)
+  @IsOptional()
   period?: PeriodEnum;
 
   @Field({ nullable: true })
