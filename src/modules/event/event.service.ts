@@ -137,7 +137,7 @@ export class EventService {
         id,
       },
       data: {
-        status: status.toString(),
+        status,
       },
     });
   }
