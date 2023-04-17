@@ -114,7 +114,6 @@ type Mutation {
   updateAvailability(updateAvailabilityInput: UpdateAvailabilityInput!): Availability!
   removeAvailability(id: Int!): Availability!
   createEvent(createEventInput: CreateEventInput!): Event!
-  updateEvent(updateEventInput: UpdateEventInput!): Event!
   removeEvent(id: Int!): Event!
   createSkill(createSkillInput: CreateSkillInput!): Skill!
   updateSkill(updateSkillInput: UpdateSkillInput!): Skill!
@@ -183,16 +182,6 @@ input CreateEventInput {
   endDate: String!
   status: String!
   active: Boolean!
-}
-
-input UpdateEventInput {
-  mentorId: String
-  learnerId: String
-  startDate: String
-  endDate: String
-  status: String
-  active: Boolean
-  id: String!
 }
 
 input CreateSkillInput {
