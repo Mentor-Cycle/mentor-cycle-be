@@ -92,5 +92,13 @@ model Skill {
   id   String @id @default(uuid())
   name String
 
-  @@map("skills")
+  @@map("skills")  
+}
+
+
+model Notification {
+  id   String @id @default(uuid())
+  message String
+
+  @@map("notifications")  
 }
