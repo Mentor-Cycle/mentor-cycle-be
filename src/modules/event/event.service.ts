@@ -119,28 +119,28 @@ export class EventService {
     });
   }
 
-  async update(id: string, updateEventInput: UpdateEventInput) {
-    const { status } = updateEventInput;
+  // async update(id: string, updateEventInput: UpdateEventInput) {
+  //   const { status } = updateEventInput;
 
-    const eventExists = await this.prisma.event.findUnique({
-      where: {
-        id,
-      },
-    });
+  //   const eventExists = await this.prisma.event.findUnique({
+  //     where: {
+  //       id,
+  //     },
+  //   });
 
-    if (!eventExists) {
-      throw new Error('Event does not exist');
-    }
+  //   if (!eventExists) {
+  //     throw new Error('Event does not exist');
+  //   }
 
-    return this.prisma.event.update({
-      where: {
-        id,
-      },
-      data: {
-        status,
-      },
-    });
-  }
+  //   return this.prisma.event.update({
+  //     where: {
+  //       id,
+  //     },
+  //     data: {
+  //       status,
+  //     },
+  //   });
+  // }
 
   remove(id: number) {
     return `This action removes a #${id} event`;
