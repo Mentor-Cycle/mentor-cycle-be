@@ -22,7 +22,7 @@ import { StaticFilesController } from '@modules/static-files-controller/static-f
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
       cors: {
-        origin: true,
+        origin: false,
         credentials: true,
       },
       playground: {
