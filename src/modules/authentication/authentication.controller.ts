@@ -3,6 +3,7 @@
 import { AuthGuard } from '@nestjs/passport';
 import { Controller, Get, UseGuards, Req, Res } from '@nestjs/common';
 import { AuthProvider } from './types';
+import { setCookies } from '@common/utils';
 
 @Controller('auth')
 export class AuthenticationController {
@@ -16,7 +17,20 @@ export class AuthenticationController {
     if (!req.user) {
       return 'No user found';
     }
-    res.redirect(`${process.env.CLIENT_URL}/${req.user.token}`);
+    const {
+      token,
+      expires,
+      user: { firstName, lastName, email, photoUrl },
+    } = req.user;
+    setCookies(res, token, expires);
+    const params = new URLSearchParams({
+      firstName,
+      lastName,
+      email,
+      photoUrl,
+    });
+
+    res.redirect(`${process.env.CLIENT_URL}/?${params.toString()}`);
   }
 
   @Get('linkedin')
@@ -29,6 +43,19 @@ export class AuthenticationController {
     if (!req.user) {
       return 'No user found';
     }
-    res.redirect(`${process.env.CLIENT_URL}/${req.user.token}`);
+    const {
+      token,
+      expires,
+      user: { firstName, lastName, email, photoUrl },
+    } = req.user;
+    setCookies(res, token, expires);
+    const params = new URLSearchParams({
+      firstName,
+      lastName,
+      email,
+      photoUrl,
+    });
+
+    res.redirect(`${process.env.CLIENT_URL}/?${params.toString()}`);
   }
 }

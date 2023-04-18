@@ -63,7 +63,7 @@ export class AuthenticationService {
     if (provider === 'google') {
       input.googleId = accountId;
     } else {
-      //input.linkedinId = accountId;
+      input.linkedinId = accountId;
     }
 
     const newUser = await this.userRepository.create(input);
