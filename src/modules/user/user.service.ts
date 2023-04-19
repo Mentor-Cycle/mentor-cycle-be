@@ -199,6 +199,17 @@ export class UserService {
     return true;
   }
 
+  async deactivateAccount(id: string) {
+    const user = await this.userRepository.getById(id);
+    if (!user) {
+      throw new NotFoundError({
+        field: 'user',
+      });
+    }
+    await this.userRepository.update({ active: false }, { id });
+    return true;
+  }
+
   private generateToken(user: User, expiresSession = 0) {
     return this.jwtService.sign(
       {

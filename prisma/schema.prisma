@@ -37,6 +37,7 @@ model User {
   bigraphy            String?
   isMentor            Boolean         @default(false) @map("is_mentor")
   status              String          @default("PENDING")
+  active              Boolean         @default(true)
   availability        Json?
   events              EventsOnUsers[]
   temporaryCodes      TemporaryCode[]
@@ -69,10 +70,10 @@ model Event {
   meetingLink String          @map("meeting_link")
   endDate     String          @map("end_date")
   active      Boolean         @default(false)
-  status      String         @default("PENDING")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  User      User[]
+  status      String          @default("PENDING")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  User        User[]
 
   @@map("events")
 }
@@ -92,13 +93,12 @@ model Skill {
   id   String @id @default(uuid())
   name String
 
-  @@map("skills")  
+  @@map("skills")
 }
 
-
 model Notification {
-  id   String @id @default(uuid())
+  id      String @id @default(uuid())
   message String
 
-  @@map("notifications")  
+  @@map("notifications")
 }

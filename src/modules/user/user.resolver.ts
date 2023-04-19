@@ -75,6 +75,24 @@ export class UserResolver {
     return setCookies(res, user.token, expires);
   }
 
+  @Mutation(() => Boolean, { name: 'deactivateAccount' })
+  @UseGuards(AuthGuard)
+  async deactivateAccount(@Args('id') id: string) {
+    return this.userService.deactivateAccount(id);
+  }
+
+  @Mutation(() => Boolean, { name: 'signOutUser' })
+  async signOut(@Context('res') res: Response) {
+    res.clearCookie('token', {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+      path: '/',
+    });
+
+    return true;
+  }
+
   @UseGuards(AuthGuard)
   @Query(() => User, { name: 'me' })
   async me(@Context('req') req: Request) {

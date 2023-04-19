@@ -206,7 +206,7 @@ describe('UserService', () => {
 
       const result = await userService.updateUserData(args);
 
-      const { email, isMentor, id, ...updateUserObj } = args;
+      const { isMentor, id, ...updateUserObj } = args;
 
       expect(userRepository.update).toHaveBeenCalledWith(updateUserObj, {
         id: '1',
