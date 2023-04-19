@@ -74,6 +74,7 @@ describe('UserService', () => {
       id: '1',
       firstName: 'John',
       lastName: 'Doe',
+      active: true,
       email: 'johndoe@example.com',
       password: 'Abc123!@#',
       photoUrl: 'https://example.com/johndoe.jpg',
