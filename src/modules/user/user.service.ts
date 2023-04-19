@@ -137,9 +137,7 @@ export class UserService {
 
   async updateUserData(userData: UpdateUserDto) {
     const user = await this.updateUser(userData);
-
     delete user.password;
-    console.log(user);
     return user;
   }
   private async checkPinUser(input: CheckPinUserDto) {
@@ -244,7 +242,7 @@ export class UserService {
   }
 
   private updateUser(updateUserObj: UpdateUserDto) {
-    const { email, password, isMentor, id, ...dataFromUserToBeUpdated } =
+    const { password, isMentor, id, ...dataFromUserToBeUpdated } =
       updateUserObj;
 
     return this.userRepository.update(dataFromUserToBeUpdated, { id });
