@@ -11,6 +11,8 @@ export class User {
   email: string;
   @Field({ nullable: true })
   password?: string | null;
+  @Field({ nullable: true })
+  active?: boolean;
   @Field()
   firstName: string;
   @Field(() => String, { nullable: true })

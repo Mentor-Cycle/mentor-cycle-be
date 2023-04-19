@@ -16,6 +16,7 @@ type User {
   id: ID!
   email: String!
   password: String
+  active: Boolean
   firstName: String!
   lastName: String
   photoUrl: String

@@ -32,6 +32,7 @@ export class UserRepository {
       where: {
         ...searchInput,
         isMentor: true,
+        active: true,
       },
       skip: args?.skip || 0,
       take: args?.take || 10,
@@ -39,29 +40,32 @@ export class UserRepository {
   }
 
   async getById(id: string) {
-    return this.prismaService.user.findUnique({
+    return this.prismaService.user.findFirstOrThrow({
       where: {
         id,
+        active: true,
       },
     });
   }
 
   async getByEmail(email: string) {
-    return this.prismaService.user.findUnique({
+    return this.prismaService.user.findFirstOrThrow({
       where: {
         email,
+        active: true,
       },
     });
   }
 
   async getUser(where: Prisma.UserWhereUniqueInput) {
-    return this.prismaService.user.findUnique({ where });
+    return this.prismaService.user.findFirstOrThrow({ where });
   }
   async findOneMentor(id: string) {
     return this.prismaService.user.findFirst({
       where: {
         id,
         isMentor: true,
+        active: true,
       },
     });
   }

@@ -62,7 +62,7 @@ export class UserService {
 
     const findUser = await this.userRepository.getByEmail(email);
 
-    if (!findUser) {
+    if (!findUser || !findUser.active) {
       throw new AuthInvalidError({ field: 'email' });
     }
 
