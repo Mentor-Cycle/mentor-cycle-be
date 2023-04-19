@@ -107,6 +107,7 @@ input FindMentorInput {
 
 type Mutation {
   signUpUser(userInput: CreateUserInput!): Boolean!
+  updateUser(userInput: UpdateUserDto!): User!
   signInUser(userInput: SignInUserInput!): Boolean!
   resetUserPassword(userInput: ResetPasswordInput!): Boolean!
   sendResetPassword(email: String!): Boolean!
@@ -142,6 +143,28 @@ input CreateUserInput {
   facebookId: String
   googleId: String
   status: String
+}
+
+input UpdateUserDto {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  photoUrl: String
+  skills: [String!]
+  birthDate: DateTime
+  country: String
+  state: String
+  city: String
+  linkedin: String
+  github: String
+  website: String
+  description: String
+  isMentor: Boolean
+  facebookId: String
+  googleId: String
+  status: String
+  id: String!
 }
 
 input SignInUserInput {

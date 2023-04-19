@@ -15,6 +15,7 @@ import {
   ResetPasswordUserDto,
   CheckPinUserDto,
   ResetPasswordSentDto,
+  UpdateUserDto,
 } from './dto';
 import { UserRepository } from './user.repository';
 import { passwordResetEmailProps } from '@providers/mails';
@@ -134,6 +135,13 @@ export class UserService {
     return true;
   }
 
+  async updateUserData(userData: UpdateUserDto) {
+    const user = await this.updateUser(userData);
+
+    delete user.password;
+    console.log(user);
+    return user;
+  }
   private async checkPinUser(input: CheckPinUserDto) {
     const { email, pin } = input;
 
@@ -233,5 +241,12 @@ export class UserService {
 
   private createUser(args: CreateUserInput) {
     return this.userRepository.create(args);
+  }
+
+  private updateUser(updateUserObj: UpdateUserDto) {
+    const { email, password, isMentor, id, ...dataFromUserToBeUpdated } =
+      updateUserObj;
+
+    return this.userRepository.update(dataFromUserToBeUpdated, { id });
   }
 }
