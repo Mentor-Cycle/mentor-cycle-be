@@ -109,6 +109,7 @@ input FindMentorInput {
 type Mutation {
   signUpUser(userInput: CreateUserInput!): Boolean!
   updateUser(userInput: UpdateUserDto!): User!
+  changePassword(changePasswordInput: ChangePasswordInputDto!): Boolean!
   signInUser(userInput: SignInUserInput!): Boolean!
   deactivateAccount(id: String!): Boolean!
   signOutUser: Boolean!
@@ -171,6 +172,12 @@ input UpdateUserDto {
   googleId: String
   status: String
   id: String!
+}
+
+input ChangePasswordInputDto {
+  userId: String!
+  oldPassword: String!
+  newPassword: String!
 }
 
 input SignInUserInput {

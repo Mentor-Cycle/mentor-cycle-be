@@ -26,6 +26,7 @@ import { FindMentorInput } from './dto/find-mentor.dto';
 import { JWTProps } from './types';
 import { render } from '@react-email/components';
 import ResetPassword from '../../../emails/reset-password';
+import { ChangePasswordInputDto } from './dto/change-password.dto';
 
 @Injectable()
 export class UserService {
@@ -111,7 +112,6 @@ export class UserService {
         field: 'user',
       });
     }
-
     const password = await this.cryptService.encrypt(newPassword);
 
     const temporaryCodeInfo = await this.temporaryCodeRepository.getOne({
@@ -133,6 +133,30 @@ export class UserService {
     }
 
     return true;
+  }
+
+  async changePassword(
+    changePasswordInput: ChangePasswordInputDto,
+    expiresSession: number,
+  ) {
+    const { userId, oldPassword, newPassword } = changePasswordInput;
+    const findUser = await this.userRepository.getById(userId);
+    if (!findUser) {
+      throw new NotFoundError({
+        field: 'user',
+      });
+    }
+    const isPasswordCorrect = await this.cryptService.compare(
+      oldPassword,
+      findUser.password as string,
+    );
+    if (!isPasswordCorrect) {
+      throw new AuthInvalidError({ field: 'password' });
+    }
+    const password = await this.cryptService.encrypt(newPassword);
+    await this.userRepository.update({ password }, { id: userId });
+    const generateToken = this.generateToken(findUser, expiresSession);
+    return { token: generateToken, user: findUser };
   }
 
   async updateUserData(userData: UpdateUserDto) {

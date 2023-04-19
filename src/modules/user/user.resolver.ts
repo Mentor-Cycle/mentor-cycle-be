@@ -13,6 +13,7 @@ import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 import { generateExpiresAt, setCookies } from '@common/utils';
 import { AuthGuard } from '@common/auth/auth.guard';
+import { ChangePasswordInputDto } from './dto/change-password.dto';
 
 @Resolver('User')
 export class UserResolver {
@@ -51,13 +52,32 @@ export class UserResolver {
   }
 
   @Mutation(() => User, { name: 'updateUser' })
+  @UseGuards(AuthGuard)
   async update(@Args('userInput') input: UpdateUserDto) {
     const user = await this.userService.updateUserData(input);
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
-
     return user;
+  }
+
+  @Mutation(() => Boolean, { name: 'changePassword' })
+  @UseGuards(AuthGuard)
+  async changePassword(
+    @Args('changePasswordInput') changePasswordInput: ChangePasswordInputDto,
+    @Context('res') res: Response,
+  ): Promise<boolean> {
+    const { expires, expireSession } = generateExpiresAt(false);
+
+    const user = await this.userService.changePassword(
+      changePasswordInput,
+      expireSession,
+    );
+    if (!user) {
+      throw new HttpException('Invalid reset token', HttpStatus.UNAUTHORIZED);
+    }
+
+    return setCookies(res, user.token, expires);
   }
 
   @Mutation(() => Boolean, { name: 'signInUser' })
@@ -82,6 +102,7 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean, { name: 'signOutUser' })
+  @UseGuards(AuthGuard)
   async signOut(@Context('res') res: Response) {
     res.clearCookie('token', {
       httpOnly: true,
