@@ -159,6 +159,9 @@ input UpdateUserDto {
   linkedin: String
   github: String
   website: String
+  jobTitle: String
+  jobCompany: String
+  biography: String
   description: String
   isMentor: Boolean
   facebookId: String

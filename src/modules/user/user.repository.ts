@@ -7,9 +7,8 @@ export class UserRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findManyMentors(args?: FindMentorInput) {
-    const searchInput = {
-      ...(args?.firstName && { firstName: { contains: args.firstName } }),
-      ...(args?.skills && { skills: { hasSome: args?.skills } }),
+    const searchInput: any = {
+      ...(args?.skills && { skills: { hasSome: args.skills } }),
       ...(args?.period && {
         availability: {
           array_contains: [
@@ -21,6 +20,14 @@ export class UserRepository {
         },
       }),
     };
+
+    if (args?.firstName) {
+      searchInput.firstName = {
+        contains: args.firstName,
+        mode: 'insensitive',
+      };
+    }
+
     return this.prismaService.user.findMany({
       where: {
         ...searchInput,
