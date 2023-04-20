@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsEnum } from 'class-validator';
+import { IsBoolean, IsEnum, IsString, IsUUID } from 'class-validator';
 export enum EventStatus {
   PENDING = 'PENDING',
   DONE = 'DONE',
@@ -8,17 +8,27 @@ export enum EventStatus {
 }
 @InputType()
 export class CreateEventInput {
+  @IsUUID()
   @Field(() => String)
   mentorId: string;
+
+  @IsUUID()
   @Field(() => String)
   learnerId: string;
+
+  @IsString()
   @Field(() => String)
   startDate: string;
+
+  @IsString()
   @Field(() => String)
   endDate: string;
+
   @Field(() => String)
   @IsEnum(EventStatus)
   status: EventStatus;
+
   @Field(() => Boolean)
+  @IsBoolean()
   active: boolean;
 }
