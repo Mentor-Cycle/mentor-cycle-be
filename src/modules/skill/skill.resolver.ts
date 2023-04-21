@@ -17,7 +17,6 @@ export class SkillResolver {
     return this.skillService.create(createSkillInput);
   }
 
-  @UseGuards(AuthGuard)
   @Query(() => [Skill], { name: 'findAllSkills' })
   async findAllSkills() {
     const skills = await this.skillService.findAll();
