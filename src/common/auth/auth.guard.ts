@@ -7,8 +7,14 @@ export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
   canActivate(context: ExecutionContext): boolean {
     const ctx = GqlExecutionContext.create(context);
-    const { req } = ctx.getContext();
+    const { req, res } = ctx.getContext();
     if (!req.cookies.token) {
+      res.clearCookie('token', {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+        path: '/',
+      });
       return false;
     }
     const { token } = req.cookies;
