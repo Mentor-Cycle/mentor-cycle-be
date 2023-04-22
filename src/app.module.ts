@@ -23,7 +23,11 @@ import { StaticFilesController } from '@modules/static-files-controller/static-f
       autoSchemaFile: 'schema.gql',
       cors: {
         allowedHeaders: ['content-type'],
-        origin: true,
+        origin: [
+          'https://studio.apollographql.com/',
+          'http://127.0.0.1:3000/',
+          'https://mentor-cycle-be-dev.onrender.com/',
+        ],
         credentials: true,
       },
       playground: {
