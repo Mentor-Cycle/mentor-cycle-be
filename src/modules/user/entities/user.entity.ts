@@ -1,5 +1,5 @@
 import { Availability } from './../../availability/entities/availability.entity';
-import { Directive, Field, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, Float, ObjectType } from '@nestjs/graphql';
 import { FieldId } from '@common/decorators';
 
 @ObjectType()
@@ -19,6 +19,8 @@ export class User {
   lastName?: string | null;
   @Field(() => String, { nullable: true })
   photoUrl?: string | null;
+  @Field(() => Float, { nullable: true })
+  yearsOfExperience?: number | null;
   @Field()
   isEmailVerified: boolean;
   @Field()

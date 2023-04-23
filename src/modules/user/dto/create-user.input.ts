@@ -37,6 +37,10 @@ export class CreateUserInput {
   @IsOptional()
   photoUrl?: string;
 
+  @Field({ nullable: true })
+  @IsOptional()
+  yearsOfExperience?: number;
+
   @Field(() => [String], { nullable: false })
   @IsArray()
   skills?: string[];
