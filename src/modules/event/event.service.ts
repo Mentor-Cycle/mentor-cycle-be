@@ -47,14 +47,14 @@ export class EventService {
       throw new Error('Mentor is not available at this time');
     }
     const meetingLink = `${MEETING_PROVIDER_URL}/mentor-cycle-${mentorId}-${learnerId}`;
-    return this.prisma.event.create({
+    const res = await this.prisma.event.create({
       data: {
         mentorId,
         startDate,
         endDate,
         active,
         meetingLink,
-        learners: {
+        participants: {
           create: [
             {
               assignedBy: 'mentor',
@@ -65,10 +65,21 @@ export class EventService {
                 },
               },
             },
+            {
+              assignedBy: 'mentor',
+              assignedAt: new Date(),
+              user: {
+                connect: {
+                  id: mentorId,
+                },
+              },
+            },
           ],
         },
       },
     });
+    console.log('res', res);
+    return res;
   }
 
   async findAll({
@@ -83,7 +94,7 @@ export class EventService {
         mentorId,
       }),
       ...(learnerId && {
-        learners: {
+        participants: {
           some: {
             user: {
               id: learnerId,
@@ -95,7 +106,7 @@ export class EventService {
     return this.prisma.event.findMany({
       where: options,
       include: {
-        learners: {
+        participants: {
           include: {
             user: true,
           },
@@ -110,7 +121,7 @@ export class EventService {
         id,
       },
       include: {
-        learners: {
+        participants: {
           include: {
             user: true,
           },
@@ -119,28 +130,28 @@ export class EventService {
     });
   }
 
-  // async update(id: string, updateEventInput: UpdateEventInput) {
-  //   const { status } = updateEventInput;
+  async update(id: string, updateEventInput: UpdateEventInput) {
+    const { status } = updateEventInput;
 
-  //   const eventExists = await this.prisma.event.findUnique({
-  //     where: {
-  //       id,
-  //     },
-  //   });
+    const eventExists = await this.prisma.event.findUnique({
+      where: {
+        id,
+      },
+    });
 
-  //   if (!eventExists) {
-  //     throw new Error('Event does not exist');
-  //   }
+    if (!eventExists) {
+      throw new Error('Event does not exist');
+    }
 
-  //   return this.prisma.event.update({
-  //     where: {
-  //       id,
-  //     },
-  //     data: {
-  //       status,
-  //     },
-  //   });
-  // }
+    return this.prisma.event.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
+      },
+    });
+  }
 
   remove(id: number) {
     return `This action removes a #${id} event`;

@@ -31,6 +31,7 @@ model User {
   linkedin            String?
   github              String?
   website             String?
+  yearsOfExperience   Float?          @map("years_of_experience")
   description         String?
   jobTitle            String?         @map("job_title")
   jobCompany          String?         @map("job_company")
@@ -63,17 +64,17 @@ model TemporaryCode {
 }
 
 model Event {
-  id          String          @id @default(uuid())
-  mentorId    String          @map("mentor_id")
-  learners    EventsOnUsers[]
-  startDate   String          @map("start_date")
-  meetingLink String          @map("meeting_link")
-  endDate     String          @map("end_date")
-  active      Boolean         @default(false)
-  status      String          @default("PENDING")
-  createdAt   DateTime        @default(now()) @map("created_at")
-  updatedAt   DateTime        @updatedAt @map("updated_at")
-  User        User[]
+  id           String          @id @default(uuid())
+  mentorId     String          @map("mentor_id")
+  participants EventsOnUsers[]
+  startDate    String          @map("start_date")
+  meetingLink  String          @map("meeting_link")
+  endDate      String          @map("end_date")
+  active       Boolean         @default(false)
+  status       String          @default("PENDING")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+  User         User[]
 
   @@map("events")
 }

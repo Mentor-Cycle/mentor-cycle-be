@@ -10,7 +10,7 @@ export class Event {
   @Field(() => String)
   mentorId: string;
   @Field(() => [User])
-  learners: User[];
+  participants: User[];
   @Field(() => String)
   status: string;
   @Field(() => String)

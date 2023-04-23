@@ -32,11 +32,11 @@ export class EventResolver {
     return this.eventService.findOne(id);
   }
 
-  // @UseGuards(AuthGuard)
-  // @Mutation(() => Event)
-  // updateEvent(@Args('updateEventInput') updateEventInput: UpdateEventInput) {
-  //   return this.eventService.update(updateEventInput.id, updateEventInput);
-  // }
+  @UseGuards(AuthGuard)
+  @Mutation(() => Event)
+  updateEvent(@Args('updateEventInput') updateEventInput: UpdateEventInput) {
+    return this.eventService.update(updateEventInput.id, updateEventInput);
+  }
 
   @UseGuards(AuthGuard)
   @Mutation(() => Event)
