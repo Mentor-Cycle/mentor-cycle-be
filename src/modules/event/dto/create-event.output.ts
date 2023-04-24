@@ -25,6 +25,8 @@ export class CreateEventOutput {
   @Field(() => String)
   startDate: string;
   @Field(() => String)
+  meetingLink: string;
+  @Field(() => String)
   endDate: string;
   @Field(() => String)
   status: string;

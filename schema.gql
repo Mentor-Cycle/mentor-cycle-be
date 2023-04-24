@@ -72,6 +72,7 @@ type CreateEventOutput {
   mentorId: String!
   participants: [ParticipantInfo!]!
   startDate: String!
+  meetingLink: String!
   endDate: String!
   status: String!
   active: Boolean!
