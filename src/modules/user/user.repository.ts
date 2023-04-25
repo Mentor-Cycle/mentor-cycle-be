@@ -13,12 +13,14 @@ export class UserRepository {
         availability: {
           array_contains: [
             {
-              active: true,
               period: args?.period,
             },
           ],
         },
       }),
+      availability: {
+        array_contains: [{ active: true }],
+      },
     };
 
     if (args?.firstName) {

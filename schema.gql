@@ -181,7 +181,6 @@ input UpdateUserDto {
 
 input ChangePasswordInputDto {
   userId: String!
-  oldPassword: String!
   newPassword: String!
 }
 

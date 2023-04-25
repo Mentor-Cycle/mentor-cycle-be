@@ -10,10 +10,6 @@ export class ChangePasswordInputDto {
 
   @Field()
   @IsNotEmpty()
-  oldPassword: string;
-
-  @Field()
-  @IsNotEmpty()
   @Matches(createStringRequirements(), {
     message: 'Password should have symbols, numbers and uppercase characters',
   })

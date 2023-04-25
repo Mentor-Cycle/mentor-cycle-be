@@ -139,19 +139,12 @@ export class UserService {
     changePasswordInput: ChangePasswordInputDto,
     expiresSession: number,
   ) {
-    const { userId, oldPassword, newPassword } = changePasswordInput;
+    const { userId, newPassword } = changePasswordInput;
     const findUser = await this.userRepository.getById(userId);
     if (!findUser) {
       throw new NotFoundError({
         field: 'user',
       });
-    }
-    const isPasswordCorrect = await this.cryptService.compare(
-      oldPassword,
-      findUser.password as string,
-    );
-    if (!isPasswordCorrect) {
-      throw new AuthInvalidError({ field: 'password' });
     }
     const password = await this.cryptService.encrypt(newPassword);
     await this.userRepository.update({ password }, { id: userId });
