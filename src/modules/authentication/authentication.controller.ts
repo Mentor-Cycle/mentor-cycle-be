@@ -18,7 +18,10 @@ export class AuthenticationController {
       return 'No user found';
     }
     const { token, expires } = req.user;
-    setCookies(res, token, expires);
+    const expireDate = new Date(expires).toUTCString();
+    req.res.setHeader('Set-Cookie', [
+      `token=${token}; HttpOnly; Path=/; SameSite=None; Secure; Expires=${expireDate}}`,
+    ]);
 
     res.redirect(`${process.env.CLIENT_URL}`);
   }

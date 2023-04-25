@@ -10,5 +10,6 @@ export function setCookies(res, token, expires): boolean {
     path: '/',
     expires,
   });
+
   return true;
 }
