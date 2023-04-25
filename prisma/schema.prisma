@@ -35,7 +35,7 @@ model User {
   description         String?
   jobTitle            String?         @map("job_title")
   jobCompany          String?         @map("job_company")
-  bigraphy            String?
+  biography           String?
   isMentor            Boolean         @default(false) @map("is_mentor")
   status              String          @default("PENDING")
   active              Boolean         @default(true)
