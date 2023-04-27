@@ -18,4 +18,8 @@ export class Availability {
   endHour: string;
   @Field(() => Boolean)
   active: boolean;
+  @Field(() => String, { nullable: true })
+  startDate?: string;
+  @Field(() => String, { nullable: true })
+  endDate?: string;
 }
