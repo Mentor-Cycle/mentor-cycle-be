@@ -35,13 +35,13 @@ export class User {
   googleId?: string | null;
   @Field({ nullable: true })
   facebookId?: string | null;
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   birthDate?: Date;
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   country?: string;
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   state?: string;
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   city?: string;
   @Field(() => [String], { nullable: true })
   skills?: string[];
@@ -57,7 +57,7 @@ export class User {
   jobCompany?: string;
   @Field({ nullable: true })
   biography?: string;
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   description?: string;
   @Field({ nullable: true })
   isMentor?: boolean;

@@ -28,10 +28,10 @@ type User {
   updatedAt: DateTime!
   googleId: String
   facebookId: String
-  birthDate: DateTime!
-  country: String!
-  state: String!
-  city: String!
+  birthDate: DateTime
+  country: String
+  state: String
+  city: String
   skills: [String!]
   linkedin: String
   github: String
@@ -39,7 +39,7 @@ type User {
   jobTitle: String
   jobCompany: String
   biography: String
-  description: String!
+  description: String
   isMentor: Boolean
   status: String
   availability: [Availability!]
