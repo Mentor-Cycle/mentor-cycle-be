@@ -77,7 +77,7 @@ export class UserRepository {
   }
 
   async update(
-    input: Omit<Prisma.UserUpdateInput, 'id' | 'isMentor' | 'email'>,
+    input: Omit<Prisma.UserUpdateInput, 'id' | 'email'>,
     where: Prisma.UserWhereUniqueInput,
   ) {
     return this.prismaService.user.update({ data: input, where });

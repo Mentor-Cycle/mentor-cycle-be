@@ -270,8 +270,7 @@ export class UserService {
   }
 
   private updateUser(updateUserObj: UpdateUserDto) {
-    const { password, isMentor, id, ...dataFromUserToBeUpdated } =
-      updateUserObj;
+    const { password, id, ...dataFromUserToBeUpdated } = updateUserObj;
 
     return this.userRepository.update(dataFromUserToBeUpdated, { id });
   }
