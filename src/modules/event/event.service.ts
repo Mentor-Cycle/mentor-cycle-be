@@ -32,6 +32,9 @@ export class EventService {
         endDate: {
           lte: endDate,
         },
+        status: {
+          not: 'CANCELLED',
+        },
       },
     });
     if (eventAtThisTimeAlreadyExists.length) {
@@ -39,11 +42,13 @@ export class EventService {
     }
     const mentorProfile = users.find((user) => user.isMentor);
     const mentorAvailabilityDates = getListOfAvailabilityDays(
-      mentorProfile.availability as unknown as Availability[],
+      mentorProfile.availability as unknown as any,
     );
-    const isPossibleToSchedule = mentorAvailabilityDates.find(
-      (avl) => avl.startDate === createEventInput.startDate,
-    );
+
+    const isPossibleToSchedule = mentorAvailabilityDates.find((avl) => {
+      return avl.startDate === createEventInput.startDate;
+    });
+
     if (!isPossibleToSchedule) {
       throw new Error('Mentor is not available at this time');
     }

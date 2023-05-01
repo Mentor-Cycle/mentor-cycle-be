@@ -28,9 +28,18 @@ export class CreateUserInput {
   email: string;
 
   @Field()
-  @Matches(createStringRequirements(), {
-    message: 'Password should have symbols, numbers and uppercase characters',
-  })
+  @Matches(
+    createStringRequirements({
+      minLength: 6,
+      includeNumber: true,
+      includeLowercase: false,
+      includeUppercase: false,
+      includeSpecial: false,
+    }),
+    {
+      message: 'Password should have symbols, numbers and uppercase characters',
+    },
+  )
   password: string;
 
   @Field({ nullable: true })

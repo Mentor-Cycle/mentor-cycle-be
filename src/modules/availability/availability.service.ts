@@ -53,9 +53,13 @@ export class AvailabilityService {
         mentorId,
       },
     });
+
     const mentorEventsDates = mentorEvents.map((event) => {
-      return event.startDate + event.endDate;
+      if (event.status !== 'CANCELLED') {
+        return event.startDate + event.endDate;
+      }
     });
+
     const availability = availabilityDaysOfTheCurrentWeek.filter(
       (availability) => {
         const available = !mentorEventsDates.includes(
@@ -64,6 +68,7 @@ export class AvailabilityService {
         return available;
       },
     );
+
     mentor.availability = availability;
     return mentor;
   }
