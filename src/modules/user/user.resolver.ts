@@ -121,7 +121,6 @@ export class UserResolver {
     return this.userService.me(token);
   }
 
-  @UseGuards(AuthGuard)
   @Mutation(() => Boolean)
   async resetUserPassword(
     @Args('userInput') resetUserInput: ResetPasswordUserDto,
@@ -129,7 +128,6 @@ export class UserResolver {
     return this.userService.resetPasswordUser(resetUserInput);
   }
 
-  @UseGuards(AuthGuard)
   @Mutation(() => Boolean)
   async sendResetPassword(@Args('email') email: string) {
     const validateEmail = isEmail(email);
