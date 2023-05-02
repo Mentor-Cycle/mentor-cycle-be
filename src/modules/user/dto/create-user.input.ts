@@ -102,7 +102,7 @@ export class CreateUserInput {
 
   @Field()
   @IsString()
-  @Length(2, 400)
+  @Length(2, 2000)
   description?: string;
 
   @Field({ nullable: true })
