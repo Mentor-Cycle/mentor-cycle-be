@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import { Availability } from './../entities/availability.entity';
 
 export function getListOfAvailabilityDays(availabilities: Availability[]) {
-  console.log('availabilitiesDays before transform', availabilities);
   return availabilities.map((availability) => {
     const startDate = getDateForWeekday(
       availability.weekDay,

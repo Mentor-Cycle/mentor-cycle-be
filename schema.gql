@@ -90,6 +90,7 @@ type Query {
   findMentors(findMentorsInput: FindMentorInput!): [User!]!
   findOneMentor(id: String!): User!
   me: User!
+  isUserLogged: Boolean!
   findMentorAvailability(mentorId: String!): User!
   findEvents(learnerId: String, mentorId: String): [CreateEventOutput!]!
   findOneEvent(id: String!): CreateEventOutput!

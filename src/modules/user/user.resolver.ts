@@ -121,6 +121,25 @@ export class UserResolver {
     return this.userService.me(token);
   }
 
+  @Query(() => Boolean, { name: 'isUserLogged' })
+  async isUserLogged(
+    @Context('req') req: Request,
+    @Context('res') res: Response,
+  ) {
+    const token = req.cookies['token'];
+    const isValidToken = await this.userService.isValidToken(token);
+    if (!isValidToken) {
+      res.clearCookie('token', {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+        path: '/',
+      });
+      return false;
+    }
+    return true;
+  }
+
   @Mutation(() => Boolean)
   async resetUserPassword(
     @Args('userInput') resetUserInput: ResetPasswordUserDto,

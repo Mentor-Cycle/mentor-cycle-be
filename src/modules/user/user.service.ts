@@ -246,6 +246,17 @@ export class UserService {
     return this.userRepository.findOneMentor(id);
   }
 
+  async isValidToken(token: string): Promise<boolean> {
+    try {
+      const decoded = await this.jwtService.verify(token, {
+        secret: process.env.SECRET,
+      });
+      return !!decoded.email;
+    } catch (error) {
+      return false;
+    }
+  }
+
   private async resetPasswordSent(input: ResetPasswordSentDto) {
     const { email, firstName: name, pin } = input;
     const redirectUrl = `${process.env.FRONTEND_URL}/change-password?email=${email}&pin=${pin}`;
