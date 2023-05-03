@@ -15,6 +15,7 @@ import { EventModule } from '@modules/event/event.module';
 import { JwtService } from '@nestjs/jwt';
 import { SkillModule } from '@modules/skill/skill.module';
 import { StaticFilesController } from '@modules/static-files-controller/static-files-controller.controller';
+import GraphQLUpload = require('graphql-upload/GraphQLUpload.js');
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { StaticFilesController } from '@modules/static-files-controller/static-f
         },
       },
       context: ({ req, res }) => ({ req, res }),
+      resolvers: { Upload: GraphQLUpload },
     }),
     PrismaModule,
     AuthenticationModule,

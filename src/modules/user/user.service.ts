@@ -81,6 +81,16 @@ export class UserService {
     return { token: generateToken, user: findUser };
   }
 
+  async updateUserPhotoUrl(userId: string, photoUrl: string): Promise<void> {
+    const user = await this.userRepository.getById(userId);
+    if (!user) {
+      throw new NotFoundError({
+        field: 'user',
+      });
+    }
+    await this.userRepository.update({ photoUrl }, { id: userId });
+  }
+
   async signUpUser(args: CreateUserInput) {
     const countedUsers = await this.userRepository.count({ email: args.email });
 
