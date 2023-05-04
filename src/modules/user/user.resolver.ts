@@ -128,12 +128,12 @@ export class UserResolver {
     file: FileUpload,
     @Args('userId') userId: string,
   ) {
-    const { createReadStream, mimetype } = await file;
+    const { createReadStream, mimetype, filename } = await file;
 
     const result = await this.s3
       .upload({
         Bucket: process.env.S3_BUCKET,
-        Key: `user-photos/${userId}`,
+        Key: `user-photos/${userId}${filename}`,
         Body: createReadStream(),
         ContentType: mimetype,
       })
