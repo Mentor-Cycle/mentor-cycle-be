@@ -28,9 +28,11 @@ import GraphQLUpload = require('graphql-upload/GraphQLUpload.js');
           'https://studio.apollographql.com/',
           'http://127.0.0.1:3000/',
           'https://mentor-cycle-be-dev.onrender.com/',
+          process.env.APP_BASE_URL,
         ],
         credentials: true,
       },
+      introspection: true,
       playground: {
         settings: {
           'request.credentials': 'include',

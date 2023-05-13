@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import graphqlUploadExpress = require('graphql-upload/graphqlUploadExpress.js');
 
 async function bootstrap() {
@@ -12,6 +13,16 @@ async function bootstrap() {
       credentials: true,
     },
   });
+  const config = new DocumentBuilder()
+    .setTitle('Mentor Cycle')
+    .setDescription(
+      'Backend da aplicação mentor cycle, onde podemos conectar aprendizes a mentores',
+    )
+    .setVersion('1.0')
+    .addTag('mentor-cycle')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   app.use(graphqlUploadExpress({ maxFileSize: 1000000, maxFiles: 10 }));
 
