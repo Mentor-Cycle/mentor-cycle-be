@@ -8,6 +8,7 @@ import {
   IsArray,
   IsDate,
   IsBoolean,
+  IsUrl,
 } from 'class-validator';
 import { createStringRequirements } from '@common/utils';
 
@@ -32,7 +33,7 @@ export class CreateUserInput {
     createStringRequirements({
       minLength: 6,
       includeNumber: true,
-      includeLowercase: false,
+      includeLowercase: true,
       includeUppercase: false,
       includeSpecial: false,
     }),
@@ -44,6 +45,7 @@ export class CreateUserInput {
 
   @Field({ nullable: true })
   @IsOptional()
+  @IsUrl()
   photoUrl?: string;
 
   @Field({ nullable: true })
@@ -52,22 +54,27 @@ export class CreateUserInput {
 
   @Field(() => [String], { nullable: false })
   @IsArray()
+  @IsOptional()
   skills?: string[];
 
   @Field({ nullable: true })
   @IsDate()
+  @IsOptional()
   birthDate?: Date;
 
   @Field()
+  @IsOptional()
   @IsString()
   country?: string;
 
   @Field()
+  @IsOptional()
   @IsString()
   state?: string;
 
   @Field()
   @IsString()
+  @IsOptional()
   city?: string;
 
   @Field({ nullable: true })
@@ -102,7 +109,7 @@ export class CreateUserInput {
 
   @Field()
   @IsString()
-  @Length(2, 2000)
+  @IsOptional()
   description?: string;
 
   @Field({ nullable: true })

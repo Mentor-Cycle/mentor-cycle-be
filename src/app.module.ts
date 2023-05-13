@@ -31,6 +31,7 @@ import GraphQLUpload = require('graphql-upload/GraphQLUpload.js');
         ],
         credentials: true,
       },
+      introspection: true,
       playground: {
         settings: {
           'request.credentials': 'include',
