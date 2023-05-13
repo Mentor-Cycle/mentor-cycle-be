@@ -5,14 +5,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator nestgraphql {
-    provider = "node node_modules/prisma-nestjs-graphql"
-    // for yarn monorepos
-    // provider = "prisma-nestjs-graphql"
-    emitSingle = true
-    output = "../src/@generated"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
