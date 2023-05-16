@@ -12,7 +12,7 @@ export class Availability {
   weekDay: number;
   @Field(() => String)
   startHour: string;
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   period?: string;
   @Field(() => String)
   endHour: string;

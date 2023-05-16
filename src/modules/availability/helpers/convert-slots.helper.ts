@@ -16,14 +16,16 @@ export function splitTimeSlot(
   const durationInMinutes =
     (endDateTime.valueOf() - startDateTime.valueOf()) / 60000;
   if (durationInMinutes <= 30) {
+    const period = getAvailabilityPeriodBasedOnStartHour(timeSlot.startHour);
+    timeSlot.period = period;
     return [timeSlot];
   }
   const numNewTimeSlots = Math.floor(durationInMinutes / 30);
   const minutesToAdd = durationInMinutes / numNewTimeSlots;
   let currentStartDateTime = startDateTime;
   let currentEndDateTime = currentStartDateTime.add(minutesToAdd, 'minute');
-  const period = getAvailabilityPeriodBasedOnStartHour(timeSlot.startHour);
   const newTimeSlots = Array.from({ length: numNewTimeSlots }, () => {
+    const period = getAvailabilityPeriodBasedOnStartHour(timeSlot.startHour);
     const newStartHour = currentStartDateTime.format('HH:mm');
     const newEndHour = currentEndDateTime.format('HH:mm');
     currentStartDateTime = currentEndDateTime;
@@ -38,6 +40,7 @@ export function splitTimeSlot(
   });
   if (currentEndDateTime.isBefore(endDateTime)) {
     const newStartHour = currentEndDateTime.format('HH:mm');
+    const period = getAvailabilityPeriodBasedOnStartHour(timeSlot.startHour);
     const newEndHour = timeSlot.endHour.padStart(5, '0');
     newTimeSlots.push({
       weekDay: timeSlot.weekDay,

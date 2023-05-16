@@ -7,7 +7,7 @@ type Availability {
   mentorId: String!
   weekDay: Int!
   startHour: String!
-  period: String!
+  period: String
   endHour: String!
   active: Boolean!
   startDate: String
