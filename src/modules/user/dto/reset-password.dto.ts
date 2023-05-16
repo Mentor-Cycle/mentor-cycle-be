@@ -13,8 +13,17 @@ export class ResetPasswordUserDto {
   pin: string;
 
   @Field()
-  @Matches(createStringRequirements(), {
-    message: 'Password should have symbols, numbers and uppercase characters',
-  })
+  @Matches(
+    createStringRequirements({
+      minLength: 6,
+      includeNumber: true,
+      includeLowercase: true,
+      includeUppercase: false,
+      includeSpecial: false,
+    }),
+    {
+      message: 'Password should have numbers and letters',
+    },
+  )
   newPassword: string;
 }
