@@ -5,12 +5,13 @@ import {
   IsEmail,
   IsString,
   IsOptional,
-  IsArray,
   IsDate,
   IsBoolean,
   IsUrl,
+  IsEnum,
 } from 'class-validator';
 import { createStringRequirements } from '@common/utils';
+import { Skill } from '../types';
 
 @InputType('CreateUserInput')
 export class CreateUserInput {
@@ -53,9 +54,9 @@ export class CreateUserInput {
   yearsOfExperience?: number;
 
   @Field(() => [String], { nullable: false })
-  @IsArray()
+  @IsEnum(Skill, { each: true })
   @IsOptional()
-  skills?: string[];
+  skills?: Skill[];
 
   @Field({ nullable: true })
   @IsDate()

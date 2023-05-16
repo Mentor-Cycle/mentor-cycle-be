@@ -9,15 +9,23 @@ export class UserRepository {
   async findManyMentors(args?: FindMentorInput) {
     const searchInput: any = {
       ...(args?.skills && { skills: { hasSome: args.skills } }),
+    };
+
+    searchInput.availability = {
       ...(args?.period && {
-        availability: {
-          array_contains: [
-            {
-              period: args?.period,
-              active: true,
-            },
-          ],
-        },
+        array_contains: [
+          {
+            period: args?.period,
+            active: true,
+          },
+        ],
+      }),
+      ...(!args.period && {
+        array_contains: [
+          {
+            active: true,
+          },
+        ],
       }),
     };
 
