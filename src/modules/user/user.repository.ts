@@ -57,7 +57,7 @@ export class UserRepository {
   }
 
   async getByEmail(email: string) {
-    return this.prismaService.user.findFirstOrThrow({
+    return this.prismaService.user.findFirst({
       where: {
         email,
         active: true,
