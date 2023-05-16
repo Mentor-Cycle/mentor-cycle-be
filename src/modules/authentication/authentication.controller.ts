@@ -3,7 +3,6 @@
 import { AuthGuard } from '@nestjs/passport';
 import { Controller, Get, UseGuards, Req, Res } from '@nestjs/common';
 import { AuthProvider } from './types';
-import { setCookies } from '@common/utils';
 
 @Controller('auth')
 export class AuthenticationController {
@@ -37,7 +36,10 @@ export class AuthenticationController {
       return 'No user found';
     }
     const { token, expires } = req.user;
-    setCookies(res, token, expires);
+    const expireDate = new Date(expires).toUTCString();
+    req.res.setHeader('Set-Cookie', [
+      `token=${token}; HttpOnly; Path=/; SameSite=None; Secure; Expires=${expireDate}}`,
+    ]);
 
     res.redirect(`${process.env.CLIENT_URL}`);
   }

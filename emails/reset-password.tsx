@@ -67,7 +67,7 @@ export const ResetPassword = ({
           <Hr />
           <Text className="text-center">
             Olá {name}, recebemos um pedido para troca da sua senha, clique no
-            botão a baixo para realizar a alteração:
+            botão abaixo para realizar a alteração:
           </Text>
           <Container className="flex justify-center items-center mt-16 m-auto cursor-pointer w-full">
             <Button
