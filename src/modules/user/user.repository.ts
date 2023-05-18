@@ -44,6 +44,11 @@ export class UserRepository {
       },
       skip: args?.skip || 0,
       take: args?.take || 10,
+      orderBy: {
+        ...(args.orderBy && {
+          [args.orderBy]: args?.order || 'firstName',
+        }),
+      },
     });
   }
 

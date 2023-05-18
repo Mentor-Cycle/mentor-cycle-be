@@ -117,6 +117,9 @@ export class EventService {
           },
         },
       },
+      orderBy: {
+        startDate: 'asc',
+      },
     });
 
     const currentTime = dayjs();
