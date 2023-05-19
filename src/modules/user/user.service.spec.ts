@@ -5,12 +5,17 @@ import { AuthInvalidError, ObjectAlreadyExistsError } from '@common/errors';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
 import { SignInUserDto } from './dto';
+import { MailService } from '@common/services/mail';
+import { TemporaryCodeRepository } from './temporary-code.repository';
 
 describe('UserService', () => {
   let userService: UserService;
   let userRepository: UserRepository;
   let jwtService: JwtService;
   let cryptService: CryptService;
+  let mailService: MailService;
+  let temporaryCodeRepository: TemporaryCodeRepository;
+
   let user: any;
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -22,6 +27,8 @@ describe('UserService', () => {
             getByEmail: jest.fn(),
             count: jest.fn(),
             create: jest.fn(),
+            update: jest.fn(),
+            findOneMentor: jest.fn(),
           },
         },
         {
@@ -37,6 +44,21 @@ describe('UserService', () => {
             encrypt: jest.fn(),
           },
         },
+        {
+          provide: MailService,
+          useValue: {
+            sendMail: jest.fn(),
+          },
+        },
+        {
+          provide: TemporaryCodeRepository,
+          useValue: {
+            getOne: jest.fn(),
+            delete: jest.fn(),
+            deleteMany: jest.fn(),
+            create: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -44,10 +66,15 @@ describe('UserService', () => {
     userRepository = moduleRef.get<UserRepository>(UserRepository);
     jwtService = moduleRef.get<JwtService>(JwtService);
     cryptService = moduleRef.get<CryptService>(CryptService);
+    mailService = moduleRef.get<MailService>(MailService);
+    temporaryCodeRepository = moduleRef.get<TemporaryCodeRepository>(
+      TemporaryCodeRepository,
+    );
     user = {
       id: '1',
       firstName: 'John',
       lastName: 'Doe',
+      active: true,
       email: 'johndoe@example.com',
       password: 'Abc123!@#',
       photoUrl: 'https://example.com/johndoe.jpg',
@@ -86,7 +113,7 @@ describe('UserService', () => {
       jest.spyOn(userRepository, 'getByEmail').mockResolvedValueOnce(null);
 
       // Act
-      const signInPromise = userService.signIn(input);
+      const signInPromise = userService.signIn(input, Date.now());
 
       // Assert
       await expect(signInPromise).rejects.toThrow(AuthInvalidError);
@@ -99,7 +126,7 @@ describe('UserService', () => {
       jest.spyOn(cryptService, 'compare').mockResolvedValueOnce(false);
 
       // Act
-      const signInPromise = userService.signIn(input);
+      const signInPromise = userService.signIn(input, Date.now());
 
       // Assert
       await expect(signInPromise).rejects.toThrow(AuthInvalidError);
@@ -119,9 +146,8 @@ describe('UserService', () => {
       jest.spyOn(userRepository, 'getByEmail').mockResolvedValue(user);
       jest.spyOn(cryptService, 'compare').mockResolvedValue(true);
       jest.spyOn(jwtService, 'sign').mockReturnValue('token');
-
       // Act
-      const result = await userService.signIn(signInUserDto);
+      const result = await userService.signIn(signInUserDto, Date.now());
 
       // Assert
       expect(result).toEqual({ token: 'token', user });
@@ -131,11 +157,16 @@ describe('UserService', () => {
         user.password,
       );
       expect(jwtService.sign).toHaveBeenCalledWith(
-        { id: user.id, email, role: 'USER' },
-        { subject: user.id, secret: process.env.SECRET },
+        { id: user.id, email, role: expect.any(String) },
+        {
+          subject: user.id,
+          secret: process.env.SECRET,
+          expiresIn: expect.any(Number),
+        },
       );
     });
   });
+
   describe('signUpUser', () => {
     it('should throw ObjectAlreadyExistsError when a user with the same email already exists', async () => {
       const args = user;
@@ -157,11 +188,51 @@ describe('UserService', () => {
       expect(userRepository.create).toHaveBeenCalledWith(args);
       expect(jwtService.sign).toHaveBeenCalledTimes(1);
       expect(jwtService.sign).toHaveBeenCalledWith(
-        { id: '1', email: args.email, role: 'USER' },
-        { subject: '1', secret: process.env.SECRET },
+        { id: '1', email: args.email, role: expect.any(String) },
+        {
+          subject: '1',
+          secret: process.env.SECRET,
+          expiresIn: expect.any(Number),
+        },
       );
       expect(result.user).toEqual(args);
       expect(result.token).toEqual('dummyToken');
+    });
+  });
+
+  describe('updateUserData', () => {
+    it('should update user data and generate a token when the user was found', async () => {
+      const args = user;
+      jest.spyOn(userRepository, 'update').mockResolvedValue(args);
+
+      const result = await userService.updateUserData(args);
+
+      const { id, ...updateUserObj } = args;
+
+      expect(userRepository.update).toHaveBeenCalledWith(updateUserObj, {
+        id: '1',
+      });
+
+      expect(result).toEqual(args);
+    });
+  });
+
+  describe('findOneMentor', () => {
+    it('should return a mentor with the given id', async () => {
+      const id = '1';
+      jest.spyOn(userRepository, 'findOneMentor').mockResolvedValue(user);
+      const result = await userService.findOneMentor(id);
+      expect(userRepository.findOneMentor).toHaveBeenCalledTimes(1);
+      expect(userRepository.findOneMentor).toHaveBeenCalledWith(id);
+      expect(result).toEqual(user);
+    });
+    it('should return null when no mentor with the given id exists', async () => {
+      const id = '1';
+      jest.spyOn(userRepository, 'findOneMentor').mockResolvedValue(null);
+      const result = await userService.findOneMentor(id);
+      expect(userRepository.findOneMentor).toHaveBeenCalledTimes(1);
+      expect(userRepository.findOneMentor).toHaveBeenCalledWith(id);
+      expect(result).toEqual(null);
     });
   });
 });

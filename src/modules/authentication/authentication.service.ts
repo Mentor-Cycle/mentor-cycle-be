@@ -24,7 +24,7 @@ export class AuthenticationService {
     const firstName = name?.givenName || '';
     const lastName = name?.familyName || '';
     const email = emails?.[0].value || '';
-    const photoUrl = photos?.[0].value;
+    const photoUrl = photos?.[photos.length - 1].value;
     const accountId = id;
 
     const existingUser = await this.userRepository.getByEmail(email);
@@ -63,7 +63,7 @@ export class AuthenticationService {
     if (provider === 'google') {
       input.googleId = accountId;
     } else {
-      //input.linkedinId = accountId;
+      input.linkedinId = accountId;
     }
 
     const newUser = await this.userRepository.create(input);

@@ -11,6 +11,7 @@ export function getListOfAvailabilityDays(availabilities: Availability[]) {
       availability.weekDay,
       availability.endHour,
     );
+
     return {
       ...availability,
       startDate,

@@ -5,6 +5,8 @@ import { UserRepository } from './user.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
+import { MailService } from '@common/services/mail';
+import { TemporaryCodeRepository } from './temporary-code.repository';
 
 describe('UserResolver', () => {
   let resolver: UserResolver;
@@ -15,8 +17,10 @@ describe('UserResolver', () => {
         UserResolver,
         UserService,
         UserRepository,
+        TemporaryCodeRepository,
         JwtService,
         CryptService,
+        MailService,
         PrismaService,
       ],
     }).compile();

@@ -2,15 +2,20 @@
   "moduleFileExtensions": [
     "js",
     "json",
-    "ts"
+    "ts",
+    "tsx"
   ],
   "rootDir": "src",
   "testRegex": ".*\\.spec\\.ts$",
   "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
+    "^.+\\.(t|j)s$": "ts-jest",
+    "^.+\\.(t|j)sx$": "ts-jest"
   },
   "collectCoverageFrom": [
     "**/*.(t|j)s",
+    "!**/*.(t|j)sx",
+    "!**/emails/**",
+    "!**/.react-email/**",
     "!**/*.module.(t|j)s",
     "!**/*.dto.(t|j)s",
     "!**/*.entity.(t|j)s",
@@ -25,6 +30,7 @@
   "testEnvironment": "node",
   "moduleNameMapper": {
     "^@common(.*)$": "<rootDir>/common$1",
-    "^@modules(.*)$": "<rootDir>/modules$1"
+    "^@modules(.*)$": "<rootDir>/modules$1",
+    "^@providers(.*)$": "<rootDir>/providers$1"
   }
 }

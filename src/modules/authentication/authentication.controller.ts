@@ -16,7 +16,13 @@ export class AuthenticationController {
     if (!req.user) {
       return 'No user found';
     }
-    res.redirect(`${process.env.CLIENT_URL}/${req.user.token}`);
+    const { token, expires } = req.user;
+    const expireDate = new Date(expires).toUTCString();
+    req.res.setHeader('Set-Cookie', [
+      `token=${token}; HttpOnly; Path=/; SameSite=None; Secure; Expires=${expireDate}}`,
+    ]);
+
+    res.redirect(`${process.env.CLIENT_URL}`);
   }
 
   @Get('linkedin')
@@ -29,6 +35,12 @@ export class AuthenticationController {
     if (!req.user) {
       return 'No user found';
     }
-    res.redirect(`${process.env.CLIENT_URL}/${req.user.token}`);
+    const { token, expires } = req.user;
+    const expireDate = new Date(expires).toUTCString();
+    req.res.setHeader('Set-Cookie', [
+      `token=${token}; HttpOnly; Path=/; SameSite=None; Secure; Expires=${expireDate}}`,
+    ]);
+
+    res.redirect(`${process.env.CLIENT_URL}`);
   }
 }

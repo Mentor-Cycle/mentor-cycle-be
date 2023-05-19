@@ -3,7 +3,7 @@ import { User } from '@modules/user/entities/user.entity';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class LearnerInfo {
+export class ParticipantInfo {
   @Field(() => User)
   user: User;
 
@@ -20,12 +20,16 @@ export class CreateEventOutput {
   id: string;
   @Field(() => String)
   mentorId: string;
-  @Field(() => [LearnerInfo])
-  learners: LearnerInfo[];
+  @Field(() => [ParticipantInfo])
+  participants: ParticipantInfo[];
   @Field(() => String)
   startDate: string;
   @Field(() => String)
+  meetingLink: string;
+  @Field(() => String)
   endDate: string;
+  @Field(() => String)
+  status: string;
   @Field(() => Boolean)
   active: boolean;
 }

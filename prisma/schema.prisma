@@ -31,11 +31,17 @@ model User {
   linkedin            String?
   github              String?
   website             String?
+  yearsOfExperience   Float?          @map("years_of_experience")
   description         String?
+  jobTitle            String?         @map("job_title")
+  jobCompany          String?         @map("job_company")
+  biography           String?
   isMentor            Boolean         @default(false) @map("is_mentor")
   status              String          @default("PENDING")
+  active              Boolean         @default(true)
   availability        Json?
   events              EventsOnUsers[]
+  temporaryCodes      TemporaryCode[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -45,17 +51,30 @@ model User {
   @@map("users")
 }
 
-model Event {
-  id        String          @id @default(uuid())
-  mentorId  String          @map("mentor_id")
-  learners  EventsOnUsers[]
-  startDate String          @map("start_date")
-  endDate   String          @map("end_date")
-  active    Boolean         @default(false)
+model TemporaryCode {
+  id            String    @id @default(uuid())
+  temporarycode String    @map("temporary_code")
+  email         String
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String    @map("user_id")
+  isPin         Boolean?  @default(false) @map("is_pin")
+  expiresAt     DateTime? @default(now()) @map("expires_at")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  User      User[]
+  @@map("temporary_codes")
+}
+
+model Event {
+  id           String          @id @default(uuid())
+  mentorId     String          @map("mentor_id")
+  participants EventsOnUsers[]
+  startDate    String          @map("start_date")
+  meetingLink  String          @map("meeting_link")
+  endDate      String          @map("end_date")
+  active       Boolean         @default(false)
+  status       String          @default("CONFIRMED")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+  User         User[]
 
   @@map("events")
 }
@@ -69,4 +88,18 @@ model EventsOnUsers {
   assignedBy String
 
   @@id([eventId, userId])
+}
+
+model Skill {
+  id   String @id @default(uuid())
+  name String
+
+  @@map("skills")
+}
+
+model Notification {
+  id      String @id @default(uuid())
+  message String
+
+  @@map("notifications")
 }

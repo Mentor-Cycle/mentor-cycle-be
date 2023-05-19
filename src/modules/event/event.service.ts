@@ -4,6 +4,8 @@ import { PrismaService } from '@modules/prisma';
 import { Injectable } from '@nestjs/common';
 import { CreateEventInput } from './dto/create-event.input';
 import { UpdateEventInput } from './dto/update-event.input';
+import { MEETING_PROVIDER_URL } from '@common/config/constants';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class EventService {
@@ -30,6 +32,9 @@ export class EventService {
         endDate: {
           lte: endDate,
         },
+        status: {
+          not: 'CANCELLED',
+        },
       },
     });
     if (eventAtThisTimeAlreadyExists.length) {
@@ -37,24 +42,25 @@ export class EventService {
     }
     const mentorProfile = users.find((user) => user.isMentor);
     const mentorAvailabilityDates = getListOfAvailabilityDays(
-      mentorProfile.availability as unknown as Availability[],
+      mentorProfile.availability as unknown as any,
     );
 
-    const isPossibleToSchedule = mentorAvailabilityDates.find(
-      (avl) => avl.startDate === createEventInput.startDate,
-    );
+    const isPossibleToSchedule = mentorAvailabilityDates.find((avl) => {
+      return avl.startDate === createEventInput.startDate;
+    });
 
     if (!isPossibleToSchedule) {
       throw new Error('Mentor is not available at this time');
     }
-
-    return this.prisma.event.create({
+    const meetingLink = `${MEETING_PROVIDER_URL}/mentor-cycle-${mentorId}-${learnerId}`;
+    const res = await this.prisma.event.create({
       data: {
         mentorId,
         startDate,
         endDate,
         active,
-        learners: {
+        meetingLink,
+        participants: {
           create: [
             {
               assignedBy: 'mentor',
@@ -65,10 +71,20 @@ export class EventService {
                 },
               },
             },
+            {
+              assignedBy: 'mentor',
+              assignedAt: new Date(),
+              user: {
+                connect: {
+                  id: mentorId,
+                },
+              },
+            },
           ],
         },
       },
     });
+    return res;
   }
 
   async findAll({
@@ -83,7 +99,7 @@ export class EventService {
         mentorId,
       }),
       ...(learnerId && {
-        learners: {
+        participants: {
           some: {
             user: {
               id: learnerId,
@@ -92,15 +108,27 @@ export class EventService {
         },
       }),
     };
-    return this.prisma.event.findMany({
+    const events = await this.prisma.event.findMany({
       where: options,
       include: {
-        learners: {
+        participants: {
           include: {
             user: true,
           },
         },
       },
+      orderBy: {
+        startDate: 'asc',
+      },
+    });
+
+    const currentTime = dayjs();
+
+    return events.map((event) => {
+      if (dayjs(event.startDate).isBefore(currentTime)) {
+        event.status = 'DONE';
+      }
+      return event;
     });
   }
 
@@ -110,7 +138,7 @@ export class EventService {
         id,
       },
       include: {
-        learners: {
+        participants: {
           include: {
             user: true,
           },
@@ -119,8 +147,27 @@ export class EventService {
     });
   }
 
-  update(id: string, updateEventInput: UpdateEventInput) {
-    return `This action updates a #${id} event`;
+  async update(id: string, updateEventInput: UpdateEventInput) {
+    const { status } = updateEventInput;
+
+    const eventExists = await this.prisma.event.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!eventExists) {
+      throw new Error('Event does not exist');
+    }
+
+    return this.prisma.event.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
+      },
+    });
   }
 
   remove(id: number) {

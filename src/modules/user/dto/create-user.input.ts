@@ -5,11 +5,13 @@ import {
   IsEmail,
   IsString,
   IsOptional,
-  IsArray,
   IsDate,
   IsBoolean,
+  IsUrl,
+  IsEnum,
 } from 'class-validator';
 import { createStringRequirements } from '@common/utils';
+import { Skill } from '../types';
 
 @InputType('CreateUserInput')
 export class CreateUserInput {
@@ -28,33 +30,52 @@ export class CreateUserInput {
   email: string;
 
   @Field()
-  @Matches(createStringRequirements(), {
-    message: 'Password should have symbols, numbers and uppercase characters',
-  })
+  @Matches(
+    createStringRequirements({
+      minLength: 6,
+      includeNumber: true,
+      includeLowercase: true,
+      includeUppercase: false,
+      includeSpecial: false,
+    }),
+    {
+      message: 'Password should have symbols, numbers and uppercase characters',
+    },
+  )
   password: string;
 
   @Field({ nullable: true })
   @IsOptional()
+  @IsUrl()
   photoUrl?: string;
 
+  @Field({ nullable: true })
+  @IsOptional()
+  yearsOfExperience?: number;
+
   @Field(() => [String], { nullable: false })
-  @IsArray()
-  skills?: string[];
+  @IsEnum(Skill, { each: true })
+  @IsOptional()
+  skills?: Skill[];
 
   @Field({ nullable: true })
   @IsDate()
+  @IsOptional()
   birthDate?: Date;
 
   @Field()
+  @IsOptional()
   @IsString()
   country?: string;
 
   @Field()
+  @IsOptional()
   @IsString()
   state?: string;
 
   @Field()
   @IsString()
+  @IsOptional()
   city?: string;
 
   @Field({ nullable: true })
@@ -72,9 +93,24 @@ export class CreateUserInput {
   @IsOptional()
   website?: string;
 
+  @Field({ nullable: true })
+  @IsString()
+  @IsOptional()
+  jobTitle?: string;
+
+  @Field({ nullable: true })
+  @IsString()
+  @IsOptional()
+  jobCompany?: string;
+
+  @Field({ nullable: true })
+  @IsString()
+  @IsOptional()
+  biography?: string;
+
   @Field()
   @IsString()
-  @Length(2, 400)
+  @IsOptional()
   description?: string;
 
   @Field({ nullable: true })

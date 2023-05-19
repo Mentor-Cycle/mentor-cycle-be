@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -26,9 +27,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-			"@common/*": ["common/*"],
-			"@modules/*": ["modules/*"]
-		}
+      "@common/*": ["common/*"],
+      "@modules/*": ["modules/*"],
+      "@providers/*": ["providers/*"]
+    }
   },
   "exclude": ["dist"]
 }

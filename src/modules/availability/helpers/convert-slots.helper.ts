@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { REGEX_TO_REMOVE_AM_AND_PM } from '@common/utils';
 import { AvailabilityInput } from './../dto/availability.input';
+import { PeriodEnum } from '@modules/user/dto/find-mentor.dto';
 
 function convertAvailabilityToThirtyMinuteSlots(
   timeSlots: AvailabilityInput[],
@@ -15,6 +16,8 @@ export function splitTimeSlot(
   const durationInMinutes =
     (endDateTime.valueOf() - startDateTime.valueOf()) / 60000;
   if (durationInMinutes <= 30) {
+    const period = getAvailabilityPeriodBasedOnStartHour(timeSlot.startHour);
+    timeSlot.period = period;
     return [timeSlot];
   }
   const numNewTimeSlots = Math.floor(durationInMinutes / 30);
@@ -22,6 +25,7 @@ export function splitTimeSlot(
   let currentStartDateTime = startDateTime;
   let currentEndDateTime = currentStartDateTime.add(minutesToAdd, 'minute');
   const newTimeSlots = Array.from({ length: numNewTimeSlots }, () => {
+    const period = getAvailabilityPeriodBasedOnStartHour(timeSlot.startHour);
     const newStartHour = currentStartDateTime.format('HH:mm');
     const newEndHour = currentEndDateTime.format('HH:mm');
     currentStartDateTime = currentEndDateTime;
@@ -31,17 +35,19 @@ export function splitTimeSlot(
       active: timeSlot.active,
       startHour: newStartHour,
       endHour: newEndHour,
+      period,
     };
   });
   if (currentEndDateTime.isBefore(endDateTime)) {
     const newStartHour = currentEndDateTime.format('HH:mm');
+    const period = getAvailabilityPeriodBasedOnStartHour(timeSlot.startHour);
     const newEndHour = timeSlot.endHour.padStart(5, '0');
-
     newTimeSlots.push({
       weekDay: timeSlot.weekDay,
       active: timeSlot.active,
       startHour: newStartHour,
       endHour: newEndHour,
+      period,
     });
   }
   return newTimeSlots;
@@ -63,6 +69,17 @@ function generateDate(hours: string, minutes: string) {
   const month = (now.month() + 1).toString().padStart(2, '0');
   const day = now.date().toString().padStart(2, '0');
   return `${year}-${month}-${day}T${hours}:${minutes}:00`;
+}
+
+function getAvailabilityPeriodBasedOnStartHour(startHour: string) {
+  const startHourNumber = parseInt(startHour.split(':')[0]);
+  if (startHourNumber < 11) {
+    return PeriodEnum.MORNING;
+  }
+  if (startHourNumber < 18) {
+    return PeriodEnum.AFTERNOON;
+  }
+  return PeriodEnum.EVENING;
 }
 
 export { convertAvailabilityToThirtyMinuteSlots };

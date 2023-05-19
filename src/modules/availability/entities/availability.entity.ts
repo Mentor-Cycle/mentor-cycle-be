@@ -12,8 +12,14 @@ export class Availability {
   weekDay: number;
   @Field(() => String)
   startHour: string;
+  @Field(() => String, { nullable: true })
+  period?: string;
   @Field(() => String)
   endHour: string;
   @Field(() => Boolean)
   active: boolean;
+  @Field(() => String, { nullable: true })
+  startDate?: string;
+  @Field(() => String, { nullable: true })
+  endDate?: string;
 }

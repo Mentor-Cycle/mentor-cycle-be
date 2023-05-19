@@ -8,6 +8,7 @@ import { CreateAvailabilityInput } from './dto/create-availability.input';
 import { UpdateAvailabilityInput } from './dto/update-availability.input';
 import { Availability } from './entities/availability.entity';
 import { convertAvailabilityToThirtyMinuteSlots } from './helpers/convert-slots.helper';
+import { AvailabilityInput } from './dto/availability.input';
 
 @Injectable()
 export class AvailabilityService {
@@ -33,7 +34,7 @@ export class AvailabilityService {
       throw new Error('availabilities must be an array');
     }
     mentor.availability = convertAvailabilityToThirtyMinuteSlots(
-      availabilities as unknown as Availability[],
+      availabilities as unknown as AvailabilityInput[],
     ) as unknown as Prisma.JsonValue;
     return this.userRepository.update(mentor, { id: mentor.id });
   }
@@ -52,9 +53,13 @@ export class AvailabilityService {
         mentorId,
       },
     });
+
     const mentorEventsDates = mentorEvents.map((event) => {
-      return event.startDate + event.endDate;
+      if (event.status !== 'CANCELLED') {
+        return event.startDate + event.endDate;
+      }
     });
+
     const availability = availabilityDaysOfTheCurrentWeek.filter(
       (availability) => {
         const available = !mentorEventsDates.includes(
@@ -63,6 +68,7 @@ export class AvailabilityService {
         return available;
       },
     );
+
     mentor.availability = availability;
     return mentor;
   }

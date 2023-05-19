@@ -7,17 +7,22 @@ type Availability {
   mentorId: String!
   weekDay: Int!
   startHour: String!
+  period: String
   endHour: String!
   active: Boolean!
+  startDate: String
+  endDate: String
 }
 
 type User {
   id: ID!
   email: String!
   password: String
+  active: Boolean
   firstName: String!
   lastName: String
   photoUrl: String
+  yearsOfExperience: Float
   isEmailVerified: Boolean!
   isTermsAccepted: Boolean!
   onBoardingCompleted: Boolean!
@@ -25,15 +30,18 @@ type User {
   updatedAt: DateTime!
   googleId: String
   facebookId: String
-  birthDate: DateTime!
-  country: String!
-  state: String!
-  city: String!
+  birthDate: DateTime
+  country: String
+  state: String
+  city: String
   skills: [String!]
   linkedin: String
   github: String
   website: String
-  description: String!
+  jobTitle: String
+  jobCompany: String
+  biography: String
+  description: String
   isMentor: Boolean
   status: String
   availability: [Availability!]
@@ -44,26 +52,18 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type SignIn {
-  token: ID!
-  user: User!
-}
-
-type SignUp {
-  token: ID!
-  user: User!
-}
-
 type Event {
   id: ID!
   mentorId: String!
-  learners: [User!]!
+  participants: [User!]!
+  status: String!
   startDate: String!
   endDate: String!
   active: Boolean!
+  meetLink: String!
 }
 
-type LearnerInfo {
+type ParticipantInfo {
   user: User!
   assignedBy: String!
   assignedAt: DateTime!
@@ -72,28 +72,64 @@ type LearnerInfo {
 type CreateEventOutput {
   id: ID!
   mentorId: String!
-  learners: [LearnerInfo!]!
+  participants: [ParticipantInfo!]!
   startDate: String!
+  meetingLink: String!
   endDate: String!
+  status: String!
   active: Boolean!
+}
+
+type Skill {
+  id: ID!
+  name: String!
 }
 
 type Query {
   sayHello: String!
+  findMentors(findMentorsInput: FindMentorInput!): [User!]!
+  findOneMentor(id: String!): User!
+  me: User!
+  isUserLogged: Boolean!
   findMentorAvailability(mentorId: String!): User!
   findEvents(learnerId: String, mentorId: String): [CreateEventOutput!]!
   findOneEvent(id: String!): CreateEventOutput!
+  findAllSkills: [Skill!]!
+  skill(id: Int!): Skill!
+}
+
+input FindMentorInput {
+  firstName: String
+  skills: [String!]
+  period: String
+  limit: Float
+  orderBy: String
+  order: String
+  pageNumber: Float
+  pageSize: Float
+  skip: Float
+  take: Float
 }
 
 type Mutation {
-  signUp(userInput: CreateUserInput!): SignUp!
-  signInUser(userInput: SignInUserInput!): SignIn!
+  signUpUser(userInput: CreateUserInput!): Boolean!
+  updateUser(userInput: UpdateUserDto!): User!
+  changePassword(changePasswordInput: ChangePasswordInputDto!): Boolean!
+  signInUser(userInput: SignInUserInput!): Boolean!
+  deactivateAccount(id: String!): Boolean!
+  signOutUser: Boolean!
+  updateUserPhoto(file: Upload!, userId: String!): Boolean!
+  resetUserPassword(userInput: ResetPasswordInput!): Boolean!
+  sendResetPassword(email: String!): Boolean!
   createAvailability(createAvailabilityInput: CreateAvailabilityInput!): User!
   updateAvailability(updateAvailabilityInput: UpdateAvailabilityInput!): Availability!
   removeAvailability(id: Int!): Availability!
   createEvent(createEventInput: CreateEventInput!): Event!
   updateEvent(updateEventInput: UpdateEventInput!): Event!
   removeEvent(id: Int!): Event!
+  createSkill(createSkillInput: CreateSkillInput!): Skill!
+  updateSkill(updateSkillInput: UpdateSkillInput!): Skill!
+  removeSkill(id: Int!): Skill!
 }
 
 input CreateUserInput {
@@ -102,6 +138,7 @@ input CreateUserInput {
   email: String!
   password: String!
   photoUrl: String
+  yearsOfExperience: Float
   skills: [String!]!
   birthDate: DateTime
   country: String!
@@ -110,6 +147,9 @@ input CreateUserInput {
   linkedin: String
   github: String
   website: String
+  jobTitle: String
+  jobCompany: String
+  biography: String
   description: String!
   isMentor: Boolean
   facebookId: String
@@ -117,9 +157,50 @@ input CreateUserInput {
   status: String
 }
 
+input UpdateUserDto {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  photoUrl: String
+  yearsOfExperience: Float
+  skills: [String!]
+  birthDate: DateTime
+  country: String
+  state: String
+  city: String
+  linkedin: String
+  github: String
+  website: String
+  jobTitle: String
+  jobCompany: String
+  biography: String
+  description: String
+  isMentor: Boolean
+  facebookId: String
+  googleId: String
+  status: String
+  id: String!
+}
+
+input ChangePasswordInputDto {
+  userId: String!
+  newPassword: String!
+}
+
 input SignInUserInput {
   email: String!
   password: String!
+  rememberMe: Boolean
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input ResetPasswordInput {
+  email: String!
+  pin: String!
+  newPassword: String!
 }
 
 input CreateAvailabilityInput {
@@ -132,6 +213,7 @@ input AvailabilityInput {
   startHour: String!
   endHour: String!
   active: Boolean!
+  period: String
 }
 
 input UpdateAvailabilityInput {
@@ -145,6 +227,7 @@ input CreateEventInput {
   learnerId: String!
   startDate: String!
   endDate: String!
+  status: String!
   active: Boolean!
 }
 
@@ -153,6 +236,18 @@ input UpdateEventInput {
   learnerId: String
   startDate: String
   endDate: String
+  status: String
   active: Boolean
   id: String!
+}
+
+input CreateSkillInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateSkillInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }

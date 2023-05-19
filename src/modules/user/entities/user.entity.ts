@@ -1,5 +1,5 @@
 import { Availability } from './../../availability/entities/availability.entity';
-import { Directive, Field, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, Float, ObjectType } from '@nestjs/graphql';
 import { FieldId } from '@common/decorators';
 
 @ObjectType()
@@ -11,12 +11,16 @@ export class User {
   email: string;
   @Field({ nullable: true })
   password?: string | null;
+  @Field({ nullable: true })
+  active?: boolean;
   @Field()
   firstName: string;
   @Field(() => String, { nullable: true })
   lastName?: string | null;
   @Field(() => String, { nullable: true })
   photoUrl?: string | null;
+  @Field(() => Float, { nullable: true })
+  yearsOfExperience?: number | null;
   @Field()
   isEmailVerified: boolean;
   @Field()
@@ -31,13 +35,13 @@ export class User {
   googleId?: string | null;
   @Field({ nullable: true })
   facebookId?: string | null;
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   birthDate?: Date;
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   country?: string;
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   state?: string;
-  @Field({ nullable: false })
+  @Field({ nullable: true })
   city?: string;
   @Field(() => [String], { nullable: true })
   skills?: string[];
@@ -47,7 +51,13 @@ export class User {
   github?: string;
   @Field({ nullable: true })
   website?: string;
-  @Field({ nullable: false })
+  @Field({ nullable: true })
+  jobTitle?: string;
+  @Field({ nullable: true })
+  jobCompany?: string;
+  @Field({ nullable: true })
+  biography?: string;
+  @Field({ nullable: true })
   description?: string;
   @Field({ nullable: true })
   isMentor?: boolean;
