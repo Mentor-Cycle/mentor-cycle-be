@@ -24,14 +24,9 @@ import GraphQLUpload = require('graphql-upload/GraphQLUpload.js');
       autoSchemaFile: 'schema.gql',
       cors: {
         allowedHeaders: ['content-type'],
-        origin: [
-          'https://studio.apollographql.com/',
-          'http://127.0.0.1:3000/',
-          'https://mentor-cycle-be-dev.onrender.com/',
-        ],
+        origin: ['https://studio.apollographql.com/', 'http://127.0.0.1:3000/'],
         credentials: true,
       },
-      introspection: true,
       playground: {
         settings: {
           'request.credentials': 'include',
