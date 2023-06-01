@@ -69,6 +69,8 @@ git clone https://github.com/oliveirabalsa/mentor-cycle-be.git
 ```bash
 yarn install
 ```
+- Para ter a aplicação utilizável, é necessário adicionar um arquivo .env na raiz do projeto. Para obter esse arquivo peça a algum mentor ou lider em nosso canal do Discord.
+
 Isso fará com que o gerenciador de pacotes do node, baixe todas as dependências necessárias para rodar, finalizado a instalação rode o comando:
 ```bash
 yarn dev
