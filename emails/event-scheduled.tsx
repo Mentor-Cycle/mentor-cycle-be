@@ -5,13 +5,14 @@ import { Preview } from '@react-email/preview';
 import { Tailwind } from '@react-email/tailwind';
 import { Container } from '@react-email/container';
 import { Text } from '@react-email/text';
-import { Section } from '@react-email/section';
 import { Heading } from '@react-email/heading';
 import { Hr } from '@react-email/hr';
 import { Img } from '@react-email/img';
 import { Button } from '@react-email/button';
-import { Column } from '@react-email/column';
-import { Link } from '@react-email/link';
+import { TAILWIND_CONFIG } from './config/tailwind';
+import { Footer } from './components/Footer';
+
+const baseUrl = process.env.APP_BASE_URL;
 
 type EventScheduledProps = {
   mentor: string;
@@ -33,38 +34,13 @@ export const EventScheduled = ({
   <Html>
     <Head />
     <Preview>Mentor Cycle - Mentoria</Preview>
-    <Tailwind
-      config={{
-        theme: {
-          fontFamily: {
-            sans: ['Poppins', 'sans-serif'],
-          },
-          colors: {
-            transparent: 'transparent',
-            current: 'currentColor',
-            primary: {
-              '05': '#580505',
-              '03': '#BA0000',
-            },
-            secondary: {
-              '02': '#212324',
-            },
-            gray: {
-              '01': '#CECECE',
-            },
-            neutral: {
-              '03': '#F3F3F3',
-            },
-          },
-        },
-      }}
-    >
+    <Tailwind config={TAILWIND_CONFIG}>
       <Container className="bg-neutral-03 font-sans text-gray-01">
         <Container className="bg-secondary-02 p-12 pb-4 rounded-lg rounded-b-none">
           <Heading className="text-primary-03 inline-flex">
             Ola!!
             <Img
-              src={`/static/smile.svg`}
+              src={`${baseUrl}/static/smile.png`}
               width="32"
               height="32"
               alt="smile picture"
@@ -103,39 +79,7 @@ export const EventScheduled = ({
             Obrigado por fazer parte dessa iniciativa
           </Text>
         </Container>
-        <Container className="bg-primary-05 rounded-b-lg">
-          <Section className="p-2">
-            <Column className="text-center">
-              <div className="w-[32px] h-[32px] px-12 py-6 rounded-sm">
-                <Img
-                  src={`/static/logo.png`}
-                  width="40"
-                  height="40"
-                  alt="smile picture"
-                />
-              </div>
-            </Column>
-            <Column className="text-left w-56 text-gray-01">
-              <Text className="text-left font-bold my-0">Contatos</Text>
-              <div className="flex justify-start items-center gap-2 py-2 h-6 w-6">
-                <Link href="https://www.linkedin.com/company/mentor-cycle/">
-                  <Img
-                    src={`/static/linkedin.svg`}
-                    alt="LinkedIn icon"
-                    className="w-6 h-6 object-fill"
-                  />
-                </Link>
-                <Link href="https://discord.gg/WRD3uT3JaC">
-                  <Img
-                    src={`/static/discord.svg`}
-                    alt="Discord icon"
-                    className="w-6 h-6 object-fill"
-                  />
-                </Link>
-              </div>
-            </Column>
-          </Section>
-        </Container>
+        <Footer />
       </Container>
     </Tailwind>
   </Html>
