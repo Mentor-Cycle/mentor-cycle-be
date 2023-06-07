@@ -60,6 +60,7 @@
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
     "cuid": "^3.0.0",
+    "date-fns": "^2.30.0",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
