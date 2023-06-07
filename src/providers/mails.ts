@@ -5,6 +5,10 @@ export const passwordResetEmailProps = (html: string): IReturnMail => ({
   html,
 });
 
+export const eventScheduledEmailProps = (html: string): IReturnMail => ({
+  subject: 'Nova Mentoria Agendada!',
+  html,
+});
 export const updatePasswordConfirmationProps = (args: {
   fname: string;
 }): IReturnMail => ({

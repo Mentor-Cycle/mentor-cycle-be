@@ -1,4 +1,3 @@
-import { Availability } from '@modules/availability/entities/availability.entity';
 import { getListOfAvailabilityDays } from '@modules/availability/helpers/get-date-for-weekday.helper';
 import { PrismaService } from '@modules/prisma';
 import { Injectable } from '@nestjs/common';
@@ -6,10 +5,18 @@ import { CreateEventInput } from './dto/create-event.input';
 import { UpdateEventInput } from './dto/update-event.input';
 import { MEETING_PROVIDER_URL } from '@common/config/constants';
 import dayjs from 'dayjs';
+import { render } from '@react-email/components';
+import EventScheduled from '../../../emails/event-scheduled';
+import { MailService } from '@common/services/mail/mail.service';
+import { eventScheduledEmailProps } from '@providers/mails';
+import { formatDate, formatHour } from '@common/utils/date';
 
 @Injectable()
 export class EventService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly mailService: MailService,
+  ) {}
   async create(createEventInput: CreateEventInput) {
     const { mentorId, startDate, endDate, learnerId, active } =
       createEventInput;
@@ -41,6 +48,7 @@ export class EventService {
       throw new Error('Event already exists at this time');
     }
     const mentorProfile = users.find((user) => user.isMentor);
+    const userProfile = users.find((user) => !user.isMentor);
     const mentorAvailabilityDates = getListOfAvailabilityDays(
       mentorProfile.availability as unknown as any,
     );
@@ -84,6 +92,52 @@ export class EventService {
         },
       },
     });
+
+    const startDateFormated = new Date(startDate);
+    const endDateFormated = new Date(endDate);
+
+    const startDateAdjusted = new Date(
+      startDateFormated.getTime() - 3 * 60 * 60 * 1000,
+    );
+    const endDateAdjusted = new Date(
+      endDateFormated.getTime() - 3 * 60 * 60 * 1000,
+    );
+
+    const googleStartDate = startDateAdjusted
+      .toISOString()
+      .replace(/[-:]/g, '')
+      .slice(0, -5);
+    const googleEndDate = endDateAdjusted
+      .toISOString()
+      .replace(/[-:]/g, '')
+      .slice(0, -5);
+    const googleLink = `https://www.google.com/calendar/render?action=TEMPLATE&dates=${encodeURIComponent(
+      googleStartDate,
+    )}/${encodeURIComponent(googleEndDate)}&text=${encodeURIComponent(
+      `Mentoria com o ${mentorProfile.firstName}`,
+    )}&details=${encodeURIComponent(`Link de acesso ${meetingLink}`)}`;
+
+    const html = render(
+      EventScheduled({
+        mentor: mentorProfile.firstName,
+        learner: userProfile.firstName,
+        hour: formatHour(new Date(startDate)),
+        date: formatDate(new Date(startDate)),
+        googleLink,
+        meetingLink,
+      }),
+    );
+
+    for (const { email, firstName: name } of users) {
+      this.mailService.sendMail({
+        to: {
+          name,
+          email,
+        },
+        ...eventScheduledEmailProps(html),
+      });
+    }
+
     return res;
   }
 
