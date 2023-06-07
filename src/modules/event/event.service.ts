@@ -97,10 +97,10 @@ export class EventService {
     const endDateFormated = new Date(endDate);
 
     const startDateAdjusted = new Date(
-      startDateFormated.getTime() - 60 * 60 * 1000,
+      startDateFormated.getTime() - (60 + 60) * 60 * 1000,
     );
     const endDateAdjusted = new Date(
-      endDateFormated.getTime() - 60 * 60 * 1000,
+      endDateFormated.getTime() - (60 + 60) * 60 * 1000,
     );
 
     const googleStartDate = startDateAdjusted
