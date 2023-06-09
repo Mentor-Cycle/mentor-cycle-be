@@ -1,4 +1,4 @@
-import { IsBoolean } from 'class-validator';
+import { IsBoolean, IsUUID } from 'class-validator';
 import { CreateNotificationInput } from './create-notification.input';
 import { Field, InputType, PartialType } from '@nestjs/graphql';
 
@@ -6,6 +6,10 @@ import { Field, InputType, PartialType } from '@nestjs/graphql';
 export class UpdateNotificationInput extends PartialType(
   CreateNotificationInput,
 ) {
+  @Field(() => String)
+  @IsUUID()
+  id: string;
+
   @IsBoolean()
   @Field(() => String)
   read: boolean;
