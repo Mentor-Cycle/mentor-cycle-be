@@ -85,6 +85,15 @@ type Skill {
   name: String!
 }
 
+type Notification {
+  id: ID!
+  title: String!
+  description: String!
+  imageUrl: String!
+  read: Boolean!
+  users: [User!]!
+}
+
 type Query {
   sayHello: String!
   findMentors(findMentorsInput: FindMentorInput!): [User!]!
@@ -96,6 +105,8 @@ type Query {
   findOneEvent(id: String!): CreateEventOutput!
   findAllSkills: [Skill!]!
   skill(id: Int!): Skill!
+  findNotifications(userId: String): [Notification!]!
+  findOneNotification(id: String!): Notification!
 }
 
 input FindMentorInput {
@@ -130,6 +141,9 @@ type Mutation {
   createSkill(createSkillInput: CreateSkillInput!): Skill!
   updateSkill(updateSkillInput: UpdateSkillInput!): Skill!
   removeSkill(id: Int!): Skill!
+  createNotification(createNotificationInput: CreateNotificationInput!): Notification!
+  updateNotification(updateNotificationInput: UpdateNotificationInput!): Notification!
+  removeNotification(id: Int!): Notification!
 }
 
 input CreateUserInput {
@@ -250,4 +264,20 @@ input UpdateSkillInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
+}
+
+input CreateNotificationInput {
+  title: String!
+  description: String!
+  imageUrl: String!
+  usersIds: [String!]!
+}
+
+input UpdateNotificationInput {
+  title: String
+  description: String
+  imageUrl: String
+  usersIds: [String!]
+  id: String!
+  read: String!
 }
