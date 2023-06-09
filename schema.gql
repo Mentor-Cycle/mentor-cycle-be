@@ -91,7 +91,6 @@ type Notification {
   description: String!
   imageUrl: String!
   read: Boolean!
-  users: [User!]!
 }
 
 type Query {
@@ -106,7 +105,7 @@ type Query {
   findAllSkills: [Skill!]!
   skill(id: Int!): Skill!
   findNotifications(userId: String): [Notification!]!
-  findOneNotification(id: String!): Notification!
+  findOneNotification(id: String!): Notification
 }
 
 input FindMentorInput {
@@ -279,5 +278,5 @@ input UpdateNotificationInput {
   imageUrl: String
   usersIds: [String!]
   id: String!
-  read: String!
+  read: Boolean = false
 }

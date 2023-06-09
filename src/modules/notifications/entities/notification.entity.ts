@@ -18,7 +18,4 @@ export class Notification {
 
   @Field(() => Boolean)
   read: boolean;
-
-  @Field(() => [User])
-  users: User[];
 }

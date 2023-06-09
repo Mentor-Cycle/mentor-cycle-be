@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsString } from 'class-validator';
+import { IsArray, IsString } from 'class-validator';
 
 @InputType()
 export class CreateNotificationInput {
@@ -15,7 +15,7 @@ export class CreateNotificationInput {
   @Field(() => String)
   imageUrl: string;
 
-  @IsString()
+  @IsArray()
   @Field(() => [String])
   usersIds: string[];
 }

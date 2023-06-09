@@ -28,7 +28,7 @@ export class NotificationsResolver {
   }
 
   @UseGuards(AuthGuard)
-  @Query(() => Notification, { name: 'findOneNotification' })
+  @Query(() => Notification, { name: 'findOneNotification', nullable: true })
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.notificationsService.findOne(id);
   }

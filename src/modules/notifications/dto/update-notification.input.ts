@@ -6,11 +6,11 @@ import { Field, InputType, PartialType } from '@nestjs/graphql';
 export class UpdateNotificationInput extends PartialType(
   CreateNotificationInput,
 ) {
-  @Field(() => String)
   @IsUUID()
+  @Field(() => String)
   id: string;
 
   @IsBoolean()
-  @Field(() => String)
-  read: boolean;
+  @Field(() => Boolean, { defaultValue: false, nullable: true })
+  read?: boolean;
 }
