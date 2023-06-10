@@ -1,5 +1,4 @@
 import { FieldId } from '@common/decorators';
-import { User } from '@modules/user/entities/user.entity';
 import { ObjectType, Field } from '@nestjs/graphql';
 
 @ObjectType()
