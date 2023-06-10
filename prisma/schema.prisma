@@ -43,11 +43,12 @@ model User {
   events              EventsOnUsers[]
   temporaryCodes      TemporaryCode[]
 
-  createdAt     DateTime       @default(now()) @map("created_at")
-  updatedAt     DateTime       @updatedAt @map("updated_at")
-  Event         Event?         @relation(fields: [eventId], references: [id])
-  eventId       String?
-  notifications Notification[]
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  Event             Event?             @relation(fields: [eventId], references: [id])
+  eventId           String?
+  notificationsData NotificationData[]
+  notifications     Notification[]
 
   @@map("users")
 }
@@ -99,15 +100,28 @@ model Skill {
 }
 
 model Notification {
+  id                 String  @id @default(uuid())
+  notificationDataId String  @map("notification_data_id")
+  userId             String  @map("user_id")
+  read               Boolean @default(false)
+
+  user User              @relation(fields: [userId], references: [id])
+  data NotificationData? @relation(fields: [notificationDataId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model NotificationData {
   id          String   @id @default(uuid())
   title       String
   description String
   imageUrl    String   @map("image_url")
-  read        Boolean  @default(false)
+  notifierId  String?  @map("user_id")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  users User[]
+  notifier      User?          @relation(fields: [notifierId], references: [id])
+  notifications Notification[]
 
-  @@map("notifications")
+  @@map("notifications_data")
 }
