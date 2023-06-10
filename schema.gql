@@ -85,12 +85,22 @@ type Skill {
   name: String!
 }
 
-type Notification {
+type NotificationData {
   id: ID!
   title: String!
   description: String!
   imageUrl: String!
+  notifierId: ID
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type Notification {
+  id: ID!
+  notificationDataId: ID!
+  userId: ID!
   read: Boolean!
+  data: NotificationData!
 }
 
 type Query {
@@ -140,9 +150,10 @@ type Mutation {
   createSkill(createSkillInput: CreateSkillInput!): Skill!
   updateSkill(updateSkillInput: UpdateSkillInput!): Skill!
   removeSkill(id: Int!): Skill!
-  createNotification(createNotificationInput: CreateNotificationInput!): Notification!
-  updateNotification(updateNotificationInput: UpdateNotificationInput!): Notification!
-  removeNotification(id: Int!): Notification!
+  createNotification(createNotificationInput: CreateNotificationInput!): NotificationData!
+  updateNotification(updateNotificationInput: UpdateNotificationInput!): NotificationData!
+  markRead(id: String!): Notification!
+  removeNotification(id: ID!): Boolean!
 }
 
 input CreateUserInput {
@@ -269,6 +280,7 @@ input CreateNotificationInput {
   title: String!
   description: String!
   imageUrl: String!
+  notifierId: ID
   usersIds: [String!]!
 }
 
@@ -276,7 +288,7 @@ input UpdateNotificationInput {
   title: String
   description: String
   imageUrl: String
+  notifierId: ID
   usersIds: [String!]
   id: String!
-  read: Boolean = false
 }

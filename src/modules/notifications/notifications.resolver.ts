@@ -1,17 +1,18 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { Notification } from './entities/notification.entity';
 import { CreateNotificationInput } from './dto/create-notification.input';
 import { UpdateNotificationInput } from './dto/update-notification.input';
 import { AuthGuard } from '@common/auth/auth.guard';
+import { NotificationData } from './entities/notification-data.entity';
 
 @Resolver(() => Notification)
 export class NotificationsResolver {
   constructor(private readonly notificationsService: NotificationsService) {}
 
   @UseGuards(AuthGuard)
-  @Mutation(() => Notification)
+  @Mutation(() => NotificationData)
   createNotification(
     @Args('createNotificationInput')
     createNotificationInput: CreateNotificationInput,
@@ -34,7 +35,7 @@ export class NotificationsResolver {
   }
 
   @UseGuards(AuthGuard)
-  @Mutation(() => Notification)
+  @Mutation(() => NotificationData)
   updateNotification(
     @Args('updateNotificationInput')
     updateNotificationInput: UpdateNotificationInput,
@@ -47,7 +48,16 @@ export class NotificationsResolver {
 
   @UseGuards(AuthGuard)
   @Mutation(() => Notification)
-  removeNotification(@Args('id', { type: () => Int }) id: string) {
+  markRead(
+    @Args('id', { type: () => String })
+    id: string,
+  ) {
+    return this.notificationsService.markRead(id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation(() => Boolean)
+  removeNotification(@Args('id', { type: () => ID }) id: string) {
     return this.notificationsService.remove(id);
   }
 }

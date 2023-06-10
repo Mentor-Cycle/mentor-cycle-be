@@ -1,5 +1,5 @@
-import { InputType, Field } from '@nestjs/graphql';
-import { IsArray, IsString } from 'class-validator';
+import { InputType, Field, ID } from '@nestjs/graphql';
+import { IsArray, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
 export class CreateNotificationInput {
@@ -14,6 +14,11 @@ export class CreateNotificationInput {
   @IsString()
   @Field(() => String)
   imageUrl: string;
+
+  @IsUUID()
+  @IsOptional()
+  @Field(() => ID, { nullable: true })
+  notifierId?: string;
 
   @IsArray()
   @Field(() => [String])

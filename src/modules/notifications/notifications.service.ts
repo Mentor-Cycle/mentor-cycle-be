@@ -8,35 +8,34 @@ export class NotificationsService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(createNotificationInput: CreateNotificationInput) {
-    const { title, description, imageUrl, usersIds } = createNotificationInput;
+    const { title, description, imageUrl, notifierId, usersIds } =
+      createNotificationInput;
 
-    return this.prisma.notification.create({
+    return this.prisma.notificationData.create({
       data: {
         title,
         description,
         imageUrl,
-        users: {
-          connect: usersIds.map((userId) => ({
-            id: userId,
-          })),
+        notifierId,
+        notifications: {
+          createMany: {
+            data: usersIds.map((userId) => ({
+              userId,
+            })),
+          },
         },
       },
     });
   }
 
   findAll({ userId }: { userId?: string }) {
-    const where = {
-      ...(userId && {
-        users: {
-          some: {
-            id: userId,
-          },
-        },
-      }),
-    };
-
     return this.prisma.notification.findMany({
-      where,
+      where: {
+        ...(userId && { userId }),
+      },
+      include: {
+        data: true,
+      },
     });
   }
 
@@ -45,12 +44,40 @@ export class NotificationsService {
       where: {
         id,
       },
+      include: {
+        data: true,
+      },
     });
   }
 
   async update(id: string, updateNotificationInput: UpdateNotificationInput) {
-    const { description, imageUrl, title, read } = updateNotificationInput;
+    const { description, imageUrl, title, notifierId } =
+      updateNotificationInput;
 
+    const notification = await this.prisma.notificationData.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!notification) {
+      throw new NotFoundException('Notification does not exist');
+    }
+
+    return this.prisma.notificationData.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        description,
+        imageUrl,
+        notifierId,
+      },
+    });
+  }
+
+  async markRead(id: string) {
     const notification = await this.prisma.notification.findUnique({
       where: {
         id,
@@ -66,16 +93,13 @@ export class NotificationsService {
         id,
       },
       data: {
-        title,
-        description,
-        imageUrl,
-        read,
+        read: true,
       },
     });
   }
 
   async remove(id: string) {
-    const notification = await this.prisma.notification.findUnique({
+    const notification = await this.prisma.notificationData.findUnique({
       where: {
         id,
       },
@@ -85,10 +109,12 @@ export class NotificationsService {
       throw new NotFoundException('Notification does not exist');
     }
 
-    return this.prisma.notification.delete({
+    await this.prisma.notificationData.delete({
       where: {
         id,
       },
     });
+
+    return true;
   }
 }
