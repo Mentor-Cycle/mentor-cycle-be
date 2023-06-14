@@ -6,6 +6,7 @@ import { UserService } from './user.service';
 import { UserResolver } from './user.resolver';
 import { MailService } from '@common/services/mail';
 import { TemporaryCodeRepository } from './temporary-code.repository';
+import { NotificationsService } from '@modules/notifications/notifications.service';
 
 @Module({
   imports: [],
@@ -17,6 +18,7 @@ import { TemporaryCodeRepository } from './temporary-code.repository';
     JwtService,
     CryptService,
     MailService,
+    NotificationsService,
   ],
 })
 export class UserModule {}
