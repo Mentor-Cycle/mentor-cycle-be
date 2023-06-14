@@ -10,12 +10,14 @@ import EventScheduled from '../../../emails/event-scheduled';
 import { MailService } from '@common/services/mail/mail.service';
 import { eventScheduledEmailProps } from '@providers/mails';
 import { formatDate, formatHour } from '@common/utils/date';
+import { NotificationsService } from '@modules/notifications/notifications.service';
 
 @Injectable()
 export class EventService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly mailService: MailService,
+    private readonly notificationsService: NotificationsService,
   ) {}
   async create(createEventInput: CreateEventInput) {
     const { mentorId, startDate, endDate, learnerId, active } =
@@ -93,11 +95,11 @@ export class EventService {
       },
     });
 
-    const startDateFormated = new Date(startDate);
-    const endDateFormated = new Date(endDate);
+    const startDateFormatted = new Date(startDate);
+    const endDateFormatted = new Date(endDate);
 
-    const startDateAdjusted = new Date(startDateFormated.getTime());
-    const endDateAdjusted = new Date(endDateFormated.getTime());
+    const startDateAdjusted = new Date(startDateFormatted.getTime());
+    const endDateAdjusted = new Date(endDateFormatted.getTime());
 
     const googleStartDate = startDateAdjusted
       .toISOString()
@@ -133,6 +135,18 @@ export class EventService {
         ...eventScheduledEmailProps(html),
       });
     }
+
+    const mentorFullName = `${mentorProfile.firstName} ${mentorProfile.lastName}`;
+    const formattedDate = dayjs(startDate).format('DD/MM/YYYY HH:mm');
+    const usersIds = users.map((user) => user.id);
+
+    this.notificationsService.create({
+      description: `Mentoria marcada com o mentor(a) ${mentorFullName} na data ${formattedDate}`,
+      imageUrl: mentorProfile.photoUrl,
+      title: mentorFullName,
+      notifierId: mentorProfile.id,
+      usersIds,
+    });
 
     return res;
   }
@@ -204,13 +218,30 @@ export class EventService {
       where: {
         id,
       },
+      include: {
+        participants: true,
+      },
     });
 
     if (!eventExists) {
       throw new Error('Event does not exist');
     }
 
-    return this.prisma.event.update({
+    const mentor = await this.prisma.user.findUnique({
+      where: {
+        id: eventExists.mentorId,
+      },
+    });
+
+    const mentorFullName = `${mentor.firstName} ${mentor.lastName}`;
+    const formattedDate = dayjs(eventExists.startDate).format(
+      'DD/MM/YYYY HH:mm',
+    );
+    const usersIds = eventExists.participants.map(
+      (participant) => participant.userId,
+    );
+
+    const updatedEvent = await this.prisma.event.update({
       where: {
         id,
       },
@@ -218,9 +249,19 @@ export class EventService {
         status,
       },
     });
+
+    this.notificationsService.create({
+      description: `Mentoria com o mentor(a) ${mentorFullName} na data ${formattedDate} teve o status atualizado para "${status}"`,
+      imageUrl: mentor.photoUrl,
+      title: mentorFullName,
+      notifierId: mentor.id,
+      usersIds,
+    });
+
+    return updatedEvent;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} event`;
   }
 }
