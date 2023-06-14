@@ -7,6 +7,7 @@ import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 import { MailService } from '@common/services/mail';
 import { TemporaryCodeRepository } from './temporary-code.repository';
+import { NotificationsService } from '@modules/notifications/notifications.service';
 
 describe('UserResolver', () => {
   let resolver: UserResolver;
@@ -22,6 +23,7 @@ describe('UserResolver', () => {
         CryptService,
         MailService,
         PrismaService,
+        NotificationsService,
       ],
     }).compile();
 
