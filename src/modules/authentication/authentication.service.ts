@@ -20,9 +20,12 @@ export class AuthenticationService {
     token: string;
     new?: boolean;
   }> {
-    const { id, emails, photos, name } = profile;
-    const firstName = name?.givenName || '';
-    const lastName = name?.familyName || '';
+    const { id, emails, photos, name, displayName } = profile;
+    const arrayDisplayName = displayName.split(' ');
+    const firstDisplayName = arrayDisplayName[0];
+    const lastDisplayName = arrayDisplayName[arrayDisplayName.length - 1];
+    const firstName = name?.givenName || firstDisplayName || '';
+    const lastName = name?.familyName || lastDisplayName || '';
     const email = emails?.[0].value || '';
     const photoUrl = photos?.[photos.length - 1].value;
     const accountId = id;
@@ -62,8 +65,11 @@ export class AuthenticationService {
 
     if (provider === 'google') {
       input.googleId = accountId;
-    } else {
+    }
+    if (provider === 'linkedin') {
       input.linkedinId = accountId;
+    } else {
+      input.githubId = accountId;
     }
 
     const newUser = await this.userRepository.create(input);
