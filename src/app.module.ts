@@ -17,6 +17,7 @@ import { SkillModule } from '@modules/skill/skill.module';
 import { StaticFilesController } from '@modules/static-files-controller/static-files-controller.controller';
 import { NotificationsModule } from '@modules/notifications/notifications.module';
 import GraphQLUpload = require('graphql-upload/GraphQLUpload.js');
+import { TestimonyModule } from './modules/testimony/testimony.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import GraphQLUpload = require('graphql-upload/GraphQLUpload.js');
     AuthModule,
     SkillModule,
     NotificationsModule,
+    TestimonyModule,
   ],
   controllers: [AppController, AuthenticationController, StaticFilesController],
   providers: [AppService, CryptService, RootResolver, JwtService],
