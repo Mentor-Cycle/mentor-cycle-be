@@ -3,6 +3,7 @@ import { RootResolver } from './app.resolver';
 import { CryptService } from '@common/services/crypt';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { PrismaModule } from '@modules/prisma';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -18,6 +19,8 @@ import { StaticFilesController } from '@modules/static-files-controller/static-f
 import { NotificationsModule } from '@modules/notifications/notifications.module';
 import GraphQLUpload = require('graphql-upload/GraphQLUpload.js');
 import { TestimonyModule } from './modules/testimony/testimony.module';
+import { APP_GUARD } from '@nestjs/core';
+import { GqlThrottlerGuard } from '@common/throttler/throttler.guard';
 
 @Module({
   imports: [
@@ -37,6 +40,10 @@ import { TestimonyModule } from './modules/testimony/testimony.module';
       context: ({ req, res }) => ({ req, res }),
       resolvers: { Upload: GraphQLUpload },
     }),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 20,
+    }),
     PrismaModule,
     AuthenticationModule,
     UserModule,
@@ -49,6 +56,15 @@ import { TestimonyModule } from './modules/testimony/testimony.module';
     TestimonyModule,
   ],
   controllers: [AppController, AuthenticationController, StaticFilesController],
-  providers: [AppService, CryptService, RootResolver, JwtService],
+  providers: [
+    AppService,
+    CryptService,
+    RootResolver,
+    JwtService,
+    {
+      provide: APP_GUARD,
+      useClass: GqlThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

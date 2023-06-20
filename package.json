@@ -36,6 +36,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/throttler": "^4.1.0",
     "@prisma/client": "4.9.0",
     "@react-email/button": "0.0.7",
     "@react-email/column": "0.0.7",
