@@ -45,7 +45,7 @@ export class UserResolver {
     return mentor;
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Query(() => [Users], { name: 'findAllUsers' })
   async getUsers(): Promise<Users[]> {
     return await this.userService.getAllUsers();
