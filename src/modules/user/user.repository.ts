@@ -52,6 +52,10 @@ export class UserRepository {
     });
   }
 
+  async findManyUsers() {
+    return this.prismaService.user.findMany();
+  }
+
   async getById(id: string) {
     return this.prismaService.user.findFirstOrThrow({
       where: {

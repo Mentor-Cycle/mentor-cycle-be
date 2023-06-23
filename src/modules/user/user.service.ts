@@ -16,6 +16,7 @@ import {
   CheckPinUserDto,
   ResetPasswordSentDto,
   UpdateUserDto,
+  Users,
 } from './dto';
 import { UserRepository } from './user.repository';
 import { passwordResetEmailProps } from '@providers/mails';
@@ -58,6 +59,10 @@ export class UserService {
       };
     }
     return this.userRepository.findManyMentors(args);
+  }
+
+  async getAllUsers(): Promise<Users[]> {
+    return this.userRepository.findManyUsers();
   }
 
   async signIn(input: SignInUserDto, expiresSession: number) {

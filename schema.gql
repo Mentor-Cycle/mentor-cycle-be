@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Users {
+  firstName: String
+  isMentor: Boolean
+  skills: [String!]
+}
+
 type Availability {
   id: ID!
   mentorId: String!
@@ -107,6 +113,7 @@ type Query {
   sayHello: String!
   findMentors(findMentorsInput: FindMentorInput!): [User!]!
   findOneMentor(id: String!): User!
+  findAllUsers: [Users!]!
   me: User!
   isUserLogged: Boolean!
   findMentorAvailability(mentorId: String!): User!
