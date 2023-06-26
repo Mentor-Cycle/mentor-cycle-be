@@ -16,7 +16,7 @@ import {
   CheckPinUserDto,
   ResetPasswordSentDto,
   UpdateUserDto,
-  Users,
+  InputUsers,
 } from './dto';
 import { UserRepository } from './user.repository';
 import { passwordResetEmailProps } from '@providers/mails';
@@ -50,19 +50,13 @@ export class UserService {
   }
 
   async findMentors(input: FindMentorInput) {
-    let args = Object.values(input).length && input;
-    if (input.pageNumber && input.pageSize) {
-      args = {
-        ...args,
-        skip: (input.pageNumber - 1) * input.pageSize,
-        take: input.pageSize,
-      };
-    }
-    return this.userRepository.findManyMentors(args);
+    return this.userRepository.findManyMentors(
+      this.returnTypesFromQuery(input),
+    );
   }
 
-  async getAllUsers(): Promise<Users[]> {
-    return this.userRepository.findManyUsers();
+  async getAllUsers(input: InputUsers) {
+    return this.userRepository.findManyUsers(this.returnTypesFromQuery(input));
   }
 
   async signIn(input: SignInUserDto, expiresSession: number) {
@@ -251,6 +245,18 @@ export class UserService {
     }
 
     return true;
+  }
+
+  private returnTypesFromQuery(input: InputUsers | FindMentorInput) {
+    let args = Object.values(input).length && input;
+    if (input.pageNumber && input.pageSize) {
+      args = {
+        ...args,
+        skip: (input.pageNumber - 1) * input.pageSize,
+        take: input.pageSize,
+      };
+    }
+    return args;
   }
 
   async sendResetPassword(email: string) {

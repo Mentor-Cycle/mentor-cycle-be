@@ -2,12 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Users {
-  firstName: String
-  isMentor: Boolean
-  skills: [String!]
-}
-
 type Availability {
   id: ID!
   mentorId: String!
@@ -113,7 +107,7 @@ type Query {
   sayHello: String!
   findMentors(findMentorsInput: FindMentorInput!): [User!]!
   findOneMentor(id: String!): User!
-  findAllUsers: [Users!]!
+  findAllUsers(getUsersInput: getUsers!): [User!]!
   me: User!
   isUserLogged: Boolean!
   findMentorAvailability(mentorId: String!): User!
@@ -136,6 +130,20 @@ input FindMentorInput {
   pageSize: Float
   skip: Float
   take: Float
+}
+
+input getUsers {
+  firstName: String
+  skills: [String!]
+  period: String
+  limit: Float
+  orderBy: String
+  order: String
+  pageNumber: Float
+  pageSize: Float
+  skip: Float
+  take: Float
+  isMentor: Boolean
 }
 
 type Mutation {

@@ -1,6 +1,7 @@
 import { Prisma, PrismaService } from '@modules/prisma';
 import { Injectable } from '@nestjs/common';
 import { FindMentorInput } from './dto/find-mentor.dto';
+import { InputUsers } from './dto';
 
 @Injectable()
 export class UserRepository {
@@ -52,8 +53,24 @@ export class UserRepository {
     });
   }
 
-  async findManyUsers() {
-    return this.prismaService.user.findMany();
+  async findManyUsers(args: InputUsers) {
+    const { firstName, isMentor, skills } = args;
+    const where = {
+      ...(firstName && { firstName }),
+      ...(isMentor !== undefined && { isMentor }),
+      ...(skills && { skills: { hasSome: skills } }),
+    };
+
+    return this.prismaService.user.findMany({
+      where,
+      skip: args?.skip || 0,
+      take: args?.take || 10,
+      orderBy: {
+        ...(args.orderBy && {
+          [args.orderBy]: args?.order || 'firstName',
+        }),
+      },
+    });
   }
 
   async getById(id: string) {

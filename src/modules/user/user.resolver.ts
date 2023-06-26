@@ -7,7 +7,7 @@ import {
   UpdateUserDto,
   ResetPasswordUserDto,
   SignInUserDto,
-  Users,
+  InputUsers,
 } from './dto';
 import { FindMentorInput } from './dto/find-mentor.dto';
 import { User } from './entities/user.entity';
@@ -46,9 +46,9 @@ export class UserResolver {
   }
 
   @UseGuards(AuthGuard)
-  @Query(() => [Users], { name: 'findAllUsers' })
-  async getUsers(): Promise<Users[]> {
-    return await this.userService.getAllUsers();
+  @Query(() => [User], { name: 'findAllUsers' })
+  async getUsers(@Args('getUsersInput') getUsersInput: InputUsers) {
+    return await this.userService.getAllUsers(getUsersInput);
   }
 
   @Mutation(() => Boolean, { name: 'signUpUser' })
