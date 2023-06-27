@@ -103,6 +103,20 @@ type Notification {
   data: NotificationData!
 }
 
+type Testimony {
+  id: ID!
+  mentorId: String!
+  learnerId: String!
+  text: String!
+}
+
+type CreateTestimonyOutput {
+  id: ID!
+  mentorId: String!
+  learnerId: String!
+  text: String!
+}
+
 type Query {
   sayHello: String!
   findMentors(findMentorsInput: FindMentorInput!): [User!]!
@@ -117,6 +131,8 @@ type Query {
   skill(id: Int!): Skill!
   findNotifications(userId: String): [Notification!]!
   findOneNotification(id: String!): Notification
+  findTestimonies(learnerId: String, mentorId: String): [CreateTestimonyOutput!]!
+  findOneTestimony(id: String!): [CreateTestimonyOutput!]!
 }
 
 input FindMentorInput {
@@ -169,6 +185,9 @@ type Mutation {
   updateNotification(updateNotificationInput: UpdateNotificationInput!): NotificationData!
   markRead(id: String!): Notification!
   removeNotification(id: ID!): Boolean!
+  createTestimony(createTestimonyInput: CreateTestimonyInput!): Testimony!
+  updateTestimony(UpdateTestimonyInput: UpdateTestimonyInput!): Testimony!
+  deleteTestimony(id: Int!): Testimony!
 }
 
 input CreateUserInput {
@@ -305,5 +324,18 @@ input UpdateNotificationInput {
   imageUrl: String
   notifierId: ID
   usersIds: [String!]
+  id: String!
+}
+
+input CreateTestimonyInput {
+  mentorId: String!
+  learnerId: String!
+  text: String!
+}
+
+input UpdateTestimonyInput {
+  mentorId: String
+  learnerId: String
+  text: String
   id: String!
 }
