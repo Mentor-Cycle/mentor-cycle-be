@@ -28,6 +28,7 @@ import { render } from '@react-email/components';
 import ResetPassword from '../../../emails/reset-password';
 import { ChangePasswordInputDto } from './dto/change-password.dto';
 import { NotificationsService } from '@modules/notifications/notifications.service';
+import { MENTOR_CYCLE_LOGO_URL } from '@common/config/constants';
 
 @Injectable()
 export class UserService {
@@ -170,9 +171,9 @@ export class UserService {
     const isUserProfileComplete = this.checkIfUserProfileIsComplete(user);
 
     if (isUserProfileComplete) {
-      this.notificationsService.create({
+      await this.notificationsService.create({
         description: 'Parabéns, seu perfil está completo!',
-        imageUrl: user.photoUrl,
+        imageUrl: user.photoUrl || MENTOR_CYCLE_LOGO_URL,
         title: 'Perfil completo',
         notifierId: null,
         usersIds: [user.id],
@@ -341,10 +342,10 @@ export class UserService {
   private async createUser(args: CreateUserInput) {
     const user = await this.userRepository.create(args);
 
-    this.notificationsService.create({
+    await this.notificationsService.create({
       description:
         'Obrigado por realizar o seu cadastro em nossa plataforma, aproveite e complete o seu perfil!',
-      imageUrl: user.photoUrl,
+      imageUrl: user.photoUrl || MENTOR_CYCLE_LOGO_URL,
       title: 'Complete o seu perfil',
       notifierId: null,
       usersIds: [user.id],

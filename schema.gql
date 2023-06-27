@@ -89,7 +89,7 @@ type NotificationData {
   id: ID!
   title: String!
   description: String!
-  imageUrl: String!
+  imageUrl: String
   notifierId: ID
   updatedAt: DateTime!
   createdAt: DateTime!
@@ -298,7 +298,7 @@ input UpdateSkillInput {
 input CreateNotificationInput {
   title: String!
   description: String!
-  imageUrl: String!
+  imageUrl: String
   notifierId: ID
   usersIds: [String!]!
 }

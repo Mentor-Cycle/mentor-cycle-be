@@ -3,7 +3,10 @@ import { PrismaService } from '@modules/prisma';
 import { Injectable } from '@nestjs/common';
 import { CreateEventInput } from './dto/create-event.input';
 import { UpdateEventInput } from './dto/update-event.input';
-import { MEETING_PROVIDER_URL } from '@common/config/constants';
+import {
+  MEETING_PROVIDER_URL,
+  MENTOR_CYCLE_LOGO_URL,
+} from '@common/config/constants';
 import dayjs from 'dayjs';
 import { render } from '@react-email/components';
 import EventScheduled from '../../../emails/event-scheduled';
@@ -140,9 +143,9 @@ export class EventService {
     const formattedDate = dayjs(startDate).format('DD/MM/YYYY HH:mm');
     const usersIds = users.map((user) => user.id);
 
-    this.notificationsService.create({
+    await this.notificationsService.create({
       description: `Mentoria marcada com o mentor(a) ${mentorFullName} na data ${formattedDate}`,
-      imageUrl: mentorProfile.photoUrl,
+      imageUrl: mentorProfile.photoUrl || MENTOR_CYCLE_LOGO_URL,
       title: mentorFullName,
       notifierId: mentorProfile.id,
       usersIds,
@@ -250,9 +253,9 @@ export class EventService {
       },
     });
 
-    this.notificationsService.create({
+    await this.notificationsService.create({
       description: `Mentoria com o mentor(a) ${mentorFullName} na data ${formattedDate} teve o status atualizado para "${status}"`,
-      imageUrl: mentor.photoUrl,
+      imageUrl: mentor.photoUrl || MENTOR_CYCLE_LOGO_URL,
       title: mentorFullName,
       notifierId: mentor.id,
       usersIds,

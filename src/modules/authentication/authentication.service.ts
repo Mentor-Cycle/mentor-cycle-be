@@ -74,7 +74,7 @@ export class AuthenticationService {
 
     const newUser = await this.userRepository.create(input);
 
-    const token = this.generateToken(newUser.id, email);
+    const token = await this.generateToken(newUser.id, email);
 
     return { token, user: newUser, new: true };
   }
@@ -82,7 +82,7 @@ export class AuthenticationService {
   private async signIn(provider: AuthProvider, accountId: string, user: User) {
     await this.linkOAuthAccountToUser(provider, accountId, user);
 
-    const token = this.generateToken(user.id, user.email);
+    const token = await this.generateToken(user.id, user.email);
 
     return { user, token };
   }
@@ -107,12 +107,14 @@ export class AuthenticationService {
     await this.userRepository.update(updateInput, { email: user.email });
   }
 
-  private generateToken(userId: string, email: string) {
+  private async generateToken(userId: string, email: string) {
+    const existingUser = await this.userRepository.getByEmail(email);
+
     return this.jwtService.sign(
       {
         id: userId,
         email,
-        role: 'USER',
+        role: existingUser.isMentor ? 'MENTOR' : 'USER',
       },
       { subject: userId, secret: process.env.SECRET },
     );

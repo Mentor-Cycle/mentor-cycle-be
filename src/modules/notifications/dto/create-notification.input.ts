@@ -12,8 +12,8 @@ export class CreateNotificationInput {
   description: string;
 
   @IsString()
-  @Field(() => String)
-  imageUrl: string;
+  @Field(() => String, { nullable: true })
+  imageUrl?: string;
 
   @IsUUID()
   @IsOptional()

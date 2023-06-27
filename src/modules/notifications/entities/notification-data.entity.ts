@@ -12,8 +12,8 @@ export class NotificationData {
   @Field(() => String)
   description: string;
 
-  @Field(() => String)
-  imageUrl: string;
+  @Field(() => String, { nullable: true })
+  imageUrl?: string;
 
   @Field(() => ID, { nullable: true })
   notifierId?: string;
