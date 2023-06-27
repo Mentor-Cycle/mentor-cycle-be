@@ -7,6 +7,7 @@ import {
   UpdateUserDto,
   ResetPasswordUserDto,
   SignInUserDto,
+  InputUsers,
 } from './dto';
 import { FindMentorInput } from './dto/find-mentor.dto';
 import { User } from './entities/user.entity';
@@ -42,6 +43,12 @@ export class UserResolver {
       throw new HttpException('Mentor not found', 404);
     }
     return mentor;
+  }
+
+  @UseGuards(AuthGuard)
+  @Query(() => [User], { name: 'findAllUsers' })
+  async getUsers(@Args('getUsersInput') getUsersInput: InputUsers) {
+    return await this.userService.getAllUsers(getUsersInput);
   }
 
   @Mutation(() => Boolean, { name: 'signUpUser' })

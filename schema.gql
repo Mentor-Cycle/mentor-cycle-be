@@ -121,6 +121,7 @@ type Query {
   sayHello: String!
   findMentors(findMentorsInput: FindMentorInput!): [User!]!
   findOneMentor(id: String!): User!
+  findAllUsers(getUsersInput: getUsers!): [User!]!
   me: User!
   isUserLogged: Boolean!
   findMentorAvailability(mentorId: String!): User!
@@ -145,6 +146,20 @@ input FindMentorInput {
   pageSize: Float
   skip: Float
   take: Float
+}
+
+input getUsers {
+  firstName: String
+  skills: [String!]
+  period: String
+  limit: Float
+  orderBy: String
+  order: String
+  pageNumber: Float
+  pageSize: Float
+  skip: Float
+  take: Float
+  isMentor: Boolean
 }
 
 type Mutation {
