@@ -199,6 +199,88 @@ export class EventService {
     });
   }
 
+  async findEventsPerWeek({
+    learnerId,
+    mentorId,
+  }: {
+    learnerId?: string;
+    mentorId?: string;
+  }) {
+    const options = {
+      ...(mentorId && {
+        mentorId,
+      }),
+      ...(learnerId && {
+        participants: {
+          some: {
+            user: {
+              id: learnerId,
+            },
+          },
+        },
+      }),
+    };
+    const currentDate = dayjs();
+    const oneWeekAgo = currentDate.subtract(1, 'week');
+
+    const eventsPerWeek = await this.prisma.event.findMany({
+      where: {
+        ...options,
+        ...oneWeekAgo.toDate(),
+      },
+      include: {
+        participants: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    return eventsPerWeek;
+  }
+
+  async findCurrentEvents({
+    learnerId,
+    mentorId,
+  }: {
+    learnerId?: string;
+    mentorId?: string;
+  }) {
+    const options = {
+      ...(mentorId && {
+        mentorId,
+      }),
+      ...(learnerId && {
+        participants: {
+          some: {
+            user: {
+              id: learnerId,
+            },
+          },
+        },
+      }),
+    };
+
+    const currentEvent = dayjs();
+
+    const pendingEvents = await this.prisma.event.findMany({
+      where: {
+        ...options,
+        ...currentEvent.toDate(),
+      },
+      include: {
+        participants: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    return pendingEvents;
+  }
+
   async findOne(id: string) {
     return this.prisma.event.findUnique({
       where: {
