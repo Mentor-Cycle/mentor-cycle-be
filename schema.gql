@@ -31,6 +31,7 @@ type User {
   googleId: String
   facebookId: String
   birthDate: DateTime
+  zipCode: String
   country: String
   state: String
   city: String
@@ -199,6 +200,7 @@ input CreateUserInput {
   yearsOfExperience: Float
   skills: [String!]!
   birthDate: DateTime
+  zipCode: String!
   country: String!
   state: String!
   city: String!
@@ -224,6 +226,7 @@ input UpdateUserDto {
   yearsOfExperience: Float
   skills: [String!]
   birthDate: DateTime
+  zipCode: String
   country: String
   state: String
   city: String

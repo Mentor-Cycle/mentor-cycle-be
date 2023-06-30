@@ -66,6 +66,15 @@ export class CreateUserInput {
   @Field()
   @IsOptional()
   @IsString()
+  @Length(9, 9)
+  @Matches(/^[0-9]{5}-[0-9]{3}/, {
+    message: 'Zip code should be on format "99999-99"',
+  })
+  zipCode?: string;
+
+  @Field()
+  @IsOptional()
+  @IsString()
   country?: string;
 
   @Field()

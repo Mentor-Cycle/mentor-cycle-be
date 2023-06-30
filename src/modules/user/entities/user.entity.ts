@@ -38,6 +38,8 @@ export class User {
   @Field({ nullable: true })
   birthDate?: Date;
   @Field({ nullable: true })
+  zipCode?: string;
+  @Field({ nullable: true })
   country?: string;
   @Field({ nullable: true })
   state?: string;
