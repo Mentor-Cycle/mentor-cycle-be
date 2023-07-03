@@ -88,6 +88,13 @@ export class UserRepository {
         email,
         active: true,
       },
+      include: {
+        notifications: {
+          include: {
+            data: true,
+          },
+        },
+      },
     });
   }
 
