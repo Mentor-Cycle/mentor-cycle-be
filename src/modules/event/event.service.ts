@@ -14,6 +14,7 @@ import { MailService } from '@common/services/mail/mail.service';
 import { eventScheduledEmailProps } from '@providers/mails';
 import { formatDate, formatHour } from '@common/utils/date';
 import { NotificationsService } from '@modules/notifications/notifications.service';
+import { Role } from '@common/decorators/roles.decorator';
 
 @Injectable()
 export class EventService {
@@ -199,12 +200,15 @@ export class EventService {
     });
   }
 
+  @Role('ADMIN')
   async findEventsPerWeek({
     learnerId,
     mentorId,
+    weeks,
   }: {
     learnerId?: string;
     mentorId?: string;
+    weeks?: number;
   }) {
     const options = {
       ...(mentorId && {
@@ -219,14 +223,17 @@ export class EventService {
           },
         },
       }),
+      ...(weeks && {
+        weeks,
+      }),
     };
     const currentDate = dayjs();
-    const oneWeekAgo = currentDate.subtract(1, 'week');
+    const subtractWeeks = currentDate.subtract(weeks, 'weeks');
 
     const eventsPerWeek = await this.prisma.event.findMany({
       where: {
         ...options,
-        ...oneWeekAgo.toDate(),
+        ...subtractWeeks.toDate(),
       },
       include: {
         participants: {
@@ -234,51 +241,13 @@ export class EventService {
             user: true,
           },
         },
+      },
+      orderBy: {
+        startDate: 'asc',
       },
     });
 
     return eventsPerWeek;
-  }
-
-  async findCurrentEvents({
-    learnerId,
-    mentorId,
-  }: {
-    learnerId?: string;
-    mentorId?: string;
-  }) {
-    const options = {
-      ...(mentorId && {
-        mentorId,
-      }),
-      ...(learnerId && {
-        participants: {
-          some: {
-            user: {
-              id: learnerId,
-            },
-          },
-        },
-      }),
-    };
-
-    const currentEvent = dayjs();
-
-    const pendingEvents = await this.prisma.event.findMany({
-      where: {
-        ...options,
-        ...currentEvent.toDate(),
-      },
-      include: {
-        participants: {
-          include: {
-            user: true,
-          },
-        },
-      },
-    });
-
-    return pendingEvents;
   }
 
   async findOne(id: string) {
