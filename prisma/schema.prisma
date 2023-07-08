@@ -25,6 +25,7 @@ model User {
   facebookId          String?         @map("facebook_id")
   githubId            String?         @map("github_id")
   birthDate           DateTime?       @map("birth_date")
+  language            Json?
   country             String?
   state               String?
   city                String?
@@ -44,16 +45,16 @@ model User {
   events              EventsOnUsers[]
   temporaryCodes      TemporaryCode[]
 
-  createdAt           DateTime        @default(now()) @map("created_at")
-  updatedAt           DateTime        @updatedAt @map("updated_at")
-  Event               Event?          @relation(fields: [eventId], references: [id])
-  eventId             String?
-  notificationsData   NotificationData[]
-  notifications       Notification[]
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  Event             Event?             @relation(fields: [eventId], references: [id])
+  eventId           String?
+  notificationsData NotificationData[]
+  notifications     Notification[]
 
-  writtenTestimonies  Testimony[]     @relation("WrittenTestimonies")
-  testimonies         Testimony[]     @relation("Testimonies")
-       
+  writtenTestimonies Testimony[] @relation("WrittenTestimonies")
+  testimonies        Testimony[] @relation("Testimonies")
+
   @@map("users")
 }
 
@@ -128,17 +129,17 @@ model NotificationData {
   notifications Notification[]
 
   @@map("notifications_data")
-} 
+}
 
 model Testimony {
-  id        String    @id @default(uuid())
+  id        String   @id @default(uuid())
   learnerId String
   mentorId  String
   text      String
-  learner   User      @relation("WrittenTestimonies", fields: [learnerId], references: [id])
-  mentor    User      @relation("Testimonies", fields: [mentorId], references: [id])
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+  learner   User     @relation("WrittenTestimonies", fields: [learnerId], references: [id])
+  mentor    User     @relation("Testimonies", fields: [mentorId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("testimonies")
 }
