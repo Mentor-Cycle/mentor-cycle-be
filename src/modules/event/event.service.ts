@@ -223,17 +223,20 @@ export class EventService {
           },
         },
       }),
-      ...(weeks && {
-        weeks,
-      }),
     };
+
     const currentDate = dayjs();
-    const subtractWeeks = currentDate.subtract(weeks, 'weeks');
+    let subtractWeeks = currentDate;
+
+    if (weeks) {
+      subtractWeeks = currentDate.subtract(weeks, 'weeks');
+      subtractWeeks.toDate();
+    }
 
     const eventsPerWeek = await this.prisma.event.findMany({
       where: {
         ...options,
-        ...subtractWeeks.toDate(),
+        ...subtractWeeks,
       },
       include: {
         participants: {
@@ -247,7 +250,10 @@ export class EventService {
       },
     });
 
-    return eventsPerWeek;
+    return eventsPerWeek.map((events) => {
+      if (!weeks) this.findAll(events);
+      return events;
+    });
   }
 
   async findOne(id: string) {
