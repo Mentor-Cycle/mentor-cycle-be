@@ -33,7 +33,7 @@ model User {
   linkedin            String?
   github              String?
   website             String?
-  yearsOfExperience   Float?          @map("years_of_experience")
+  experience          String?          @map("experience")
   description         String?
   jobTitle            String?         @map("job_title")
   jobCompany          String?         @map("job_company")

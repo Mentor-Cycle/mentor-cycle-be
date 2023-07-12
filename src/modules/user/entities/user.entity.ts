@@ -19,8 +19,8 @@ export class User {
   lastName?: string | null;
   @Field(() => String, { nullable: true })
   photoUrl?: string | null;
-  @Field(() => Float, { nullable: true })
-  yearsOfExperience?: number | null;
+  @Field(() => String, { nullable: true })
+  experience?: string | null;
   @Field()
   isEmailVerified: boolean;
   @Field()

@@ -22,7 +22,7 @@ type User {
   firstName: String!
   lastName: String
   photoUrl: String
-  yearsOfExperience: Float
+  experience: String
   isEmailVerified: Boolean!
   isTermsAccepted: Boolean!
   onBoardingCompleted: Boolean!
@@ -197,7 +197,7 @@ input CreateUserInput {
   email: String!
   password: String!
   photoUrl: String
-  yearsOfExperience: Float
+  experience: String!
   skills: [String!]!
   birthDate: DateTime
   zipCode: String!
@@ -223,7 +223,7 @@ input UpdateUserDto {
   email: String
   password: String
   photoUrl: String
-  yearsOfExperience: Float
+  experience: String
   skills: [String!]
   birthDate: DateTime
   zipCode: String

@@ -49,9 +49,14 @@ export class CreateUserInput {
   @IsUrl()
   photoUrl?: string;
 
-  @Field({ nullable: true })
+  @Field()
   @IsOptional()
-  yearsOfExperience?: number;
+  @IsString()
+  @Length(3, 5)
+  @Matches(/^[0-9]{1,2}-(10|11|[0-9]{1})$/, {
+    message: 'experience should be on format "99-99" (years-months)',
+  })
+  experience?: string;
 
   @Field(() => [String], { nullable: false })
   @IsEnum(Skill, { each: true })
@@ -68,7 +73,7 @@ export class CreateUserInput {
   @IsString()
   @Length(9, 9)
   @Matches(/^[0-9]{5}-[0-9]{3}/, {
-    message: 'Zip code should be on format "99999-99"',
+    message: 'zipCode should be on format "99999-999"',
   })
   zipCode?: string;
 
