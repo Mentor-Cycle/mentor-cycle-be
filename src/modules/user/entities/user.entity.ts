@@ -1,6 +1,7 @@
 import { Availability } from './../../availability/entities/availability.entity';
 import { Directive, Field, Float, ObjectType } from '@nestjs/graphql';
 import { FieldId } from '@common/decorators';
+import { Notification } from '@modules/notifications/entities/notification.entity';
 
 @ObjectType()
 @Directive('@key(fields: "id")')
@@ -67,4 +68,6 @@ export class User {
   status?: string;
   @Field(() => [Availability], { nullable: true })
   availability?: Availability[];
+  @Field(() => [Notification], { nullable: true })
+  notifications?: Notification[];
 }
