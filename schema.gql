@@ -104,24 +104,6 @@ type Skill {
   name: String!
 }
 
-type NotificationData {
-  id: ID!
-  title: String!
-  description: String!
-  imageUrl: String
-  notifierId: ID
-  updatedAt: DateTime!
-  createdAt: DateTime!
-}
-
-type Notification {
-  id: ID!
-  notificationDataId: ID!
-  userId: ID!
-  read: Boolean!
-  data: NotificationData!
-}
-
 type Testimony {
   id: ID!
   mentorId: String!
@@ -134,6 +116,14 @@ type CreateTestimonyOutput {
   mentorId: String!
   learnerId: String!
   text: String!
+}
+
+type Recommendation {
+  id: ID!
+  mentorId: String!
+  learnerId: String!
+  text: String!
+  approved: Boolean!
 }
 
 type Query {
@@ -150,10 +140,7 @@ type Query {
   skill(id: Int!): Skill!
   findNotifications(userId: String): [Notification!]!
   findOneNotification(id: String!): Notification
-  findTestimonies(
-    learnerId: String
-    mentorId: String
-  ): [CreateTestimonyOutput!]!
+  findTestimonies(learnerId: String, mentorId: String): [CreateTestimonyOutput!]!
   findOneTestimony(id: String!): [CreateTestimonyOutput!]!
 }
 
@@ -195,9 +182,7 @@ type Mutation {
   resetUserPassword(userInput: ResetPasswordInput!): Boolean!
   sendResetPassword(email: String!): Boolean!
   createAvailability(createAvailabilityInput: CreateAvailabilityInput!): User!
-  updateAvailability(
-    updateAvailabilityInput: UpdateAvailabilityInput!
-  ): Availability!
+  updateAvailability(updateAvailabilityInput: UpdateAvailabilityInput!): Availability!
   removeAvailability(id: Int!): Availability!
   createEvent(createEventInput: CreateEventInput!): Event!
   updateEvent(updateEventInput: UpdateEventInput!): Event!
@@ -205,17 +190,14 @@ type Mutation {
   createSkill(createSkillInput: CreateSkillInput!): Skill!
   updateSkill(updateSkillInput: UpdateSkillInput!): Skill!
   removeSkill(id: Int!): Skill!
-  createNotification(
-    createNotificationInput: CreateNotificationInput!
-  ): NotificationData!
-  updateNotification(
-    updateNotificationInput: UpdateNotificationInput!
-  ): NotificationData!
+  createNotification(createNotificationInput: CreateNotificationInput!): NotificationData!
+  updateNotification(updateNotificationInput: UpdateNotificationInput!): NotificationData!
   markRead(id: String!): Notification!
   removeNotification(id: ID!): Boolean!
   createTestimony(createTestimonyInput: CreateTestimonyInput!): Testimony!
   updateTestimony(UpdateTestimonyInput: UpdateTestimonyInput!): Testimony!
   deleteTestimony(id: Int!): Testimony!
+  createRecommendation(createRecommendationInput: CreateRecommendationInput!): Recommendation!
 }
 
 input CreateUserInput {
@@ -280,9 +262,7 @@ input SignInUserInput {
   rememberMe: Boolean
 }
 
-"""
-The `Upload` scalar type represents a file upload.
-"""
+"""The `Upload` scalar type represents a file upload."""
 scalar Upload
 
 input ResetPasswordInput {
@@ -330,16 +310,12 @@ input UpdateEventInput {
 }
 
 input CreateSkillInput {
-  """
-  Example field (placeholder)
-  """
+  """Example field (placeholder)"""
   exampleField: Int!
 }
 
 input UpdateSkillInput {
-  """
-  Example field (placeholder)
-  """
+  """Example field (placeholder)"""
   exampleField: Int
   id: Int!
 }
@@ -372,4 +348,11 @@ input UpdateTestimonyInput {
   learnerId: String
   text: String
   id: String!
+}
+
+input CreateRecommendationInput {
+  mentorId: String!
+  learnerId: String!
+  text: String!
+  approved: Boolean!
 }
