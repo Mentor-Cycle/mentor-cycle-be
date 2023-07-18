@@ -20,9 +20,12 @@ export class AuthenticationService {
     token: string;
     new?: boolean;
   }> {
-    const { id, emails, photos, name } = profile;
-    const firstName = name?.givenName || '';
-    const lastName = name?.familyName || '';
+    const { id, emails, photos, name, displayName } = profile;
+    const arrayDisplayName = displayName.split(' ');
+    const firstDisplayName = arrayDisplayName[0];
+    const lastDisplayName = arrayDisplayName[arrayDisplayName.length - 1];
+    const firstName = name?.givenName || firstDisplayName || '';
+    const lastName = name?.familyName || lastDisplayName || '';
     const email = emails?.[0].value || '';
     const photoUrl = photos?.[photos.length - 1].value;
     const accountId = id;
@@ -62,13 +65,16 @@ export class AuthenticationService {
 
     if (provider === 'google') {
       input.googleId = accountId;
-    } else {
+    }
+    if (provider === 'linkedin') {
       input.linkedinId = accountId;
+    } else {
+      input.githubId = accountId;
     }
 
     const newUser = await this.userRepository.create(input);
 
-    const token = this.generateToken(newUser.id, email);
+    const token = await this.generateToken(newUser.id, email);
 
     return { token, user: newUser, new: true };
   }
@@ -76,7 +82,7 @@ export class AuthenticationService {
   private async signIn(provider: AuthProvider, accountId: string, user: User) {
     await this.linkOAuthAccountToUser(provider, accountId, user);
 
-    const token = this.generateToken(user.id, user.email);
+    const token = await this.generateToken(user.id, user.email);
 
     return { user, token };
   }
@@ -101,12 +107,14 @@ export class AuthenticationService {
     await this.userRepository.update(updateInput, { email: user.email });
   }
 
-  private generateToken(userId: string, email: string) {
+  private async generateToken(userId: string, email: string) {
+    const existingUser = await this.userRepository.getByEmail(email);
+
     return this.jwtService.sign(
       {
         id: userId,
         email,
-        role: 'USER',
+        role: existingUser.isMentor ? 'MENTOR' : 'USER',
       },
       { subject: userId, secret: process.env.SECRET },
     );

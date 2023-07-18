@@ -23,6 +23,7 @@ model User {
   googleId            String?         @map("google_id")
   linkedinId          String?         @map("linkedin_id")
   facebookId          String?         @map("facebook_id")
+  githubId            String?         @map("github_id")
   birthDate           DateTime?       @map("birth_date")
   country             String?
   state               String?
@@ -43,10 +44,15 @@ model User {
   events              EventsOnUsers[]
   temporaryCodes      TemporaryCode[]
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  Event     Event?   @relation(fields: [eventId], references: [id])
-  eventId   String?
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+  Event             Event?             @relation(fields: [eventId], references: [id])
+  eventId           String?
+  notificationsData NotificationData[]
+  notifications     Notification[]
+
+  writtenTestimonies Testimony[] @relation("WrittenTestimonies")
+  testimonies        Testimony[] @relation("Testimonies")
 
   @@map("users")
 }
@@ -81,13 +87,14 @@ model Event {
 
 model EventsOnUsers {
   event      Event    @relation(fields: [eventId], references: [id])
-  eventId    String
+  eventId    String   @map("event_id")
   user       User     @relation(fields: [userId], references: [id])
-  userId     String
+  userId     String   @map("user_id")
   assignedAt DateTime @default(now())
   assignedBy String
 
   @@id([eventId, userId])
+  @@map("events_on_users")
 }
 
 model Skill {
@@ -98,8 +105,41 @@ model Skill {
 }
 
 model Notification {
-  id      String @id @default(uuid())
-  message String
+  id                 String  @id @default(uuid())
+  notificationDataId String  @map("notification_data_id")
+  userId             String  @map("user_id")
+  read               Boolean @default(false)
+
+  user User              @relation(fields: [userId], references: [id])
+  data NotificationData? @relation(fields: [notificationDataId], references: [id], onDelete: Cascade)
 
   @@map("notifications")
+}
+
+model NotificationData {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  imageUrl    String   @map("image_url")
+  notifierId  String?  @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  notifier      User?          @relation(fields: [notifierId], references: [id])
+  notifications Notification[]
+
+  @@map("notifications_data")
+}
+
+model Testimony {
+  id        String   @id @default(uuid())
+  learnerId String
+  mentorId  String
+  text      String
+  learner   User     @relation("WrittenTestimonies", fields: [learnerId], references: [id])
+  mentor    User     @relation("Testimonies", fields: [mentorId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("testimonies")
 }

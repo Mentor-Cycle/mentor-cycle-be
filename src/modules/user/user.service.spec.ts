@@ -7,6 +7,7 @@ import { UserService } from './user.service';
 import { SignInUserDto } from './dto';
 import { MailService } from '@common/services/mail';
 import { TemporaryCodeRepository } from './temporary-code.repository';
+import { NotificationsService } from '@modules/notifications/notifications.service';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -15,6 +16,7 @@ describe('UserService', () => {
   let cryptService: CryptService;
   let mailService: MailService;
   let temporaryCodeRepository: TemporaryCodeRepository;
+  let notificationsService: NotificationsService;
 
   let user: any;
   beforeEach(async () => {
@@ -59,6 +61,12 @@ describe('UserService', () => {
             create: jest.fn(),
           },
         },
+        {
+          provide: NotificationsService,
+          useValue: {
+            create: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -70,6 +78,9 @@ describe('UserService', () => {
     temporaryCodeRepository = moduleRef.get<TemporaryCodeRepository>(
       TemporaryCodeRepository,
     );
+    notificationsService =
+      moduleRef.get<NotificationsService>(NotificationsService);
+
     user = {
       id: '1',
       firstName: 'John',

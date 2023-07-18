@@ -13,3 +13,9 @@ export enum Skill {
   ProductDesign = 'Product Design',
   QA = 'QA',
 }
+
+export enum Roles {
+  Admin = 'ADMIN',
+  User = 'USER',
+  Mentor = 'MENTOR',
+}

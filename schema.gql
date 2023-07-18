@@ -14,6 +14,29 @@ type Availability {
   endDate: String
 }
 
+type NotificationData {
+  id: ID!
+  title: String!
+  description: String!
+  imageUrl: String
+  notifierId: ID
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Notification {
+  id: ID!
+  notificationDataId: ID!
+  userId: ID!
+  read: Boolean!
+  data: NotificationData!
+}
+
 type User {
   id: ID!
   email: String!
@@ -45,12 +68,8 @@ type User {
   isMentor: Boolean
   status: String
   availability: [Availability!]
+  notifications: [Notification!]
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Event {
   id: ID!
@@ -85,10 +104,25 @@ type Skill {
   name: String!
 }
 
+type Testimony {
+  id: ID!
+  mentorId: String!
+  learnerId: String!
+  text: String!
+}
+
+type CreateTestimonyOutput {
+  id: ID!
+  mentorId: String!
+  learnerId: String!
+  text: String!
+}
+
 type Query {
   sayHello: String!
   findMentors(findMentorsInput: FindMentorInput!): [User!]!
   findOneMentor(id: String!): User!
+  findAllUsers(getUsersInput: getUsers!): [User!]!
   me: User!
   isUserLogged: Boolean!
   findMentorAvailability(mentorId: String!): User!
@@ -96,6 +130,10 @@ type Query {
   findOneEvent(id: String!): CreateEventOutput!
   findAllSkills: [Skill!]!
   skill(id: Int!): Skill!
+  findNotifications(userId: String): [Notification!]!
+  findOneNotification(id: String!): Notification
+  findTestimonies(learnerId: String, mentorId: String): [CreateTestimonyOutput!]!
+  findOneTestimony(id: String!): [CreateTestimonyOutput!]!
 }
 
 input FindMentorInput {
@@ -109,6 +147,20 @@ input FindMentorInput {
   pageSize: Float
   skip: Float
   take: Float
+}
+
+input getUsers {
+  firstName: String
+  skills: [String!]
+  period: String
+  limit: Float
+  orderBy: String
+  order: String
+  pageNumber: Float
+  pageSize: Float
+  skip: Float
+  take: Float
+  isMentor: Boolean
 }
 
 type Mutation {
@@ -130,6 +182,13 @@ type Mutation {
   createSkill(createSkillInput: CreateSkillInput!): Skill!
   updateSkill(updateSkillInput: UpdateSkillInput!): Skill!
   removeSkill(id: Int!): Skill!
+  createNotification(createNotificationInput: CreateNotificationInput!): NotificationData!
+  updateNotification(updateNotificationInput: UpdateNotificationInput!): NotificationData!
+  markRead(id: String!): Notification!
+  removeNotification(id: ID!): Boolean!
+  createTestimony(createTestimonyInput: CreateTestimonyInput!): Testimony!
+  updateTestimony(UpdateTestimonyInput: UpdateTestimonyInput!): Testimony!
+  deleteTestimony(id: Int!): Testimony!
 }
 
 input CreateUserInput {
@@ -250,4 +309,34 @@ input UpdateSkillInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
+}
+
+input CreateNotificationInput {
+  title: String!
+  description: String!
+  imageUrl: String
+  notifierId: ID
+  usersIds: [String!]!
+}
+
+input UpdateNotificationInput {
+  title: String
+  description: String
+  imageUrl: String
+  notifierId: ID
+  usersIds: [String!]
+  id: String!
+}
+
+input CreateTestimonyInput {
+  mentorId: String!
+  learnerId: String!
+  text: String!
+}
+
+input UpdateTestimonyInput {
+  mentorId: String
+  learnerId: String
+  text: String
+  id: String!
 }

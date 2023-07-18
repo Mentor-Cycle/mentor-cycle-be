@@ -16,6 +16,7 @@ import {
   CheckPinUserDto,
   ResetPasswordSentDto,
   UpdateUserDto,
+  InputUsers,
 } from './dto';
 import { UserRepository } from './user.repository';
 import { passwordResetEmailProps } from '@providers/mails';
@@ -27,6 +28,8 @@ import { JWTProps } from './types';
 import { render } from '@react-email/components';
 import ResetPassword from '../../../emails/reset-password';
 import { ChangePasswordInputDto } from './dto/change-password.dto';
+import { NotificationsService } from '@modules/notifications/notifications.service';
+import { MENTOR_CYCLE_LOGO_URL } from '@common/config/constants';
 
 @Injectable()
 export class UserService {
@@ -36,6 +39,7 @@ export class UserService {
     private readonly cryptService: CryptService,
     private readonly mailService: MailService,
     private readonly temporaryCodeRepository: TemporaryCodeRepository,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async me(token: string) {
@@ -47,15 +51,13 @@ export class UserService {
   }
 
   async findMentors(input: FindMentorInput) {
-    let args = Object.values(input).length && input;
-    if (input.pageNumber && input.pageSize) {
-      args = {
-        ...args,
-        skip: (input.pageNumber - 1) * input.pageSize,
-        take: input.pageSize,
-      };
-    }
-    return this.userRepository.findManyMentors(args);
+    return this.userRepository.findManyMentors(
+      this.returnTypesFromQuery(input),
+    );
+  }
+
+  async getAllUsers(input: InputUsers) {
+    return this.userRepository.findManyUsers(this.returnTypesFromQuery(input));
   }
 
   async signIn(input: SignInUserDto, expiresSession: number) {
@@ -164,9 +166,59 @@ export class UserService {
 
   async updateUserData(userData: UpdateUserDto) {
     const user = await this.updateUser(userData);
+
+    const isUserProfileComplete = this.checkIfUserProfileIsComplete(user);
+
+    if (isUserProfileComplete) {
+      await this.notificationsService.create({
+        description: 'Parabéns, seu perfil está completo!',
+        imageUrl: user.photoUrl || MENTOR_CYCLE_LOGO_URL,
+        title: 'Perfil completo',
+        notifierId: null,
+        usersIds: [user.id],
+      });
+    }
+
     delete user.password;
     return user;
   }
+
+  checkIfUserProfileIsComplete(user: User) {
+    const requiredFields = [
+      user.lastName,
+      user.isVerified,
+      user.isTermsAccepted,
+      user.onBoardingCompleted,
+      user.birthDate,
+      user.country,
+      user.state,
+      user.city,
+      user.linkedin,
+      user.github,
+      user.yearsOfExperience,
+      user.description,
+      user.jobTitle,
+      user.jobCompany,
+      user.biography,
+      user.active,
+      user.skills,
+    ];
+
+    return requiredFields.every((field) => {
+      if (Array.isArray(field)) {
+        return field.length > 0;
+      }
+
+      switch (typeof field) {
+        case 'boolean':
+          return field;
+
+        default:
+          return field !== null && field !== '';
+      }
+    });
+  }
+
   private async checkPinUser(input: CheckPinUserDto) {
     const { email, pin } = input;
 
@@ -194,6 +246,18 @@ export class UserService {
     }
 
     return true;
+  }
+
+  private returnTypesFromQuery(input: InputUsers | FindMentorInput) {
+    let args = Object.values(input).length && input;
+    if (input.pageNumber && input.pageSize) {
+      args = {
+        ...args,
+        skip: (input.pageNumber - 1) * input.pageSize,
+        take: input.pageSize,
+      };
+    }
+    return args;
   }
 
   async sendResetPassword(email: string) {
@@ -286,8 +350,19 @@ export class UserService {
     )}`.replace(/[0-9]/g, '');
   }
 
-  private createUser(args: CreateUserInput) {
-    return this.userRepository.create(args);
+  private async createUser(args: CreateUserInput) {
+    const user = await this.userRepository.create(args);
+
+    await this.notificationsService.create({
+      description:
+        'Obrigado por realizar o seu cadastro em nossa plataforma, aproveite e complete o seu perfil!',
+      imageUrl: user.photoUrl || MENTOR_CYCLE_LOGO_URL,
+      title: 'Complete o seu perfil',
+      notifierId: null,
+      usersIds: [user.id],
+    });
+
+    return user;
   }
 
   private updateUser(updateUserObj: UpdateUserDto) {
