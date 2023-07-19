@@ -5,8 +5,7 @@ export function setCookies(res, token, expires): boolean {
 
   res.cookie('token', token, {
     httpOnly: true,
-    sameSite: 'none',
-    secure: true,
+    sameSite: 'lax',
     path: '/',
     expires,
   });

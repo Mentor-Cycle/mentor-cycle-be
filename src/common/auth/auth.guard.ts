@@ -18,8 +18,7 @@ export class AuthGuard implements CanActivate {
     if (!isVerified) {
       res.clearCookie('token', {
         httponly: true,
-        samesite: 'none',
-        secure: true,
+        samesite: 'lax',
         path: '/',
       });
     }
