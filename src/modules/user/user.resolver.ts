@@ -121,7 +121,8 @@ export class UserResolver {
   async signOut(@Context('res') res: Response) {
     res.clearCookie('token', {
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: 'none',
+      secure: true,
       path: '/',
     });
 
@@ -167,7 +168,7 @@ export class UserResolver {
     if (!isValidToken) {
       res.clearCookie('token', {
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: 'none',
         secure: true,
         path: '/',
       });
