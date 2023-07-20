@@ -118,6 +118,14 @@ type CreateTestimonyOutput {
   text: String!
 }
 
+type Recommendation {
+  id: ID!
+  mentorId: String!
+  learnerId: String!
+  text: String!
+  approved: Boolean!
+}
+
 type Query {
   sayHello: String!
   findMentors(findMentorsInput: FindMentorInput!): [User!]!
@@ -189,6 +197,7 @@ type Mutation {
   createTestimony(createTestimonyInput: CreateTestimonyInput!): Testimony!
   updateTestimony(UpdateTestimonyInput: UpdateTestimonyInput!): Testimony!
   deleteTestimony(id: Int!): Testimony!
+  createRecommendation(createRecommendationInput: CreateRecommendationInput!): Recommendation!
 }
 
 input CreateUserInput {
@@ -339,4 +348,11 @@ input UpdateTestimonyInput {
   learnerId: String
   text: String
   id: String!
+}
+
+input CreateRecommendationInput {
+  mentorId: String!
+  learnerId: String!
+  text: String!
+  approved: Boolean!
 }
