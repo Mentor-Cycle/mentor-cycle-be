@@ -88,13 +88,14 @@ model Event {
 
 model EventsOnUsers {
   event      Event    @relation(fields: [eventId], references: [id])
-  eventId    String
+  eventId    String   @map("event_id")
   user       User     @relation(fields: [userId], references: [id])
-  userId     String
+  userId     String   @map("user_id")
   assignedAt DateTime @default(now())
   assignedBy String
 
   @@id([eventId, userId])
+  @@map("events_on_users")
 }
 
 model Skill {
