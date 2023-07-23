@@ -14,6 +14,7 @@ import { MailService } from '@common/services/mail/mail.service';
 import { eventScheduledEmailProps } from '@providers/mails';
 import { formatDate, formatHour } from '@common/utils/date';
 import { NotificationsService } from '@modules/notifications/notifications.service';
+import { Role } from '@common/decorators/roles.decorator';
 
 @Injectable()
 export class EventService {
@@ -196,6 +197,62 @@ export class EventService {
         event.status = 'DONE';
       }
       return event;
+    });
+  }
+
+  @Role('ADMIN')
+  async findEventsPerWeek({
+    learnerId,
+    mentorId,
+    weeks,
+  }: {
+    learnerId?: string;
+    mentorId?: string;
+    weeks?: number;
+  }) {
+    const options = {
+      ...(mentorId && {
+        mentorId,
+      }),
+      ...(learnerId && {
+        participants: {
+          some: {
+            user: {
+              id: learnerId,
+            },
+          },
+        },
+      }),
+    };
+
+    const currentDate = dayjs();
+    let subtractWeeks = currentDate;
+
+    if (weeks) {
+      subtractWeeks = currentDate.subtract(weeks, 'weeks');
+      subtractWeeks.toDate();
+    }
+
+    const eventsPerWeek = await this.prisma.event.findMany({
+      where: {
+        ...options,
+        ...subtractWeeks,
+      },
+      include: {
+        participants: {
+          include: {
+            user: true,
+          },
+        },
+      },
+      orderBy: {
+        startDate: 'asc',
+      },
+    });
+
+    return eventsPerWeek.map((events) => {
+      if (!weeks) this.findAll(events);
+      return events;
     });
   }
 
