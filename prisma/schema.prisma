@@ -44,17 +44,17 @@ model User {
   availability        Json?
   events              EventsOnUsers[]
   temporaryCodes      TemporaryCode[]
-
-  createdAt         DateTime           @default(now()) @map("created_at")
-  updatedAt         DateTime           @updatedAt @map("updated_at")
-  Event             Event?             @relation(fields: [eventId], references: [id])
-  eventId           String?
-  notificationsData NotificationData[]
-  notifications     Notification[]
-
-  writtenTestimonies Testimony[] @relation("WrittenTestimonies")
-  testimonies        Testimony[] @relation("Testimonies")
-
+  createdAt           DateTime        @default(now()) @map("created_at")
+  updatedAt           DateTime        @updatedAt @map("updated_at")
+  Event               Event?          @relation(fields: [eventId], references: [id])
+  eventId             String?
+  notificationsData   NotificationData[]
+  notifications       Notification[]
+  writtenTestimonies  Testimony[]     @relation("WrittenTestimonies")
+  testimonies         Testimony[]     @relation("Testimonies")
+  writtenRecommendations  Recommendation[]     @relation("WrittenRecommendations")
+  recommendations         Recommendation[]     @relation("Recommendations")
+       
   @@map("users")
 }
 
@@ -110,7 +110,6 @@ model Notification {
   notificationDataId String  @map("notification_data_id")
   userId             String  @map("user_id")
   read               Boolean @default(false)
-
   user User              @relation(fields: [userId], references: [id])
   data NotificationData? @relation(fields: [notificationDataId], references: [id], onDelete: Cascade)
 
@@ -143,4 +142,18 @@ model Testimony {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("testimonies")
+}
+
+model Recommendation {
+  id        String    @id @default(uuid())
+  learnerId String
+  mentorId  String
+  text      String
+  approved  Boolean
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  learner   User      @relation("WrittenRecommendations", fields: [learnerId], references: [id])
+  mentor    User      @relation("Recommendations", fields: [mentorId], references: [id])
+
+  @@map("recommendations")
 }
