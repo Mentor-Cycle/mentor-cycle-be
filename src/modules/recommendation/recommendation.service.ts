@@ -9,4 +9,11 @@ export class RecommendationService {
   async create(newRecommendation: CreateRecommendationInput) {
     return await this.prisma.recommendation.create({ data: newRecommendation });
   }
+
+  async updateApproved(id: string, newApproved: boolean) {
+    return await this.prisma.recommendation.update({
+      where: { id },
+      data: { approved: newApproved },
+    });
+  }
 }

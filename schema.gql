@@ -198,6 +198,7 @@ type Mutation {
   updateTestimony(UpdateTestimonyInput: UpdateTestimonyInput!): Testimony!
   deleteTestimony(id: Int!): Testimony!
   createRecommendation(createRecommendationInput: CreateRecommendationInput!): Recommendation!
+  updateApproved(updateApprovedInput: UpdateApprovedInput!): Recommendation!
 }
 
 input CreateUserInput {
@@ -354,5 +355,10 @@ input CreateRecommendationInput {
   mentorId: String!
   learnerId: String!
   text: String!
+  approved: Boolean!
+}
+
+input UpdateApprovedInput {
+  id: String!
   approved: Boolean!
 }
