@@ -3,7 +3,7 @@ import { ObjectType, Field, Directive } from '@nestjs/graphql';
 
 @ObjectType()
 @Directive('@key(fields: "id")')
-export class Testimony {
+export class Recommendation {
   @FieldId()
   id: string;
   @Field(() => String)
@@ -12,4 +12,6 @@ export class Testimony {
   learnerId: string;
   @Field(() => String)
   text: string;
+  @Field(() => Boolean)
+  approved: boolean;
 }
