@@ -20,6 +20,8 @@ import 'dayjs/locale/pt-br';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.locale('pt-br');
+dayjs.tz.setDefault('America/Sao_Paulo');
 
 @Injectable()
 export class EventService {
@@ -195,10 +197,10 @@ export class EventService {
       },
     });
 
-    const currentTime = dayjs().tz('America/Sao_Paulo');
+    const currentTime = dayjs();
 
     return events.map((event) => {
-      const eventStartDate = dayjs(event.startDate).tz('America/Sao_Paulo');
+      const eventStartDate = dayjs(event.startDate);
       if (dayjs(eventStartDate).isBefore(currentTime)) {
         event.status = 'DONE';
       }
