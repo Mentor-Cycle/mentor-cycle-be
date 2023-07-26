@@ -201,7 +201,7 @@ export class EventService {
 
     return events.map((event) => {
       const eventStartDate = dayjs(event.startDate);
-      if (dayjs(eventStartDate).isBefore(currentTime)) {
+      if (dayjs(eventStartDate).isBefore(currentTime.subtract(3, 'hour'))) {
         event.status = 'DONE';
       }
       return event;
