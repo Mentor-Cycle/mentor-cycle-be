@@ -14,6 +14,12 @@ import { MailService } from '@common/services/mail/mail.service';
 import { eventScheduledEmailProps } from '@providers/mails';
 import { formatDate, formatHour } from '@common/utils/date';
 import { NotificationsService } from '@modules/notifications/notifications.service';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import 'dayjs/locale/pt-br';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 @Injectable()
 export class EventService {
@@ -189,10 +195,11 @@ export class EventService {
       },
     });
 
-    const currentTime = dayjs();
+    const currentTime = dayjs().tz('America/Sao_Paulo');
 
     return events.map((event) => {
-      if (dayjs(event.startDate).isBefore(currentTime)) {
+      const eventStartDate = dayjs(event.startDate).tz('America/Sao_Paulo');
+      if (dayjs(eventStartDate).isBefore(currentTime)) {
         event.status = 'DONE';
       }
       return event;
