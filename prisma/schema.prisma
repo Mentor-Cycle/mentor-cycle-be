@@ -25,6 +25,7 @@ model User {
   facebookId          String?         @map("facebook_id")
   githubId            String?         @map("github_id")
   birthDate           DateTime?       @map("birth_date")
+  zipCode             String?         @map("zip_code")
   country             String?
   state               String?
   city                String?
@@ -32,7 +33,7 @@ model User {
   linkedin            String?
   github              String?
   website             String?
-  yearsOfExperience   Float?          @map("years_of_experience")
+  experience          String?          @map("experience")
   description         String?
   jobTitle            String?         @map("job_title")
   jobCompany          String?         @map("job_company")
