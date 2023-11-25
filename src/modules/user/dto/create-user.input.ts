@@ -49,7 +49,7 @@ export class CreateUserInput {
   @IsUrl()
   photoUrl?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsOptional()
   @IsString()
   @Length(3, 5)
