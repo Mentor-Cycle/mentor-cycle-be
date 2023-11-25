@@ -21,6 +21,7 @@ import GraphQLUpload = require('graphql-upload/GraphQLUpload.js');
 import { TestimonyModule } from './modules/testimony/testimony.module';
 import { APP_GUARD } from '@nestjs/core';
 import { GqlThrottlerGuard } from '@common/throttler/throttler.guard';
+import { RecommendationModule } from './modules/recommendation/recommendation.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { GqlThrottlerGuard } from '@common/throttler/throttler.guard';
     SkillModule,
     NotificationsModule,
     TestimonyModule,
+    RecommendationModule,
   ],
   controllers: [AppController, AuthenticationController, StaticFilesController],
   providers: [
