@@ -27,6 +27,16 @@ export class EventResolver {
   }
 
   @UseGuards(AuthGuard)
+  @Query(() => [CreateEventOutput], { name: 'findEventsPerWeek' })
+  findEventsPerWeek(
+    @Args('learnerId', { nullable: true }) learnerId?: string,
+    @Args('mentorId', { nullable: true }) mentorId?: string,
+    @Args('weeks', { nullable: true }) weeks?: number,
+  ) {
+    return this.eventService.findEventsPerWeek({ learnerId, mentorId, weeks });
+  }
+
+  @UseGuards(AuthGuard)
   @Query(() => CreateEventOutput, { name: 'findOneEvent' })
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.eventService.findOne(id);

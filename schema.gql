@@ -135,6 +135,7 @@ type Query {
   isUserLogged: Boolean!
   findMentorAvailability(mentorId: String!): User!
   findEvents(learnerId: String, mentorId: String): [CreateEventOutput!]!
+  findEventsPerWeek(learnerId: String, mentorId: String, weeks: Float): [CreateEventOutput!]!
   findOneEvent(id: String!): CreateEventOutput!
   findAllSkills: [Skill!]!
   skill(id: Int!): Skill!
