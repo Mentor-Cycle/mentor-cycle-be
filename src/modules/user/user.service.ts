@@ -195,7 +195,7 @@ export class UserService {
       user.city,
       user.linkedin,
       user.github,
-      user.yearsOfExperience,
+      user.experience,
       user.description,
       user.jobTitle,
       user.jobCompany,

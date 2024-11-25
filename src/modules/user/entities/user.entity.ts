@@ -20,8 +20,8 @@ export class User {
   lastName?: string | null;
   @Field(() => String, { nullable: true })
   photoUrl?: string | null;
-  @Field(() => Float, { nullable: true })
-  yearsOfExperience?: number | null;
+  @Field(() => String, { nullable: true })
+  experience?: string | null;
   @Field()
   isEmailVerified: boolean;
   @Field()
@@ -38,6 +38,8 @@ export class User {
   facebookId?: string | null;
   @Field({ nullable: true })
   birthDate?: Date;
+  @Field({ nullable: true })
+  zipCode?: string;
   @Field({ nullable: true })
   country?: string;
   @Field({ nullable: true })

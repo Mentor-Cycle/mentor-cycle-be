@@ -45,7 +45,7 @@ type User {
   firstName: String!
   lastName: String
   photoUrl: String
-  yearsOfExperience: Float
+  experience: String
   isEmailVerified: Boolean!
   isTermsAccepted: Boolean!
   onBoardingCompleted: Boolean!
@@ -54,6 +54,7 @@ type User {
   googleId: String
   facebookId: String
   birthDate: DateTime
+  zipCode: String
   country: String
   state: String
   city: String
@@ -140,7 +141,10 @@ type Query {
   skill(id: Int!): Skill!
   findNotifications(userId: String): [Notification!]!
   findOneNotification(id: String!): Notification
-  findTestimonies(learnerId: String, mentorId: String): [CreateTestimonyOutput!]!
+  findTestimonies(
+    learnerId: String
+    mentorId: String
+  ): [CreateTestimonyOutput!]!
   findOneTestimony(id: String!): [CreateTestimonyOutput!]!
 }
 
@@ -182,7 +186,9 @@ type Mutation {
   resetUserPassword(userInput: ResetPasswordInput!): Boolean!
   sendResetPassword(email: String!): Boolean!
   createAvailability(createAvailabilityInput: CreateAvailabilityInput!): User!
-  updateAvailability(updateAvailabilityInput: UpdateAvailabilityInput!): Availability!
+  updateAvailability(
+    updateAvailabilityInput: UpdateAvailabilityInput!
+  ): Availability!
   removeAvailability(id: Int!): Availability!
   createEvent(createEventInput: CreateEventInput!): Event!
   updateEvent(updateEventInput: UpdateEventInput!): Event!
@@ -190,14 +196,20 @@ type Mutation {
   createSkill(createSkillInput: CreateSkillInput!): Skill!
   updateSkill(updateSkillInput: UpdateSkillInput!): Skill!
   removeSkill(id: Int!): Skill!
-  createNotification(createNotificationInput: CreateNotificationInput!): NotificationData!
-  updateNotification(updateNotificationInput: UpdateNotificationInput!): NotificationData!
+  createNotification(
+    createNotificationInput: CreateNotificationInput!
+  ): NotificationData!
+  updateNotification(
+    updateNotificationInput: UpdateNotificationInput!
+  ): NotificationData!
   markRead(id: String!): Notification!
   removeNotification(id: ID!): Boolean!
   createTestimony(createTestimonyInput: CreateTestimonyInput!): Testimony!
   updateTestimony(UpdateTestimonyInput: UpdateTestimonyInput!): Testimony!
   deleteTestimony(id: Int!): Testimony!
-  createRecommendation(createRecommendationInput: CreateRecommendationInput!): Recommendation!
+  createRecommendation(
+    createRecommendationInput: CreateRecommendationInput!
+  ): Recommendation!
   updateApproved(updateApprovedInput: UpdateApprovedInput!): Recommendation!
 }
 
@@ -207,9 +219,10 @@ input CreateUserInput {
   email: String!
   password: String!
   photoUrl: String
-  yearsOfExperience: Float
+  experience: String
   skills: [String!]!
   birthDate: DateTime
+  zipCode: String!
   country: String!
   state: String!
   city: String!
@@ -232,9 +245,10 @@ input UpdateUserDto {
   email: String
   password: String
   photoUrl: String
-  yearsOfExperience: Float
+  experience: String
   skills: [String!]
   birthDate: DateTime
+  zipCode: String
   country: String
   state: String
   city: String
@@ -263,7 +277,9 @@ input SignInUserInput {
   rememberMe: Boolean
 }
 
-"""The `Upload` scalar type represents a file upload."""
+"""
+The `Upload` scalar type represents a file upload.
+"""
 scalar Upload
 
 input ResetPasswordInput {
@@ -311,12 +327,16 @@ input UpdateEventInput {
 }
 
 input CreateSkillInput {
-  """Example field (placeholder)"""
+  """
+  Example field (placeholder)
+  """
   exampleField: Int!
 }
 
 input UpdateSkillInput {
-  """Example field (placeholder)"""
+  """
+  Example field (placeholder)
+  """
   exampleField: Int
   id: Int!
 }
