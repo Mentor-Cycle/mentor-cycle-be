@@ -2,6 +2,7 @@ import { Availability } from './../../availability/entities/availability.entity'
 import { Directive, Field, Float, ObjectType } from '@nestjs/graphql';
 import { FieldId } from '@common/decorators';
 import { Notification } from '@modules/notifications/entities/notification.entity';
+import { Language } from '@modules/language/entities/language.entity';
 
 @ObjectType()
 @Directive('@key(fields: "id")')
@@ -64,6 +65,8 @@ export class User {
   isMentor?: boolean;
   @Field({ nullable: true })
   status?: string;
+  @Field(() => [Language], { nullable: true })
+  language?: Language[];
   @Field(() => [Availability], { nullable: true })
   availability?: Availability[];
   @Field(() => [Notification], { nullable: true })

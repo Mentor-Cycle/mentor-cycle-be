@@ -25,6 +25,7 @@ model User {
   facebookId          String?         @map("facebook_id")
   githubId            String?         @map("github_id")
   birthDate           DateTime?       @map("birth_date")
+  language            Json?
   country             String?
   state               String?
   city                String?

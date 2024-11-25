@@ -12,6 +12,8 @@ import {
 } from 'class-validator';
 import { createStringRequirements } from '@common/utils';
 import { Skill } from '../types';
+import { Language } from '@modules/language/types';
+import { CreateLanguageInput } from '@modules/language/dto/create-language.input';
 
 @InputType('CreateUserInput')
 export class CreateUserInput {
@@ -131,4 +133,8 @@ export class CreateUserInput {
   @IsString()
   @IsOptional()
   status?: string;
+
+  @Field(() => [CreateLanguageInput], { nullable: true })
+  @IsOptional()
+  language?: Language[];
 }
